@@ -10,14 +10,15 @@ loops (Splice / Zenhiser) into original cues. Each track has two forms:
 
 | # | Track | Zone | Key / BPM |
 |---|-------|------|-----------|
-| 00 | **Neuromancer (Title)** | Title screen | D min / 119 |
-| 01 | **Chiba Streets** | Walking the city | D min / 90 |
-| 03 | **Cyberspace** | Jacked into the matrix | A min / 115 |
-| 04 | **ICE** | Breaking a data fortress | E min / 90 |
-| 05 | **Shops & PAX** | Crazy Edo's, Asano's, the terminals | D min / 90 |
-| 06 | **Endgame** | The Wintermute finale | A min / 100 |
+| 00 | **Dead Channel Sky** | Title screen | D min / 119 |
+| 01 | **Ninsei Neon** | Walking the streets of Chiba | D min / 90 |
+| 03 | **Consensual Hallucination** | Jacked into the matrix | A min / 115 |
+| 04 | **Black Ice** | Breaking a data fortress | E min / 90 |
+| 05 | **Hot Biz** | Crazy Edo's, Asano's, the terminals | D min / 90 |
+| 06 | **Wintermute** | The endgame finale | A min / 100 |
 
-*(02 is reserved; the Body Shop uses a short ambient texture in-game only.)*
+*(02 is reserved; the Body Shop uses a short ambient texture in-game only. Track
+titles are drawn from William Gibson's* Neuromancer*.)*
 
 ## License
 
