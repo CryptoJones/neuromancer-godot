@@ -27,6 +27,11 @@ const BG_PIXEL_W := 320   # downscale width: keeps the plates chunky/retro while
 const HIDDEN_ROOM := "1337"
 const VOID_IMAGE := "res://assets/ui/void.png"
 const VOID_TRACKS := ["title", "streets", "cyberspace", "ice_combat", "shops_pax", "body_shop", "endgame"]
+const TRACK_TITLES := {
+	"title": "Dead Channel Sky", "streets": "Ninsei Neon",
+	"cyberspace": "Consensual Hallucination", "ice_combat": "Black Ice",
+	"shops_pax": "Hot Biz", "body_shop": "Body Shop", "endgame": "Wintermute",
+}
 
 var _state: int = State.TITLE
 var _world: World
@@ -677,9 +682,35 @@ func _show_void_room() -> void:
 	_small(qb, 7)
 	qb.pressed.connect(_do_quit)
 	_button_bar.add_child(qb)
+	# Track-skip controls (the void is a little music player).
+	var prevb := Button.new()
+	prevb.text = "◀"
+	prevb.tooltip_text = "Previous track"
+	_small(prevb, 7)
+	prevb.pressed.connect(_void_skip.bind(false))
+	_button_bar.add_child(prevb)
+	var nextb := Button.new()
+	nextb.text = "▶"
+	nextb.tooltip_text = "Next track"
+	_small(nextb, 7)
+	nextb.pressed.connect(_void_skip.bind(true))
+	_button_bar.add_child(nextb)
 	# Everything down here reads 1337 (display only — the real stats are untouched).
 	_status_lbl.text = "%s   CR 1337   CON 1337   1337   13:37" % GameState.player_name
 	AudioManager.play_playlist(VOID_TRACKS)
+	_room_name_lbl.text = _void_nowplaying()
+
+## "1337  ♪ <track title>" for the hidden-room header.
+func _void_nowplaying() -> String:
+	var t := AudioManager.current_track()
+	return "1337    ♪ %s" % TRACK_TITLES.get(t, t)
+
+func _void_skip(forward: bool) -> void:
+	if forward:
+		AudioManager.next_track()
+	else:
+		AudioManager.prev_track()
+	_room_name_lbl.text = _void_nowplaying()
 
 ## Downscale a room's HD plate to BG_PIXEL_W (nearest-neighbour) and cache it, so
 ## the canvas_items stretch blows it back up into chunky retro pixels. The owned

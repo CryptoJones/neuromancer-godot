@@ -113,6 +113,27 @@ func _on_finished(which: AudioStreamPlayer) -> void:
 	_play_playlist_track()
 
 
+## Skip forward/back in the playlist (wraps around). No-op outside playlist mode.
+func next_track() -> void:
+	if not _pl_active or _playlist.is_empty():
+		return
+	_pl_idx = (_pl_idx + 1) % _playlist.size()
+	_play_playlist_track()
+
+
+func prev_track() -> void:
+	if not _pl_active or _playlist.is_empty():
+		return
+	_pl_idx = (_pl_idx - 1 + _playlist.size()) % _playlist.size()
+	_play_playlist_track()
+
+
+func current_track() -> String:
+	if not _pl_active or _playlist.is_empty():
+		return ""
+	return str(_playlist[_pl_idx])
+
+
 func stop() -> void:
 	_pl_active = false
 	_current = ""
