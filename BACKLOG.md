@@ -27,13 +27,19 @@ issues #1–#5; file finer-grained issues as tasks are picked up and link them h
 - [x] Owned HD art swap (FLUX.2 plates), crisp-text (MSDF) + pixelated-plate render (canvas_items)
 - [x] **Faithful full map: 56 rooms** ported from Javamancer `RoomMap` (real names + real exits); room prose from `R*.BIH`
 - [x] Inventory UI (gear/software/skills screen)
-- [x] PAX terminal — real `NEWS.BIH` + `PAXBBS.BIH` (News + Message base), booths in R1/R7/R8/R12/R41
+- [x] PAX terminal — **owned** news + BBS (`data/pax/*.json`), our writing in the original's tone; ships standalone (no BYO). Booths R1/R7/R8/R12/R41
 - [ ] Web export build + verify end-to-end
 
 > **REMASTER fidelity rule:** the game must match the 1988 original (rooms, dialogue,
 > shops, items, prices, logic) — only the art/presentation is modernised. Earlier
 > *invented* content (improvised map, Deane/Shin dialogue, made-up item/shop tables)
 > is being replaced with the originals from Javamancer + the extracted text.
+>
+> **Standalone model (2026-06-30):** keep the GAME identical to the original (rooms,
+> map, quests, mechanics, shop stock, prices, ICE, win graph) — those are facts you
+> stay faithful to; but AUTHOR OUR OWN PROSE for everything displayed (room
+> descriptions, NPC dialogue, news, BBS). Copyrighted text is never shipped, so the
+> game runs with NO original `.DAT` files. (PAX done; room descriptions + dialogue next.)
 
 ## M2 — Economy & progression ([#2](../../issues/2))
 - [x] Economy ENGINE: `Catalog.gd` + Shop / Inventory / Organ-Bank menu UI (buy/sell, half-price resale)

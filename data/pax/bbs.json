@@ -1,0 +1,35 @@
+{
+	"_note": "Original, owned PAX message-base content for this remaster — our writing, in the spirit of the original BBS. Ships freely (no BYO files).",
+	"messages": [
+		{
+			"to": "All",
+			"from": "SysOp",
+			"body": "Board's back after the brownout — we lost about a week of messages. If it mattered, post it again; if it didn't, you're welcome. House rules unchanged: don't flatline other users, don't sell ICE you wrote yourself, and assume at least one of us is a narc."
+		},
+		{
+			"to": "All",
+			"from": "Lazarus",
+			"body": "Friendly notice: good software's been moving through the boards lately. If you plan to jack into anything with teeth, get your warez sorted first. The matrix does not grade on effort and it does not offer extensions."
+		},
+		{
+			"to": "(you)",
+			"from": "a friend",
+			"body": "You don't know me, but I knew the last person you worked for. The corps are buying up old debts cheap, and yours has your name freshly inked on it. Watch the street behind you."
+		},
+		{
+			"to": "All",
+			"from": "ChromeDoc",
+			"body": "For sale: barely-used optics, one careful owner (deceased). Public service note — if a certain pawnbroker is still holding your deck, go collect it. He bites, but he doesn't keep what isn't his."
+		},
+		{
+			"to": "SysOp",
+			"from": "nomouth",
+			"body": "Someone keeps logging in as me and ordering synth-spaghetti delivered to my coffin. I cannot eat it. I cannot stop it. Please resolve this before I am buried in noodles."
+		},
+		{
+			"to": "(you)",
+			"from": "[unsigned]",
+			"body": "The doors you can't see are the ones worth opening. Keep your deck close and your password closer. — a voice that isn't supposed to be on this board"
+		}
+	]
+}

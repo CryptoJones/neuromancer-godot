@@ -421,32 +421,27 @@ func _open_pax() -> void:
 
 func _open_pax_news() -> void:
 	_menu_begin("PAX — Night City News", "")
-	var news := Assets.text_list("NEWS.BIH")
-	if news.is_empty():
-		_menu_label("(news feed unavailable — run the extractor on your original game files)")
-	for s in news:
-		_menu_label(str(s))
+	var d = _load_json("res://data/pax/news.json")
+	var news: Array = d.get("news", []) if d != null else []
+	for item in news:
+		_menu_label(str(item.get("headline", "")))
+		if str(item.get("body", "")) != "":
+			_menu_label(str(item.get("body", "")))
 	_menu_button("« Back to PAX", _open_pax)
 
 func _open_pax_messages() -> void:
 	_menu_begin("PAX — Message Base", "")
-	var raw := Assets.text_list("PAXBBS.BIH")
-	if raw.is_empty():
-		_menu_label("(message base unavailable)")
-	# Group the flat strings into messages, a new one starting at each "TO:".
-	var block := ""
-	for s in raw:
-		var line := str(s)
-		if line.begins_with("TO:") and block != "":
-			_menu_label(block)
-			block = line
-		elif block == "":
-			block = line
-		else:
-			block += "\n" + line
-	if block != "":
-		_menu_label(block)
+	var d = _load_json("res://data/pax/bbs.json")
+	var msgs: Array = d.get("messages", []) if d != null else []
+	for m in msgs:
+		_menu_label("TO: %s    FROM: %s\n%s" % [m.get("to", ""), m.get("from", ""), m.get("body", "")])
 	_menu_button("« Back to PAX", _open_pax)
+
+## Load + parse a committed JSON data file (owned content; ships with the game).
+func _load_json(path: String):
+	if not FileAccess.file_exists(path):
+		return null
+	return JSON.parse_string(FileAccess.get_file_as_string(path))
 
 
 # ---------------------------------------------------------------- state switches

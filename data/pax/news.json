@@ -1,0 +1,27 @@
+{
+	"_note": "Original, owned PAX news content — written for this remaster in the spirit of the original's darkly-comic Chiba tabloid. NOT the original game's text. Ships freely (no BYO files).",
+	"news": [
+		{
+			"headline": "Chiba Air Declared 'Technically Weather'",
+			"body": "The Port Authority reclassified the haze over Ninsei this morning, citing particulate density 'indistinguishable from a low cloud.' Residents still running original-issue lungs are advised to upgrade while the exchange rate holds."
+		},
+		{
+			"headline": "Third Cowboy Flatlines This Week",
+			"body": "Another console jockey burned out mid-run, the boards report, scorched by ICE that wasn't on the grid a month ago. The cyberspace community has taken to calling Tuesdays 'a bad day to be talented.'"
+		},
+		{
+			"headline": "Zaibatsu Denies Unnamed Event",
+			"body": "A major Chiba corporation firmly denied involvement today in an incident it would not describe, at a location it declined to specify, concerning persons it could not confirm had ever existed. The statement was applauded by no one."
+		},
+		{
+			"headline": "Freeside Bookings Up, Checkouts Down",
+			"body": "The orbital resort reports record arrivals and a near-record number of guests who have 'chosen to extend their stay indefinitely.' Management calls the ratio 'well within the brochure.'"
+		},
+		{ "headline": "**** News In Brief ****", "body": "" },
+		{ "headline": "Rent-a-Cop unionizes, arrests self for loitering on first shift.", "body": "" },
+		{ "headline": "Man sells last kidney for deck upgrade; reviews the purchase 'worth it.'", "body": "" },
+		{ "headline": "Noodle cart debuts new protein; vendor politely requests that you not ask.", "body": "" },
+		{ "headline": "Pachinko parlor achieves sentience, immediately develops a gambling problem.", "body": "" },
+		{ "headline": "PAX reminds users: everything you read here is logged, sold, and read aloud at corporate functions for morale.", "body": "" }
+	]
+}
