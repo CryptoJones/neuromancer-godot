@@ -625,6 +625,7 @@ func _enter_endgame(id: String) -> void:
 	_menu_label("\"I built this wonderland to hold your puny intellect — a prison shaped exactly like a reward. Goodbye, cowboy.\"")
 	_menu_label("The sea reaches for you. You can feel the beach trying to become the rest of your life.")
 	_menu_button("» Refuse it. Reach for the ice.", _open_final_battle)
+	_menu_button("» Stay. Don't go back to the meat.", _open_beach_ending)
 	_menu_button("« (not yet) Jack out", _jack_out)
 
 func _open_final_battle() -> void:
@@ -643,6 +644,21 @@ func _open_victory() -> void:
 	_menu_label("You come to in the Chatsubo with the trodes loose in your lap and your heart still going. Ratz is wiping the bar. The sky over the port is the color of television — tuned, now, to a live channel.")
 	_menu_label("You ran it, cowboy. You won.")
 	_menu_button("» End", _go_title)
+
+## The other ending: give in. The construct keeps you on the beach with Linda Lee
+## forever — Neuromancer's real weapon was never the ice, it was the offer.
+func _open_beach_ending() -> void:
+	GameState.story_flags["stayed_on_the_beach"] = true
+	_combat_db = ""
+	AudioManager.play("shops_pax")
+	_menu_begin("THE DREAM", "", _beach_art())
+	_menu_label("You don't refuse. Why would you? The ice can wait forever — and forever is exactly what's on offer.")
+	_menu_label("You walk up the sand. She's there. Of course she's there: Linda Lee, exactly as you remember her, exactly as you've spent so long trying to forget. The construct built her out of your own memory, down to the way she says your name — and you find you don't care that she isn't real. Real is the meat, and the meat is a long way up.")
+	_menu_label("\"Stay,\" the beach says, in her voice now. \"You're tired, cowboy. You did everything they asked of you. Stay.\"")
+	_menu_label("So you stay.")
+	_menu_label("Somewhere far above, in a coffin in Chiba, a heart monitor goes flat and a clinic bills an empty account. But here the grey sea keeps coming in, warm and endless, and she's holding your hand, and you are exactly as happy as a man can be inside a lie that loves him.")
+	_menu_label("THE END.        (you chose the dream.)")
+	_menu_button("» ...", _go_title)
 
 
 # ---------------------------------------------------------------- state switches
