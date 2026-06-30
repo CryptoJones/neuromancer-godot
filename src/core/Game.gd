@@ -618,6 +618,12 @@ func _do_load() -> void:
 
 func _refresh_dialog() -> void:
 	_dialog_text.text = _dialog.current_text()
+	# Item grants (e.g. Shin returning your deck) — apply once per item.
+	var grant := _dialog.current_grant()
+	if grant != "" and not GameState.story_flags.get("granted_" + grant, false):
+		GameState.story_flags["granted_" + grant] = true
+		if not GameState.inventory.has(grant):
+			GameState.inventory.append(grant)
 	for c in _dialog_options.get_children():
 		c.queue_free()
 	var opts := _dialog.current_options()

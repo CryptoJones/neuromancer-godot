@@ -1,0 +1,38 @@
+{
+	"id": "shin",
+	"name": "Shin",
+	"start": "greet",
+	"nodes": {
+		"greet": {
+			"text": "Shin doesn't look up from the case he's polishing. \"You. About time. Ratz says you slept a week face-down in noodles. I've been holding your deck like it's my job.\" He taps the glass. \"It is not my job.\"",
+			"options": [
+				{ "text": "\"I'm here for my deck, Shin.\"", "next": "give" },
+				{ "text": "\"What else are you holding?\"", "next": "wares" },
+				{ "text": "\"Later.\" (leave)", "next": "bye" }
+			]
+		},
+		"give": {
+			"text": "Shin grunts, reaches under the counter, and slaps a battered cyberspace deck onto the glass. \"There. Your UXB. Don't bleed on it, don't pawn it back to me, and don't tell anyone Shin is soft.\"",
+			"grant": "uxb",
+			"options": [
+				{ "text": "\"Thanks, Shin.\"", "next": "thanks" },
+				{ "text": "\"What else are you holding?\"", "next": "wares" }
+			]
+		},
+		"thanks": {
+			"text": "\"Thanks is worth nothing. Credits are worth something. Now go — you're scaring the paying customers.\"",
+			"options": []
+		},
+		"wares": {
+			"text": "\"Chips, chrome, the occasional clean ID. Cash only, and don't bleed on the counter.\" The cases are full of other people's bad luck, neatly priced.",
+			"options": [
+				{ "text": "\"I'm here for my deck, Shin.\"", "next": "give" },
+				{ "text": "\"Maybe later.\" (leave)", "next": "bye" }
+			]
+		},
+		"bye": {
+			"text": "Shin is already looking past you, at the door. \"Mind the step.\"",
+			"options": []
+		}
+	}
+}

@@ -222,7 +222,10 @@
 			"text_key": "R25.BIH",
 			"exits": {
 				"west": "R14"
-			}
+			},
+			"npcs": [
+				"shin"
+			]
 		},
 		"R26": {
 			"name": "Street Light Pole",
@@ -239,7 +242,10 @@
 			"text_key": "R27.BIH",
 			"exits": {
 				"west": "R17"
-			}
+			},
+			"npcs": [
+				"deane"
+			]
 		},
 		"R28": {
 			"name": "JAL Shuttle",

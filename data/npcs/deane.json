@@ -1,0 +1,33 @@
+{
+	"id": "deane",
+	"name": "Julius Deane",
+	"start": "greet",
+	"nodes": {
+		"greet": {
+			"text": "Deane is a hundred and thirty-five, and pays a Jersey clinic to keep him that way. He folds soft pink hands on the desk. \"Sit. You have the look of a man who lost something and is hoping I found it. I usually have.\"",
+			"options": [
+				{ "text": "Ask if he's heard anything.", "next": "word" },
+				{ "text": "Ask about work.", "next": "work" },
+				{ "text": "\"Just passing through, Deane.\" (leave)", "next": "bye" }
+			]
+		},
+		"word": {
+			"text": "\"Word is cheap, and I am not.\" The porcelain smile widens. \"But for you — someone has been quietly buying up old cowboys' debts. If I owed anyone money, I believe I'd be watching the street behind me.\"",
+			"options": [
+				{ "text": "Ask about work.", "next": "work" },
+				{ "text": "\"Thanks, Deane.\" (leave)", "next": "bye" }
+			]
+		},
+		"work": {
+			"text": "\"There is always work for a man who can think in eight dimensions. Get your deck running, learn to break a little ICE, then come back and we'll talk numbers over ginger tea.\"",
+			"options": [
+				{ "text": "Anything else?", "next": "greet" },
+				{ "text": "\"Later.\" (leave)", "next": "bye" }
+			]
+		},
+		"bye": {
+			"text": "\"Do give my regards to Ratz. And try not to die before you're useful to me.\" He returns to a ledger no one else will ever read.",
+			"options": []
+		}
+	}
+}

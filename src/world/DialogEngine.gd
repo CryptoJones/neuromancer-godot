@@ -37,6 +37,12 @@ func current_options() -> Array:
 		return _nodes[_current].get("options", [])
 	return []
 
+## Item id this node grants the player (e.g. Shin returning your deck), or "".
+func current_grant() -> String:
+	if _nodes.has(_current):
+		return _nodes[_current].get("grant", "")
+	return ""
+
 ## True when the current node has no options (conversation can end here).
 func is_terminal() -> bool:
 	return current_options().is_empty()
