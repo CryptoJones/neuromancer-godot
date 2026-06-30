@@ -17,7 +17,7 @@ const SaveSystem = preload("res://src/core/SaveSystem.gd")
 const ROOMS_PATH := "res://data/rooms/chiba.json"
 const NPC_DIR := "res://data/npcs/"
 const VIEW_W := 304
-const VIEW_H := 112
+const VIEW_H := 124   # taller frame: the owned HD plates are ~16:9, not the EGA letterbox
 const MINUTES_PER_MOVE := 3
 
 var _state: int = State.TITLE
@@ -47,6 +47,7 @@ var _name_edit: LineEdit
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_apply_theme()
 	_world = World.new()
 	if not _world.load_file(ROOMS_PATH):
 		push_error("Game: failed to load room graph %s" % ROOMS_PATH)
@@ -55,6 +56,21 @@ func _ready() -> void:
 	_build_explore_layer()
 	_build_dialog_layer()
 	_go_title()
+
+
+## Crisp DOS-terminal font (VT323, OFL) loaded at runtime, anti-aliasing OFF so
+## glyphs stay sharp through the viewport upscale. Cascades to all child controls.
+func _apply_theme() -> void:
+	var f := FontFile.new()
+	if f.load_dynamic_font("res://fonts/VT323-Regular.ttf") != OK:
+		push_warning("Game: VT323 font not found; using default font")
+		return
+	f.antialiasing = TextServer.FONT_ANTIALIASING_NONE
+	f.hinting = TextServer.HINTING_NONE
+	f.subpixel_positioning = TextServer.SUBPIXEL_POSITIONING_DISABLED
+	var th := Theme.new()
+	th.default_font = f
+	theme = th
 
 
 # ---------------------------------------------------------------- layer builders
@@ -145,21 +161,24 @@ func _build_explore_layer() -> void:
 	_explore_layer.add_child(_bg_placeholder)
 	_bg_rect = TextureRect.new()
 	_bg_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	_bg_rect.stretch_mode = TextureRect.STRETCH_SCALE
+	# COVERED keeps the plate's aspect (no squish) and fills the frame; clip the
+	# overflow so the wide HD art never bleeds past the window into the HUD.
+	_bg_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	_bg_rect.clip_contents = true
 	_bg_rect.position = Vector2(8, 6)
 	_bg_rect.size = Vector2(VIEW_W, VIEW_H)
 	_explore_layer.add_child(_bg_rect)
 	# Room name.
 	_room_name_lbl = Label.new()
-	_room_name_lbl.position = Vector2(8, 120)
+	_room_name_lbl.position = Vector2(8, 132)
 	_room_name_lbl.size = Vector2(VIEW_W, 10)
 	_room_name_lbl.add_theme_color_override("font_color", Color(0.9, 0.85, 0.5))
 	_small(_room_name_lbl, 9)
 	_explore_layer.add_child(_room_name_lbl)
 	# Description.
 	_desc_lbl = Label.new()
-	_desc_lbl.position = Vector2(8, 131)
-	_desc_lbl.size = Vector2(VIEW_W, 42)
+	_desc_lbl.position = Vector2(8, 143)
+	_desc_lbl.size = Vector2(VIEW_W, 31)
 	_desc_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_desc_lbl.add_theme_color_override("font_color", Color(0.8, 0.85, 0.85))
 	_small(_desc_lbl, 7)

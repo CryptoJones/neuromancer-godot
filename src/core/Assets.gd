@@ -6,7 +6,8 @@ extends Node
 ## disk at runtime instead of referencing imported res:// textures. Anything that
 ## is missing degrades gracefully (returns null) so the game still boots.
 
-const BG_DIR := "res://assets/backgrounds/"
+const HD_BG_DIR := "res://assets/backgrounds_hd/"   # owned, committed art (M4 swap)
+const BG_DIR := "res://assets/backgrounds/"          # extracted EGA originals (gitignored)
 const SPRITE_DIR := "res://assets/sprites/"
 const TEXT_PATH := "res://assets/text/game_text.json"
 
@@ -28,8 +29,20 @@ func load_texture(path: String) -> Texture2D:
 	_tex_cache[path] = tex
 	return tex
 
-## Background for a room's bg id, e.g. background("R1") -> R1_PIC.png (304x112).
+## Background for a room's bg id. Prefer the owned, modern HD plate
+## (assets/backgrounds_hd/R1.png, 1344x768); fall back to the extracted EGA
+## original (assets/backgrounds/R1_PIC.png, 304x112) when no HD art exists.
 func background(bg_id: String) -> Texture2D:
+	if bg_id == "":
+		return null
+	var hd_path := HD_BG_DIR + bg_id + ".png"
+	if _tex_cache.has(hd_path):
+		if _tex_cache[hd_path] != null:
+			return _tex_cache[hd_path]
+	elif FileAccess.file_exists(hd_path):
+		var hd := load_texture(hd_path)
+		if hd != null:
+			return hd
 	return load_texture(BG_DIR + bg_id + "_PIC.png")
 
 ## Sprite/title image by name, e.g. sprite("TITLE") -> TITLE_IMH.png.

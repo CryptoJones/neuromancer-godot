@@ -15,12 +15,17 @@
 !/assets/backgrounds/.gitkeep
 !/assets/palettes/.gitkeep
 !/assets/text/.gitkeep
+# NOTE: /assets/backgrounds_hd/ is OWNED, newly-authored art (M4 swap) — it IS
+# committed (not ignored) so the game ships modern backgrounds with no originals.
 
 # --- Godot ---
 .godot/
 /android/
 export.cfg
 *.translation
+# Editor-generated import sidecars: backgrounds are loaded via Image.load() at
+# runtime (no import pipeline), so the .import files are local-only churn.
+*.import
 
 # --- Python (extraction tool) ---
 __pycache__/

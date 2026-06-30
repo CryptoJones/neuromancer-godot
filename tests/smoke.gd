@@ -48,6 +48,14 @@ func _initialize() -> void:
 			"R1 background wrong size: %dx%d" % [tex.get_width(), tex.get_height()]):
 		return
 
+	# --- 2b. M4 owned-art swap: background("R1") must prefer the HD plate ---
+	var hd = assets.background("R1")
+	if not _check(hd != null, "background('R1') returned null"):
+		return
+	if not _check(hd.get_width() == 1344 and hd.get_height() == 768,
+			"R1 HD plate wrong size: %dx%d (expected 1344x768)" % [hd.get_width(), hd.get_height()]):
+		return
+
 	# --- 3. GameState to_dict/from_dict round-trip ---
 	var gs = GameStateScript.new()
 	gs.player_name = "Case"
