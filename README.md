@@ -102,8 +102,9 @@ required**.
 ## Roadmap
 
 See [BACKLOG.md](BACKLOG.md): **M0** asset pipeline ✅ → **M1** Chiba City ✅ → **M2**
-economy & shops ✅ → **M3** cyberspace & ICE combat ✅ → **M4** endgame (winnable) ✅ — full
-owned-asset build → **M5** polish & multi-platform release.
+economy & shops ✅ → **M3** cyberspace & ICE combat ✅ → **M4** endgame & full
+owned-asset build ✅ → **M5** polish & multi-platform release ✅ — **shipped as
+[v1.0.0](https://github.com/CryptoJones/neuromancer-godot/releases/tag/v1.0.0)** (Linux/macOS/Windows).
 
 ## License
 
