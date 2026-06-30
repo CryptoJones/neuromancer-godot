@@ -110,24 +110,20 @@ func _initialize() -> void:
 	# --- 6. Economy: buy / re-buy guard / resell / organ-bank ---
 	var cat = CatalogScript.new()
 	cat.load_data()
-	if not _check(not cat.item("sw_probe").is_empty(), "items.json did not load"):
+	if not _check(not cat.item("hikigaeru").is_empty(), "items.json (real decks) did not load"):
 		return
 	var gs2 = GameStateScript.new()
 	gs2.reset()
-	gs2.credits = 1000
-	if not _check(cat.buy(gs2, "sw_probe"), "buy sw_probe failed"):
-		return
-	if not _check(gs2.credits == 300 and gs2.software.has("sw_probe"),
-			"buy sw_probe: credits/grant wrong (%d)" % gs2.credits):
-		return
-	if not _check(not cat.can_buy(gs2, "sw_probe"), "owned software should not re-buy"):
-		return
 	gs2.credits = 5000
-	if not _check(cat.buy(gs2, "ram_chip") and gs2.inventory.has("ram_chip"), "buy ram_chip failed"):
+	if not _check(cat.buy(gs2, "hikigaeru") and gs2.inventory.has("hikigaeru"), "buy Hiki Gaeru deck failed"):
+		return
+	if not _check(gs2.credits == 3000, "buy deck: credits wrong (%d)" % gs2.credits):
+		return
+	if not _check(not cat.can_buy(gs2, "hikigaeru"), "an owned deck should not re-buy"):
 		return
 	var before: int = gs2.credits
-	if not _check(cat.sell(gs2, "ram_chip") and gs2.credits == before + 400,
-			"resell ram_chip should pay half (400)"):
+	if not _check(cat.sell(gs2, "hikigaeru") and gs2.credits == before + 1000,
+			"resell deck should pay half list (1000)"):
 		return
 	# Body Shop organ bank (real table): sell a part, re-sell guard, buy it back.
 	if not _check(cat.parts.size() == 20, "bodyparts.json should hold 20 parts"):

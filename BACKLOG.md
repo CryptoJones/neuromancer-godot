@@ -38,7 +38,9 @@ issues #1–#5; file finer-grained issues as tasks are picked up and link them h
 ## M2 — Economy & progression ([#2](../../issues/2))
 - [x] Economy ENGINE: `Catalog.gd` + Shop / Inventory / Organ-Bank menu UI (buy/sell, half-price resale)
 - [x] **Real Body Shop** (R4): 20 authentic body parts + prices + CON costs (`data/bodyparts.json` from `BodyPart.java`); constitution on the real 0–2000 scale; sell + buy-back
-- [ ] Re-source the **real** warez/deck/skill tables + prices from Javamancer (per-shop, traced through `RoomExtras`) — `items.json`/`shops.json` still placeholders
+- [x] **Real hardware shops**: the 20 authentic cyberdecks + prices (`Blue Light Spec.` 1000 … `Cyberspace VII` 56000), Crazy Edo's (R40, 8 decks) + Asano's (R44, 17), from `*DeckItem.java` + `ItemCatalog`
+- [ ] Real **warez/software** tables + prices (Larry's R12, Metro Holografix R32) + **skills** vendor + prices (Microsofts)
+- [ ] Deck cyberspace-capable flag (Edo's decks are non-cyberspace; Asano's higher decks are) + per-deck RAM/specs
 - [ ] Wire shops to their real rooms (Shin's R25, Crazy Edo's R40, Asano's R44, Microsofts, Body Shop R4)
 - [ ] Real NPC dialogue trees (Ratz, Julius Deane, Shin, …) from the original
 - [ ] Banks (Bank of Berne / Gemeinschaft), skill *use* / levelling, cyberspace economy

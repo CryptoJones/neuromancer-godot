@@ -1,8 +1,41 @@
 {
 	"shops": {
-		"edos":  { "name": "Crazy Edo's",       "buys": true,  "stock": ["deck_ono7", "ram_chip", "sw_comlink", "sk_hwrepair"] },
-		"larry": { "name": "Larry's Software",  "buys": true,  "stock": ["sw_hammer", "sw_probe", "sw_decoder", "sw_doorstop", "sw_jammies", "sw_concrete", "sw_logicbomb"] },
-		"asano": { "name": "Asano Computing",   "buys": false, "stock": ["deck_hosaka", "ram_chip", "sk_cyberspace", "sk_icebreak", "sk_swrepair"] },
-		"shin":  { "name": "Shin's Pawn Shop",  "buys": true,  "stock": ["sk_evasion", "sk_bargain", "sw_comlink"] }
+		"edos": {
+			"name": "Crazy Edo's",
+			"buys": true,
+			"stock": [
+				"bluelightspec",
+				"hikigaeru",
+				"gaijin",
+				"zxb",
+				"350sl",
+				"bushido",
+				"ninja3000",
+				"edokko"
+			]
+		},
+		"asano": {
+			"name": "Asano's",
+			"buys": false,
+			"stock": [
+				"bluelightspec",
+				"188bjb",
+				"uxb",
+				"hikigaeru",
+				"gaijin",
+				"ninja2000",
+				"ninja3000",
+				"edokko",
+				"cyberspaceii",
+				"katana",
+				"cyberspaceiii",
+				"tofu",
+				"ninja4000",
+				"shogun",
+				"ninja5000",
+				"samuraiseven",
+				"cyberspacevii"
+			]
+		}
 	}
 }

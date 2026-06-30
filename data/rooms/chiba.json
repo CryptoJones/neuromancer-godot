@@ -348,6 +348,7 @@
 			"name": "Crazy Edo's",
 			"bg": "R40",
 			"text_key": "R40.BIH",
+			"shop": "edos",
 			"exits": {
 				"north": "R39"
 			}
@@ -374,6 +375,7 @@
 			"name": "Asano's",
 			"bg": "R44",
 			"text_key": "R44.BIH",
+			"shop": "asano",
 			"exits": {
 				"west": "R38"
 			}

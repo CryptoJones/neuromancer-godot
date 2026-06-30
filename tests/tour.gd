@@ -46,8 +46,14 @@ func _run() -> void:
 	_game._refresh_room()
 	await _shot("08_gentleman_loser")
 
+	GameState.credits = 60000          # so the decks read as buyable in the shot
+	GameState.current_room = "R40"     # Crazy Edo's — real deck shop
+	_game._refresh_room()
+	_game._open_shop("edos", "")
+	await _shot("09_crazy_edos")
+
 	_game._open_inventory()
-	await _shot("09_inventory")
+	await _shot("10_inventory")
 
 	_game._go_explore()
 	GameState.current_room = "R4"     # Body Shop — real organ bank
