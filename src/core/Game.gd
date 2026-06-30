@@ -39,6 +39,7 @@ var _menu_title: Label
 var _menu_info: Label
 var _menu_list: VBoxContainer
 var _catalog                          # Catalog instance (items/shops + economy)
+var _descriptions: Dictionary = {}    # owned room prose (data/rooms/descriptions.json)
 
 # Explore widgets
 var _bg_rect: TextureRect
@@ -63,6 +64,9 @@ func _ready() -> void:
 		push_error("Game: failed to load room graph %s" % ROOMS_PATH)
 	_catalog = Catalog.new()
 	_catalog.load_data()
+	var dd = _load_json("res://data/rooms/descriptions.json")
+	if dd != null:
+		_descriptions = dd.get("desc", {})
 	_build_title_layer()
 	_build_name_layer()
 	_build_explore_layer()
@@ -500,13 +504,8 @@ func _refresh_room() -> void:
 	_bg_rect.texture = tex
 	_bg_rect.visible = tex != null
 	_bg_placeholder.visible = tex == null
-	# Description: prefer the room's extracted prose, fall back to authored desc.
-	var prose := ""
-	if r.has("text_key"):
-		prose = Assets.room_prose(r["text_key"])
-	if prose == "":
-		prose = r.get("desc", "")
-	_desc_lbl.text = prose
+	# Description: owned prose (ships standalone — no original game text).
+	_desc_lbl.text = _descriptions.get(id, r.get("desc", ""))
 	_rebuild_buttons(r)
 	_refresh_status()
 

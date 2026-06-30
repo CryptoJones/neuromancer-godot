@@ -28,6 +28,7 @@ issues #1–#5; file finer-grained issues as tasks are picked up and link them h
 - [x] **Faithful full map: 56 rooms** ported from Javamancer `RoomMap` (real names + real exits); room prose from `R*.BIH`
 - [x] Inventory UI (gear/software/skills screen)
 - [x] PAX terminal — **owned** news + BBS (`data/pax/*.json`), our writing in the original's tone; ships standalone (no BYO). Booths R1/R7/R8/R12/R41
+- [x] **Owned room descriptions** — all 56 rooms (`data/rooms/descriptions.json`), our prose; drops the original-text dependency (Chromebook reads them from a clean clone)
 - [ ] Web export build + verify end-to-end
 
 > **REMASTER fidelity rule:** the game must match the 1988 original (rooms, dialogue,
