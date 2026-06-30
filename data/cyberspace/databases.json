@@ -25,6 +25,12 @@
 			"id": "bank_berne", "name": "Bank of Berne", "zone": 3, "x": 336, "y": 160,
 			"ice": 400, "ai": "Gold", "bg": "DB_BankBerne", "code": "bernetest",
 			"content": "The Bank of Berne's core, packed in layers of lethal ICE and watched by an AI that calls itself Gold. The accounts here have more zeros than sense. Take what you can carry and get out before Gold feels the draft."
+		},
+		{
+			"id": "neuromancer_core", "name": "Tessier-Ashpool Core", "zone": 7, "x": 8, "y": 8,
+			"ice": 500, "ai": "Neuromancer", "bg": "DB_BankBerne",
+			"requires": "bank_berne", "final": true,
+			"content": "The oldest, coldest ice in the matrix, wound around something that has been waiting for you since the day you first jacked in."
 		}
 	]
 }

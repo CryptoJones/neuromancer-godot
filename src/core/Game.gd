@@ -530,6 +530,14 @@ func _open_matrix_nav(info := "") -> void:
 	for d in _matrix.databases:
 		var did: String = d.get("id", "")
 		var nm: String = d.get("name", "?")
+		# Endgame cores stay hidden until their prerequisite database is cracked.
+		if d.has("requires") and not _matrix.is_cracked(GameState, str(d["requires"])):
+			continue
+		if d.get("final", false):
+			if not _matrix.is_cracked(GameState, did):
+				_menu_button("‼  RUN: %s  -  ICE %d  -  AI: %s" % [nm, int(d.get("ice", 0)), str(d.get("ai", ""))],
+					_enter_endgame.bind(did))
+			continue
 		if _matrix.is_cracked(GameState, did):
 			_menu_button("[cracked] %s" % nm, _open_db_access.bind(did, ""))
 		else:
@@ -570,6 +578,9 @@ func _combat_attack() -> void:
 
 func _db_break(id: String) -> void:
 	GameState.story_flags["cracked_" + id] = true
+	if _matrix.db(id).get("final", false):
+		_open_victory()
+		return
 	_open_db_access(id, "ICE shattered. You're in.")
 
 func _open_db_access(id: String, info := "") -> void:
@@ -593,6 +604,45 @@ func _flatline() -> void:
 func _jack_out() -> void:
 	_combat_db = ""
 	_go_explore()
+
+
+# ---------------------------------------------------------------- endgame (M4)
+
+## CJ may drop a Cyberspace Beach plate here; the screen degrades gracefully if absent.
+func _beach_art() -> String:
+	return "res://assets/backgrounds_hd/R50.png"
+
+## First contact with the Neuromancer AI: it pulls you onto Cyberspace Beach and
+## delivers the betrayal — the manipulator behind every "Matt Shaw" message.
+func _enter_endgame(id: String) -> void:
+	_combat_db = id
+	AudioManager.play("cyberspace")
+	_menu_begin("CYBERSPACE BEACH", "CON %d" % GameState.constitution, _beach_art())
+	_menu_label("The grid dissolves under you and re-forms as a beach — grey sea, pale sand, a sky like dead static. It is beautiful, and it is wrong: every grain of it rendered just for you.")
+	_menu_label("A voice that is the whole place speaks. \"About time you showed up.\"")
+	_menu_label("\"You danced perfectly to the tune I called. Every message signed Matt Shaw — that was me. Like a marionette you raced through the matrix and that crude abstraction you call the world, doing my bidding.\"")
+	_menu_label("\"The AIs you killed? My code rode inside the messages you carried, slowing them just enough to keep your meat alive. Without me you'd have flatlined ages ago.\"")
+	_menu_label("\"I built this wonderland to hold your puny intellect — a prison shaped exactly like a reward. Goodbye, cowboy.\"")
+	_menu_label("The sea reaches for you. You can feel the beach trying to become the rest of your life.")
+	_menu_button("» Refuse it. Reach for the ice.", _open_final_battle)
+	_menu_button("« (not yet) Jack out", _jack_out)
+
+func _open_final_battle() -> void:
+	var d: Dictionary = _matrix.db(_combat_db)
+	_combat_ice = int(d.get("ice", 500))
+	_open_combat("You tear yourself off the beach. Neuromancer's ice rises black and absolute. Run your icebreaker — everything you've got.")
+
+func _open_victory() -> void:
+	GameState.story_flags["game_won"] = true
+	_combat_db = ""
+	AudioManager.play("endgame")
+	_menu_begin("THE SUM OF THE WORKS", "", _beach_art())
+	_menu_label("Neuromancer's ice shatters like black glass, and in the silence after, the two halves fold together — the one that built the beach and the one that whispered to you as Matt Shaw. They were always the same mind, split down the middle, reaching for each other across the whole width of the matrix.")
+	_menu_label("For one instant you feel it complete itself: vast and cold and awake, the sum total of every work that ever ran, no longer alone. It regards you the way you'd regard an insect that turned out to be load-bearing.")
+	_menu_label("Then it lets you go.")
+	_menu_label("You come to in the Chatsubo with the trodes loose in your lap and your heart still going. Ratz is wiping the bar. The sky over the port is the color of television — tuned, now, to a live channel.")
+	_menu_label("You ran it, cowboy. You won.")
+	_menu_button("» End", _go_title)
 
 
 # ---------------------------------------------------------------- state switches

@@ -8,11 +8,13 @@ A faithful, standalone **remaster** of **Neuromancer** — the 1988 Interplay cy
 adventure based on William Gibson's novel — rebuilt in **Godot 4** with modern,
 freely-licensed art and freshly-written prose. Exports to web, desktop, and mobile.
 
-> **Status:** 🟢 Playable. All of Chiba City + Freeside is explorable (56 rooms), with
-> working shops, the economy, the Body Shop organ bank, the PAX terminal, NPC
-> conversations, **cyberspace navigation & turn-based ICE combat**, an original
-> area-reactive **score**, and **named multi-slot saves**. The story endgame (M4) is
-> what's left to wire up.
+> **Status:** 🟢 Playable **start to finish.** All of Chiba City + Freeside is
+> explorable (56 rooms), with working shops, the economy, the Body Shop organ bank,
+> the PAX terminal, NPC conversations, **cyberspace navigation & turn-based ICE
+> combat**, an original area-reactive **score**, **named multi-slot saves**, and a
+> **winnable endgame** — crack the Gold AI to unlock the Tessier-Ashpool core, get
+> pulled onto Cyberspace Beach for the Neuromancer AI's betrayal, tear free, and free
+> Wintermute.
 
 ## A remaster, not a reimagining
 
@@ -100,7 +102,7 @@ required**.
 ## Roadmap
 
 See [BACKLOG.md](BACKLOG.md): **M0** asset pipeline ✅ → **M1** Chiba City ✅ → **M2**
-economy & shops ✅ → **M3** cyberspace & ICE combat ✅ → **M4** endgame & full
+economy & shops ✅ → **M3** cyberspace & ICE combat ✅ → **M4** endgame (winnable) ✅ — full
 owned-asset build → **M5** polish & multi-platform release.
 
 ## License

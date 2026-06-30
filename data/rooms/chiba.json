@@ -430,6 +430,7 @@
 			"name": "Cyberspace Beach",
 			"bg": "R50",
 			"text_key": "R50.BIH",
+			"pax": true,
 			"exits": {}
 		},
 		"R51": {

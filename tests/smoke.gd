@@ -162,6 +162,20 @@ func _initialize() -> void:
 	if not _check(mx.ice_bite(mx.db("bank_berne")) == mx.ice_bite({"ice": 400}) * 2,
 			"an AI-guarded core should bite twice as hard"):
 		return
+	# M4 endgame: the final Neuromancer core exists, is gated, and is winnable.
+	var fin = mx.db("neuromancer_core")
+	if not _check(not fin.is_empty() and fin.get("final", false), "final endgame core missing"):
+		return
+	if not _check(str(fin.get("requires", "")) == "bank_berne", "endgame core must require bank_berne"):
+		return
+	# Beatable from full constitution with a modest deck (sanity on the win path).
+	gs3.constitution = 2000
+	gs3.skills["ICE Breaking"] = 2
+	var atk: int = mx.player_attack(gs3)
+	var hits: int = int(ceil(float(fin["ice"]) / atk))
+	var bite: int = mx.ice_bite(fin)
+	if not _check(hits * bite < 2000, "endgame must be survivable from full CON (%d hits x %d bite)" % [hits, bite]):
+		return
 	gs3.free()
 
 	# --- 8. Music: every area loop loads at runtime and is set to loop ---
