@@ -36,7 +36,7 @@ The result plays like the classic but **ships standalone — no original game fi
 | ![The Chatsubo](docs/screenshots/chatsubo.png) | ![The Gentleman Loser](docs/screenshots/gentleman_loser.png) |
 | **Crazy Edo's** — real cyberdecks, real prices | **The Body Shop** — sell your organs for credits |
 | ![Crazy Edo's](docs/screenshots/crazy_edos.png) | ![The Body Shop](docs/screenshots/body_shop.png) |
-| **The PAX terminal** — our own Night City news & BBS | **Cyberspace** — the matrix *(in progress)* |
+| **The PAX terminal** — our own Chiba City news & BBS | **Cyberspace** — the matrix *(in progress)* |
 | ![PAX terminal](docs/screenshots/pax_news.png) | ![Cyberspace](docs/screenshots/cyberspace_grid.png) |
 
 ## Run it

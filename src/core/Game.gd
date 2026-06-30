@@ -455,7 +455,7 @@ func _open_pax() -> void:
 	_menu_button("« Log off", _go_explore)
 
 func _open_pax_news() -> void:
-	_menu_begin("PAX — Night City News", "")
+	_menu_begin("PAX — Chiba City News", "")
 	var d = _load_json("res://data/pax/news.json")
 	var news: Array = d.get("news", []) if d != null else []
 	for item in news:
