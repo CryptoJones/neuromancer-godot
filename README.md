@@ -1,8 +1,6 @@
 <p align="center"><em>Proudly Made in Nebraska. Go Big Red! 🌽 <a href="https://xkcd.com/2347/">https://xkcd.com/2347/</a></em></p>
 
-<!-- Cover art goes here. Drop your image at docs/screenshots/cover.png and uncomment:
-<p align="center"><img src="docs/screenshots/cover.png" alt="Neuromancer" width="100%"></p>
--->
+<p align="center"><img src="docs/screenshots/cover.png" alt="Neuromancer — a console cowboy on the neon streets of Chiba City" width="100%"></p>
 
 # Neuromancer (Godot 4 Remaster)
 
