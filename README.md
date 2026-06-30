@@ -1,5 +1,7 @@
 <p align="center"><img src="docs/screenshots/cover.png" alt="Neuromancer — a console cowboy on the neon streets of Chiba City" width="100%"></p>
 
+<p align="center"><strong>A 2026 fan remake.</strong></p>
+
 # Neuromancer (Godot 4 Remaster)
 
 A faithful, standalone **remaster** of **Neuromancer** — the 1988 Interplay cyberpunk
@@ -25,6 +27,8 @@ quests, mechanics, shop stock, prices, and the win path are the real thing
 The result plays like the classic but **ships standalone — no original game files required.**
 
 ## Screenshots
+
+📖 Browse every plate in **[The Art of a Neuromancer Fan Remake](docs/The-Art-of-a-Neuromancer-Fan-Remake.pdf)** — a PDF gallery of all 56 room plates and the full cyberspace set.
 
 |  |  |
 |:---:|:---:|
