@@ -30,6 +30,21 @@
 			"to": "(you)",
 			"from": "[unsigned]",
 			"body": "The doors you can't see are the ones worth opening. Keep your deck close and your password closer. — a voice that isn't supposed to be on this board"
+		},
+		{
+			"to": "All",
+			"from": "Automatic Jack",
+			"body": "Still in the market for a milspec icebreaker — the kind that walks through corporate ICE like it isn't there. Last one I ran made my partner and me rich and got him most of the way killed. Long story. Discretion guaranteed."
+		},
+		{
+			"to": "All",
+			"from": "Count Zero",
+			"body": "First time I jacked in, my heart stopped for the better part of a minute and something reached down and pulled me back out. Didn't have a handle before that night. Got one now. If you've felt it too, you know what I mean. — Bobby N."
+		},
+		{
+			"to": "(you)",
+			"from": "the Finn",
+			"body": "Got product nobody else carries — memory you can't search, faces that don't officially exist, the occasional ghost sealed in a chip. You want the weird stuff, you know which booth. Cash only. And no mnemonic couriers; the last one leaked all over my floor."
 		}
 	]
 }
