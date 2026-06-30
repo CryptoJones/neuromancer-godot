@@ -15,7 +15,7 @@ loops (Splice / Zenhiser) into original cues. Each track has two forms:
 | 03 | **Cyberspace** | Jacked into the matrix | A min / 115 |
 | 04 | **ICE** | Breaking a data fortress | E min / 90 |
 | 05 | **Shops & PAX** | Crazy Edo's, Asano's, the terminals | D min / 90 |
-| 06 | **Endgame** *(pending)* | The Wintermute finale | C min / 100 |
+| 06 | **Endgame** | The Wintermute finale | A min / 100 |
 
 *(02 is reserved; the Body Shop uses a short ambient texture in-game only.)*
 
