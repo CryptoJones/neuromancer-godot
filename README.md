@@ -36,12 +36,12 @@ The result plays like the classic but **ships standalone — no original game fi
 
 |  |  |
 |:---:|:---:|
-| **The Chatsubo** — Ratz works the bar | **The Gentleman Loser** — the cowboys' bar |
+| **The Chatsubo** — Ratz works the taps with a whining pink prosthetic | **The Gentleman Loser** — the console cowboys' bar |
 | ![The Chatsubo](docs/screenshots/chatsubo.png) | ![The Gentleman Loser](docs/screenshots/gentleman_loser.png) |
-| **Crazy Edo's** — real cyberdecks, real prices | **The Body Shop** — sell your organs for credits |
-| ![Crazy Edo's](docs/screenshots/crazy_edos.png) | ![The Body Shop](docs/screenshots/body_shop.png) |
-| **The PAX terminal** — our own Chiba City news & BBS | **Cyberspace** — the matrix *(in progress)* |
-| ![PAX terminal](docs/screenshots/pax_news.png) | ![Cyberspace](docs/screenshots/cyberspace_grid.png) |
+| **The Body Shop** — sell your organs for credits | **Cyberspace** — fly the matrix, pick your run |
+| ![The Body Shop](docs/screenshots/body_shop.png) | ![Cyberspace](docs/screenshots/cyberspace_grid.png) |
+| **ICE combat** — break the ice on a data fortress | **Cyberspace Beach** — the endgame, where the AI drops its mask |
+| ![ICE combat](docs/screenshots/ice_combat.png) | ![Cyberspace Beach](docs/screenshots/cyberspace_beach.png) |
 
 ## Run it
 
