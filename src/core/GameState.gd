@@ -54,5 +54,12 @@ func to_dict() -> Dictionary:
 func from_dict(d: Dictionary) -> void:
 	reset()
 	for key in d:
-		if key in self:
+		if not (key in self):
+			continue
+		var cur = get(key)
+		if cur is Array:
+			# set() can't put an untyped JSON array into a typed field like
+			# inventory: Array[String]; .assign() coerces the elements instead.
+			(cur as Array).assign(d[key] if d[key] is Array else [])
+		else:
 			set(key, d[key])

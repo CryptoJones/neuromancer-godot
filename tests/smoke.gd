@@ -72,6 +72,14 @@ func _initialize() -> void:
 			and gs.story_flags.get("met_ratz", false),
 			"GameState round-trip mismatch"):
 		return
+	# Inventory must survive a real JSON save/load: JSON arrays come back untyped, and
+	# a naive set() drops them into the typed Array[String] field (regression guard).
+	gs.inventory.assign(["uxb", "hikigaeru"])
+	var jsnap = JSON.parse_string(JSON.stringify(gs.to_dict()))
+	gs.from_dict(jsnap)
+	if not _check(gs.inventory.size() == 2 and gs.inventory.has("uxb"),
+			"inventory lost across a JSON round-trip (typed-array load bug)"):
+		return
 
 	# --- 4. Room transitions via World.move (Chiba City district graph) ---
 	var here = world.start_id
