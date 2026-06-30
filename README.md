@@ -60,8 +60,9 @@ on Linux (smooth on low-end boxes and Chromebooks), and launches. No `.DAT` file
 - **The PAX terminal** — owned news & message base, in booths around the city
 - **NPCs** — Ratz, Shin (who hands back your impounded deck), and Julius Deane
 - **An original score** — area-reactive cyberpunk music that crossfades as you move
-  between the streets, the shops, the Body Shop, and cyberspace. Browse the album in
-  [`soundtrack/`](soundtrack/)
+  between the streets, the shops, the Body Shop, and cyberspace. Listen to the full
+  soundtrack, **[*The Flatline Sessions* by As30p](https://soundcloud.com/as30p/sets/the-flatline-sessions)**,
+  on SoundCloud (tracks also in [`soundtrack/`](soundtrack/))
 
 ## Standing on the shoulders of 🙏
 

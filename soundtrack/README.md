@@ -2,6 +2,8 @@
 
 ### Original soundtrack to the Neuromancer (2026 fan remake)
 
+🎧 **Listen on SoundCloud: [*The Flatline Sessions* by As30p](https://soundcloud.com/as30p/sets/the-flatline-sessions)**
+
 The score, composed for this project by arranging royalty-free sample loops
 (Splice / Zenhiser) into original cues. Each track has two forms:
 
