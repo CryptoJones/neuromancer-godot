@@ -63,6 +63,23 @@ func _ensure_text() -> void:
 	else:
 		push_warning("Assets: could not parse %s" % TEXT_PATH)
 
+## Raw string list for a text resource key (e.g. "NEWS.BIH", "PAXBBS.BIH"),
+## with the short decode-noise tokens filtered out. Empty when absent.
+func text_list(text_key: String) -> Array:
+	_ensure_text()
+	var raw = _text_data.get(text_key, [])
+	if typeof(raw) != TYPE_ARRAY:
+		return []
+	var out: Array = []
+	for s in raw:
+		if typeof(s) != TYPE_STRING:
+			continue
+		# Drop short decode-noise tokens (e.g. "FZZ_") but keep real lines.
+		if s.length() < 5 and not s.contains(" "):
+			continue
+		out.append(s)
+	return out
+
 ## Return the descriptive prose for a text key like "R1.BIH".
 ## The extracted lists carry decode-noise tokens (short all-caps gibberish) plus
 ## the real prose. The room's rich description is the longest real sentence, so

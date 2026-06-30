@@ -408,6 +408,47 @@ func _open_inventory() -> void:
 	_menu_button("« Back", _go_explore)
 
 
+# ---------------------------------------------------------------- PAX terminal
+
+func _open_pax() -> void:
+	var hh := int(GameState.game_minutes / 60.0) % 24
+	var mm := GameState.game_minutes % 60
+	_menu_begin("PAX — Public Access System",
+		"Logged in: %s        %02d:%02d" % [GameState.player_name, hh, mm])
+	_menu_button("Read the news", _open_pax_news)
+	_menu_button("Read the message base", _open_pax_messages)
+	_menu_button("« Log off", _go_explore)
+
+func _open_pax_news() -> void:
+	_menu_begin("PAX — Night City News", "")
+	var news := Assets.text_list("NEWS.BIH")
+	if news.is_empty():
+		_menu_label("(news feed unavailable — run the extractor on your original game files)")
+	for s in news:
+		_menu_label(str(s))
+	_menu_button("« Back to PAX", _open_pax)
+
+func _open_pax_messages() -> void:
+	_menu_begin("PAX — Message Base", "")
+	var raw := Assets.text_list("PAXBBS.BIH")
+	if raw.is_empty():
+		_menu_label("(message base unavailable)")
+	# Group the flat strings into messages, a new one starting at each "TO:".
+	var block := ""
+	for s in raw:
+		var line := str(s)
+		if line.begins_with("TO:") and block != "":
+			_menu_label(block)
+			block = line
+		elif block == "":
+			block = line
+		else:
+			block += "\n" + line
+	if block != "":
+		_menu_label(block)
+	_menu_button("« Back to PAX", _open_pax)
+
+
 # ---------------------------------------------------------------- state switches
 
 func _show_only(active: Control) -> void:
@@ -526,6 +567,13 @@ func _rebuild_buttons(r: Dictionary) -> void:
 		_small(orgb, 7)
 		orgb.pressed.connect(_open_organbank.bind(""))
 		_button_bar.add_child(orgb)
+	# PAX terminal, in rooms with a booth.
+	if r.get("pax", false):
+		var paxb := Button.new()
+		paxb.text = "PAX"
+		_small(paxb, 7)
+		paxb.pressed.connect(_open_pax)
+		_button_bar.add_child(paxb)
 	# Inventory (always available).
 	var invb := Button.new()
 	invb.text = "Items"

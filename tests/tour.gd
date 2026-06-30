@@ -61,6 +61,14 @@ func _run() -> void:
 	_game._open_organbank("")
 	await _shot("10_body_shop")
 
+	_game._go_explore()
+	GameState.current_room = "R1"     # Chatsubo PAX booth
+	_game._refresh_room()
+	_game._open_pax_news()            # the real NEWS.BIH feed
+	await _shot("11_pax_news")
+	_game._open_pax_messages()        # the real PAXBBS.BIH base
+	await _shot("12_pax_messages")
+
 	print("TOUR: DONE")
 	get_tree().quit()
 

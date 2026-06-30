@@ -27,7 +27,7 @@ issues #1–#5; file finer-grained issues as tasks are picked up and link them h
 - [x] Owned HD art swap (FLUX.2 plates), crisp-text (MSDF) + pixelated-plate render (canvas_items)
 - [x] **Faithful full map: 56 rooms** ported from Javamancer `RoomMap` (real names + real exits); room prose from `R*.BIH`
 - [x] Inventory UI (gear/software/skills screen)
-- [ ] PAX terminal — wire the **real** `NEWS.BIH` + `PAXBBS.BIH` content
+- [x] PAX terminal — real `NEWS.BIH` + `PAXBBS.BIH` (News + Message base), booths in R1/R7/R8/R12/R41
 - [ ] Web export build + verify end-to-end
 
 > **REMASTER fidelity rule:** the game must match the 1988 original (rooms, dialogue,

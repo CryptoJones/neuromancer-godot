@@ -10,7 +10,8 @@
 			},
 			"npcs": [
 				"ratz"
-			]
+			],
+			"pax": true
 		},
 		"R2": {
 			"name": "Street Chatsubo",
@@ -61,7 +62,8 @@
 			"text_key": "R7.BIH",
 			"exits": {
 				"east": "R15"
-			}
+			},
+			"pax": true
 		},
 		"R8": {
 			"name": "Gentleman Loser",
@@ -69,7 +71,8 @@
 			"text_key": "R8.BIH",
 			"exits": {
 				"east": "R16"
-			}
+			},
+			"pax": true
 		},
 		"R9": {
 			"name": "Maas Biolabs",
@@ -99,7 +102,8 @@
 			"exits": {
 				"north": "R23",
 				"south": "R13"
-			}
+			},
+			"pax": true
 		},
 		"R13": {
 			"name": "Street Microsofts",
@@ -360,7 +364,8 @@
 			"exits": {
 				"east": "R47",
 				"south": "R42"
-			}
+			},
+			"pax": true
 		},
 		"R42": {
 			"name": "Bank Gemeinschaft Ext.",
