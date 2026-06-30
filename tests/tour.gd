@@ -82,6 +82,21 @@ func _run() -> void:
 	_game._combat_attack()                # -> ICE shattered, you're in
 	await _shot("15_db_cracked")
 
+	# Endgame (M4): unlock the final core, ride the beach, win the AI fight.
+	GameState.constitution = 2000
+	GameState.story_flags["cracked_bank_berne"] = true   # Gold AI down -> final core appears
+	_game._go_matrix()
+	await _shot("16_final_unlocked")
+	_game._enter_endgame("neuromancer_core")
+	await _shot("17_cyberspace_beach")
+	_game._open_final_battle()
+	for i in 40:
+		if GameState.story_flags.get("game_won", false):
+			break
+		_game._combat_attack()
+	await _shot("18_victory")
+	print("ENDGAME: game_won = %s" % str(GameState.story_flags.get("game_won", false)))
+
 	print("TOUR: DONE")
 	get_tree().quit()
 
