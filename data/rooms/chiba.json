@@ -13,20 +13,7 @@
 			"name": "Ninsei Street",
 			"bg": "R5",
 			"desc": "Neon and rain on the strip of Ninsei. Holograms flicker over the noodle stalls and the crowd moves like one tired animal under the dead-channel sky.",
-			"exits": { "north": "chatsubo", "east": "chinatown", "west": "bodyshop", "south": "justice" }
-		},
-		"chinatown": {
-			"name": "Chinatown",
-			"bg": "R6",
-			"desc": "A warren of stalls and steam. Vendors hawk black-market chips and bowls of something hot while lawbots watch from the corners.",
-			"exits": { "west": "street" }
-		},
-		"bodyshop": {
-			"name": "The Body Shop",
-			"bg": "R4",
-			"text_key": "R4.BIH",
-			"desc": "A clinic for new flesh and chrome. Jars line the shelves and the surgeon's smile never wavers.",
-			"exits": { "east": "street" }
+			"exits": { "north": "chatsubo", "west": "ninsei_west", "east": "ninsei_east", "south": "justice" }
 		},
 		"justice": {
 			"name": "Justice Booth",
@@ -34,6 +21,99 @@
 			"text_key": "R3.BIH",
 			"desc": "A cramped booth walled with monitors. A Compu-Judge frowns down from the big screen; a Compu-Lawyer waits on the small one.",
 			"exits": { "north": "street" }
+		},
+		"ninsei_west": {
+			"name": "Ninsei Street, West",
+			"bg": "R14",
+			"desc": "The strip narrows toward the bay. Pachinko parlors bleed light onto wet asphalt and a noodle vendor works his cart under a sign that died years ago.",
+			"exits": { "east": "street", "north": "cheap_hotel", "west": "donut_world", "south": "bodyshop" }
+		},
+		"cheap_hotel": {
+			"name": "Cheap Hotel",
+			"bg": "R7",
+			"desc": "A coffin rack of capsule rooms stacked to the ceiling. The clerk behind the cage never looks up. One of these coffins is yours, for now.",
+			"exits": { "south": "ninsei_west" }
+		},
+		"donut_world": {
+			"name": "Donut World",
+			"bg": "R6",
+			"desc": "Fluorescent and sticky. A pair of Chiba cops nurse coffee in the corner booth, watching the door a lot harder than their crullers.",
+			"exits": { "east": "ninsei_west" }
+		},
+		"bodyshop": {
+			"name": "The Body Shop",
+			"bg": "R4",
+			"text_key": "R4.BIH",
+			"desc": "A clinic for new flesh and chrome. Jars line the shelves and the surgeon's smile never wavers.",
+			"exits": { "north": "ninsei_west" }
+		},
+		"ninsei_east": {
+			"name": "Ninsei Alley, East",
+			"bg": "R18",
+			"desc": "A canyon of fire escapes and steam, the asphalt slick with runoff. Somewhere above, a window unit drips on the just and the unjust alike.",
+			"exits": { "west": "street", "north": "gentleman_loser", "south": "shins_pawn", "east": "chiba_alley" }
+		},
+		"gentleman_loser": {
+			"name": "The Gentleman Loser",
+			"bg": "R8",
+			"desc": "The cowboys' bar. Console jockeys and washed-out hustlers trade war stories under a haze of smoke. Nobody asks your real name here.",
+			"exits": { "south": "ninsei_east" }
+		},
+		"shins_pawn": {
+			"name": "Shin's Pawn Shop",
+			"bg": "R25",
+			"desc": "Glass cases of dead men's hardware. Shin keeps your Ono-Sendai behind the counter and, by the look of him, a sawn-off under it.",
+			"npcs": ["shin"],
+			"exits": { "north": "ninsei_east" }
+		},
+		"chiba_alley": {
+			"name": "Chiba Alley",
+			"bg": "R13",
+			"desc": "A dripping seam between two towers. Graffiti tags glow faintly where someone sprayed cheap photolume over the brick.",
+			"exits": { "west": "ninsei_east", "north": "julius_deane", "south": "house_of_pong", "east": "crazy_edos" }
+		},
+		"julius_deane": {
+			"name": "Julius Deane's Office",
+			"bg": "R27",
+			"desc": "Past a wall of shipping crates, an old man in a wool suit smiles from behind an antique desk. The air smells of ginger and very old money.",
+			"npcs": ["deane"],
+			"exits": { "south": "chiba_alley" }
+		},
+		"house_of_pong": {
+			"name": "House of Pong",
+			"bg": "R36",
+			"desc": "A dim arcade-bar where the machines are older than the patrons. Cigarette burns and spilled beer map the carpet like a city seen from orbit.",
+			"exits": { "north": "chiba_alley" }
+		},
+		"crazy_edos": {
+			"name": "Crazy Edo's",
+			"bg": "R40",
+			"desc": "Edo fixes decks, sells gray-market chrome, and asks no questions. Half-gutted cyberspace rigs hang from the ceiling like smoked hams.",
+			"exits": { "west": "chiba_alley", "north": "asano_computing", "east": "larrys_software" }
+		},
+		"asano_computing": {
+			"name": "Asano Computing",
+			"bg": "R44",
+			"desc": "A clean-lit storefront of legitimate gear, the kind with warranties and serial numbers. You feel conspicuous just standing in the doorway.",
+			"exits": { "south": "crazy_edos" }
+		},
+		"larrys_software": {
+			"name": "Larry's Software",
+			"bg": "R12",
+			"desc": "Racks of bootleg ice-breakers and skillsofts behind bulletproof glass. Larry watches you over a paperback, thumbing the page but never turning it.",
+			"exits": { "west": "crazy_edos", "south": "metro_holografix", "east": "spaceport" }
+		},
+		"metro_holografix": {
+			"name": "Metro Holografix",
+			"bg": "R32",
+			"desc": "Lonny Zone's place. Holographic touts shimmer in the doorway, selling stims and simstim dreams to whatever foot traffic the rain washes in.",
+			"exits": { "north": "larrys_software" }
+		},
+		"spaceport": {
+			"name": "Chiba Spaceport",
+			"bg": "R19",
+			"desc": "The shuttle gantries loom past the chain-link. Orbital flights to Freeside board here — but with no money and no clearance, you're not going off-world tonight.",
+			"exits": { "west": "larrys_software" }
 		}
 	}
 }

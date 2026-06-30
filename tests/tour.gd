@@ -34,8 +34,16 @@ func _run() -> void:
 	_game._try_move("south")          # Chatsubo -> Ninsei Street
 	await _shot("05_street")
 
-	_game._try_move("west")           # Street -> Body Shop
-	await _shot("06_bodyshop")
+	_game._try_move("west")           # Street -> Ninsei West
+	await _shot("06_ninsei_west")
+
+	_game._try_move("south")          # Ninsei West -> Body Shop
+	await _shot("07_bodyshop")
+
+	_game._go_explore()
+	GameState.current_room = "gentleman_loser"
+	_game._refresh_room()
+	await _shot("08_gentleman_loser")
 
 	print("TOUR: DONE")
 	get_tree().quit()

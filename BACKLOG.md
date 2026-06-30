@@ -24,9 +24,11 @@ issues #1–#5; file finer-grained issues as tasks are picked up and link them h
 - [x] `DialogEngine` + first NPC conversation (Ratz, data-driven)
 - [x] Real-world clock + status HUD; `SaveSystem` JSON round-trip
 - [x] Title → name-entry → explore loop; headless smoke test + visual tour
+- [x] Owned HD art swap (FLUX.2 plates), crisp-text + pixelated-plate render (canvas_items)
+- [x] Build out the Chiba City district: 18 connected rooms + NPCs (Ratz, Deane, Shin)
 - [ ] PAX terminal (messages + news board)
 - [ ] Inventory UI
-- [ ] Map the remaining `.PIC`→location IDs (connector rooms are provisional)
+- [ ] Map the remaining `.PIC`→location IDs — **Chiba done**; Night City / Freeside / cyberspace pending
 - [ ] Web export build + verify end-to-end
 
 ## M2 — Economy & progression ([#2](../../issues/2))

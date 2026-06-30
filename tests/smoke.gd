@@ -71,16 +71,25 @@ func _initialize() -> void:
 			"GameState round-trip mismatch"):
 		return
 
-	# --- 4. Room transitions via World.move ---
+	# --- 4. Room transitions via World.move (Chiba City district graph) ---
 	var here = world.start_id
 	var dest = world.move(here, "south")          # chatsubo -> street
 	if not _check(dest == "street", "move south from chatsubo failed"):
 		return
-	var dest2 = world.move(dest, "west")          # street -> bodyshop
-	if not _check(dest2 == "bodyshop", "move west from street failed"):
+	var dest2 = world.move(dest, "west")          # street -> ninsei_west
+	if not _check(dest2 == "ninsei_west", "move west from street failed"):
 		return
-	if not _check(world.move("bodyshop", "north") == "", "non-exit should yield ''"):
+	var dest3 = world.move(dest2, "south")        # ninsei_west -> bodyshop
+	if not _check(dest3 == "bodyshop", "move south from ninsei_west failed"):
 		return
+	if not _check(world.move("bodyshop", "east") == "", "non-exit should yield ''"):
+		return
+	# Connectivity: every exit must point at a real room, and be reciprocal.
+	for rid in world.rooms.keys():
+		for dir in world.exits(rid).keys():
+			var to: String = world.exits(rid)[dir]
+			if not _check(world.has_room(to), "room '%s' exit '%s' -> unknown room '%s'" % [rid, dir, to]):
+				return
 
 	# --- 5. One dialog step through the engine ---
 	var dlg = DialogEngine.new()
