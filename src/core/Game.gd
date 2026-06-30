@@ -822,7 +822,7 @@ func _open_load_menu() -> void:
 			_menu_button("▸ %s  —  %s, CR %d  (%s)" % [
 					s["name"], _room_name(str(s["room"])), int(s["credits"]), s["saved_at"]],
 				_do_load_slug.bind(str(s["slug"])))
-			_menu_button("        ✕ delete \"%s\"" % s["name"], _do_delete_slug.bind(str(s["slug"])))
+			_menu_button("        ✕ delete \"%s\"" % s["name"], _confirm_delete.bind(str(s["slug"]), str(s["name"])))
 	_menu_button("« Cancel", _go_explore)
 
 func _do_load_slug(slug: String) -> void:
@@ -832,9 +832,17 @@ func _do_load_slug(slug: String) -> void:
 	else:
 		_toast("Load failed — save is corrupt.")
 
-func _do_delete_slug(slug: String) -> void:
+func _confirm_delete(slug: String, display_name: String) -> void:
+	_menu_begin("DELETE SAVE?", "This cannot be undone.")
+	_menu_label("Permanently delete this save?")
+	_menu_label("    \"%s\"" % display_name)
+	_menu_button("«  No — keep it", _open_load_menu)
+	_menu_button("✕  YES, delete it", _really_delete.bind(slug, display_name))
+
+func _really_delete(slug: String, display_name: String) -> void:
 	SaveSystem.delete_slug(slug)
-	_open_load_menu()   # refresh the list in place
+	_open_load_menu()   # back to the refreshed list
+	_toast("Deleted: %s" % display_name)
 
 func _quicksave() -> void:
 	if SaveSystem.quicksave():
