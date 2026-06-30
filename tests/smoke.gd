@@ -14,6 +14,7 @@ const World = preload("res://src/world/World.gd")
 const DialogEngine = preload("res://src/world/DialogEngine.gd")
 const Assets = preload("res://src/core/Assets.gd")
 const GameStateScript = preload("res://src/core/GameState.gd")
+const CatalogScript = preload("res://src/econ/Catalog.gd")
 
 func _fail(msg: String) -> void:
 	push_error("SMOKE FAIL: " + msg)
@@ -105,6 +106,37 @@ func _initialize() -> void:
 		return
 	if not _check(dlg.current_text().length() > 0, "deck node has no text"):
 		return
+
+	# --- 6. Economy: buy / re-buy guard / resell / organ-bank ---
+	var cat = CatalogScript.new()
+	cat.load_data()
+	if not _check(not cat.item("sw_probe").is_empty(), "items.json did not load"):
+		return
+	var gs2 = GameStateScript.new()
+	gs2.reset()
+	gs2.credits = 1000
+	if not _check(cat.buy(gs2, "sw_probe"), "buy sw_probe failed"):
+		return
+	if not _check(gs2.credits == 300 and gs2.software.has("sw_probe"),
+			"buy sw_probe: credits/grant wrong (%d)" % gs2.credits):
+		return
+	if not _check(not cat.can_buy(gs2, "sw_probe"), "owned software should not re-buy"):
+		return
+	gs2.credits = 5000
+	if not _check(cat.buy(gs2, "ram_chip") and gs2.inventory.has("ram_chip"), "buy ram_chip failed"):
+		return
+	var before: int = gs2.credits
+	if not _check(cat.sell(gs2, "ram_chip") and gs2.credits == before + 400,
+			"resell ram_chip should pay half (400)"):
+		return
+	gs2.constitution = 100
+	if not _check(cat.sell_organ(gs2, cat.ORGANS[0]) and gs2.constitution == 85,
+			"kidney sale: constitution wrong (%d)" % gs2.constitution):
+		return
+	gs2.constitution = 12
+	if not _check(not cat.can_sell_organ(gs2, cat.ORGANS[2]), "organ sale must be blocked below floor"):
+		return
+	gs2.free()
 
 	# Free the Node instances we created so the SceneTree exits cleanly.
 	gs.free()

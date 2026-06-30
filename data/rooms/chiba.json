@@ -45,6 +45,7 @@
 			"bg": "R4",
 			"text_key": "R4.BIH",
 			"desc": "A clinic for new flesh and chrome. Jars line the shelves and the surgeon's smile never wavers.",
+			"organbank": true,
 			"exits": { "north": "ninsei_west" }
 		},
 		"ninsei_east": {
@@ -64,6 +65,7 @@
 			"bg": "R25",
 			"desc": "Glass cases of dead men's hardware. Shin keeps your Ono-Sendai behind the counter and, by the look of him, a sawn-off under it.",
 			"npcs": ["shin"],
+			"shop": "shin",
 			"exits": { "north": "ninsei_east" }
 		},
 		"chiba_alley": {
@@ -89,18 +91,21 @@
 			"name": "Crazy Edo's",
 			"bg": "R40",
 			"desc": "Edo fixes decks, sells gray-market chrome, and asks no questions. Half-gutted cyberspace rigs hang from the ceiling like smoked hams.",
+			"shop": "edos",
 			"exits": { "west": "chiba_alley", "north": "asano_computing", "east": "larrys_software" }
 		},
 		"asano_computing": {
 			"name": "Asano Computing",
 			"bg": "R44",
 			"desc": "A clean-lit storefront of legitimate gear, the kind with warranties and serial numbers. You feel conspicuous just standing in the doorway.",
+			"shop": "asano",
 			"exits": { "south": "crazy_edos" }
 		},
 		"larrys_software": {
 			"name": "Larry's Software",
 			"bg": "R12",
 			"desc": "Racks of bootleg ice-breakers and skillsofts behind bulletproof glass. Larry watches you over a paperback, thumbing the page but never turning it.",
+			"shop": "larry",
 			"exits": { "west": "crazy_edos", "south": "metro_holografix", "east": "spaceport" }
 		},
 		"metro_holografix": {

@@ -6,13 +6,14 @@ extends Control
 ## code at the 320x200 base resolution. Flow:
 ##   TITLE -> NAME -> EXPLORE <-> DIALOG, with F5/F9 save/load in EXPLORE.
 
-enum State { TITLE, NAME, EXPLORE, DIALOG }
+enum State { TITLE, NAME, EXPLORE, DIALOG, MENU }
 
 # Preloaded (not class_name globals) so the game runs without a prebuilt
 # .godot global-class cache — i.e. on a fresh checkout before any editor open.
 const World = preload("res://src/world/World.gd")
 const DialogEngine = preload("res://src/world/DialogEngine.gd")
 const SaveSystem = preload("res://src/core/SaveSystem.gd")
+const Catalog = preload("res://src/econ/Catalog.gd")
 
 const ROOMS_PATH := "res://data/rooms/chiba.json"
 const NPC_DIR := "res://data/npcs/"
@@ -31,6 +32,13 @@ var _title_layer: Control
 var _name_layer: Control
 var _explore_layer: Control
 var _dialog_layer: Control
+var _menu_layer: Control
+
+# Menu (shop / inventory / organ bank) widgets
+var _menu_title: Label
+var _menu_info: Label
+var _menu_list: VBoxContainer
+var _catalog                          # Catalog instance (items/shops + economy)
 
 # Explore widgets
 var _bg_rect: TextureRect
@@ -53,10 +61,13 @@ func _ready() -> void:
 	_world = World.new()
 	if not _world.load_file(ROOMS_PATH):
 		push_error("Game: failed to load room graph %s" % ROOMS_PATH)
+	_catalog = Catalog.new()
+	_catalog.load_data()
 	_build_title_layer()
 	_build_name_layer()
 	_build_explore_layer()
 	_build_dialog_layer()
+	_build_menu_layer()
 	_go_title()
 
 
@@ -235,11 +246,155 @@ func _build_dialog_layer() -> void:
 	_dialog_options.add_theme_constant_override("separation", 1)
 	panel.add_child(_dialog_options)
 
+func _build_menu_layer() -> void:
+	# One reusable full-screen list panel for shops, the organ bank, and inventory.
+	_menu_layer = _full_control("Menu")
+	_menu_layer.mouse_filter = Control.MOUSE_FILTER_STOP
+	var panel := Panel.new()
+	panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = Color(0.03, 0.04, 0.07)
+	sb.border_color = Color(0.35, 0.30, 0.20)
+	sb.set_border_width_all(1)
+	panel.add_theme_stylebox_override("panel", sb)
+	_menu_layer.add_child(panel)
+	_menu_title = Label.new()
+	_menu_title.position = Vector2(8, 5)
+	_menu_title.size = Vector2(304, 12)
+	_menu_title.add_theme_color_override("font_color", Color(0.9, 0.85, 0.5))
+	_small(_menu_title, 10)
+	panel.add_child(_menu_title)
+	_menu_info = Label.new()
+	_menu_info.position = Vector2(8, 18)
+	_menu_info.size = Vector2(304, 10)
+	_menu_info.add_theme_color_override("font_color", Color(0.6, 0.9, 0.7))
+	_small(_menu_info, 7)
+	panel.add_child(_menu_info)
+	var scroll := ScrollContainer.new()
+	scroll.position = Vector2(8, 30)
+	scroll.size = Vector2(306, 166)
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	panel.add_child(scroll)
+	_menu_list = VBoxContainer.new()
+	_menu_list.custom_minimum_size = Vector2(300, 0)
+	_menu_list.add_theme_constant_override("separation", 1)
+	scroll.add_child(_menu_list)
+
+
+# ---------------------------------------------------------------- menu (shop/inv)
+
+func _menu_begin(title: String, info: String) -> void:
+	_state = State.MENU
+	_show_only(_menu_layer)
+	_menu_title.text = title
+	_menu_info.text = info
+	for c in _menu_list.get_children():
+		c.queue_free()
+
+func _menu_label(text: String) -> void:
+	var l := Label.new()
+	l.text = text
+	l.custom_minimum_size = Vector2(298, 0)
+	l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	l.add_theme_color_override("font_color", Color(0.78, 0.83, 0.85))
+	_small(l, 7)
+	_menu_list.add_child(l)
+
+func _menu_button(text: String, cb: Callable) -> void:
+	var b := Button.new()
+	b.text = text
+	b.custom_minimum_size = Vector2(298, 0)
+	b.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	b.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	_small(b, 7)
+	if cb.is_valid():
+		b.pressed.connect(cb)
+	else:
+		b.disabled = true
+	_menu_list.add_child(b)
+
+func _open_shop(shop_id: String, info: String) -> void:
+	var shop: Dictionary = _catalog.shop(shop_id)
+	_menu_begin(shop.get("name", "Shop"),
+		info if info != "" else "Credits: %d" % GameState.credits)
+	_menu_label("— FOR SALE —")
+	for iid in shop.get("stock", []):
+		var nm: String = _catalog.item_name(iid)
+		var pr: int = _catalog.price(iid)
+		if _catalog.owned(GameState, iid):
+			_menu_button("[owned] %s" % nm, Callable())
+		elif _catalog.can_buy(GameState, iid):
+			_menu_button("Buy: %s — %d cr  · %s" % [nm, pr, _catalog.item(iid).get("desc", "")],
+				_buy.bind(shop_id, iid))
+		else:
+			_menu_button("(need %d cr) %s" % [pr, nm], Callable())
+	if shop.get("buys", false) and not GameState.inventory.is_empty():
+		_menu_label("— SELL (half price) —")
+		for iid in GameState.inventory:
+			_menu_button("Sell: %s — +%d cr" % [_catalog.item_name(iid), _catalog.sell_value(iid)],
+				_sell.bind(shop_id, iid))
+	_menu_button("« Back to the street", _go_explore)
+
+func _buy(shop_id: String, iid: String) -> void:
+	var nm: String = _catalog.item_name(iid)
+	if _catalog.buy(GameState, iid):
+		_open_shop(shop_id, "Bought %s.  Credits: %d" % [nm, GameState.credits])
+	else:
+		_open_shop(shop_id, "Can't afford %s." % nm)
+
+func _sell(shop_id: String, iid: String) -> void:
+	var nm: String = _catalog.item_name(iid)
+	if _catalog.sell(GameState, iid):
+		_open_shop(shop_id, "Sold %s.  Credits: %d" % [nm, GameState.credits])
+	else:
+		_open_shop(shop_id, "Can't sell that here.")
+
+func _open_organbank(info: String) -> void:
+	_menu_begin("The Body Shop — Organ Bank",
+		info if info != "" else "Credits: %d    Constitution: %d" % [GameState.credits, GameState.constitution])
+	_menu_label("The surgeon's smile never wavers. \"We buy what you can spare. Cash on the table.\"")
+	for organ in _catalog.ORGANS:
+		var line := "Sell %s — +%d cr  (−%d CON)" % [organ.get("name"), organ.get("price"), organ.get("con")]
+		if _catalog.can_sell_organ(GameState, organ):
+			_menu_button(line, _sell_organ.bind(organ))
+		else:
+			_menu_button("(too risky) %s" % organ.get("name"), Callable())
+	_menu_button("« Back to the street", _go_explore)
+
+func _sell_organ(organ: Dictionary) -> void:
+	if _catalog.sell_organ(GameState, organ):
+		_open_organbank("Sold %s.  Credits: %d   CON: %d" % [organ.get("name"), GameState.credits, GameState.constitution])
+	else:
+		_open_organbank("You can't spare that and still walk out.")
+
+func _open_inventory() -> void:
+	_menu_begin("%s — Gear" % GameState.player_name,
+		"Credits: %d    HP: %d    CON: %d" % [GameState.credits, GameState.health, GameState.constitution])
+	_menu_label("— HARDWARE / ITEMS —")
+	if GameState.inventory.is_empty():
+		_menu_label("   (nothing yet)")
+	else:
+		for iid in GameState.inventory:
+			_menu_label("   " + _catalog.item_name(iid))
+	_menu_label("— SOFTWARE —")
+	if GameState.software.is_empty():
+		_menu_label("   (none)")
+	else:
+		for sid in GameState.software:
+			_menu_label("   %s  (rating %d)" % [_catalog.item_name(sid), int(GameState.software[sid].get("rating", 1))])
+	_menu_label("— SKILLS —")
+	if GameState.skills.is_empty():
+		_menu_label("   (none)")
+	else:
+		for sk in GameState.skills:
+			_menu_label("   %s  L%d" % [sk, int(GameState.skills[sk])])
+	_menu_button("« Back", _go_explore)
+
 
 # ---------------------------------------------------------------- state switches
 
 func _show_only(active: Control) -> void:
-	for layer in [_title_layer, _name_layer, _explore_layer, _dialog_layer]:
+	for layer in [_title_layer, _name_layer, _explore_layer, _dialog_layer, _menu_layer]:
 		layer.visible = (layer == active)
 
 func _go_title() -> void:
@@ -341,6 +496,25 @@ func _rebuild_buttons(r: Dictionary) -> void:
 		_small(b, 7)
 		b.pressed.connect(_go_dialog.bind(npc))
 		_button_bar.add_child(b)
+	# Shop / organ bank, when the room offers them.
+	if r.has("shop"):
+		var shopb := Button.new()
+		shopb.text = "Shop"
+		_small(shopb, 7)
+		shopb.pressed.connect(_open_shop.bind(String(r["shop"]), ""))
+		_button_bar.add_child(shopb)
+	if r.get("organbank", false):
+		var orgb := Button.new()
+		orgb.text = "Organs"
+		_small(orgb, 7)
+		orgb.pressed.connect(_open_organbank.bind(""))
+		_button_bar.add_child(orgb)
+	# Inventory (always available).
+	var invb := Button.new()
+	invb.text = "Items"
+	_small(invb, 7)
+	invb.pressed.connect(_open_inventory)
+	_button_bar.add_child(invb)
 	# Save / Load.
 	var sb := Button.new()
 	sb.text = "Save"
@@ -428,6 +602,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		State.EXPLORE:
 			if event is InputEventKey and event.pressed and not event.echo:
 				_handle_explore_key(event.keycode)
+		State.MENU:
+			if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
+				_go_explore()
+				get_viewport().set_input_as_handled()
 
 func _handle_explore_key(keycode: int) -> void:
 	match keycode:
@@ -439,6 +617,8 @@ func _handle_explore_key(keycode: int) -> void:
 			_try_move("west")
 		KEY_RIGHT, KEY_D:
 			_try_move("east")
+		KEY_I:
+			_open_inventory()
 		KEY_F5:
 			_do_save()
 		KEY_F9:

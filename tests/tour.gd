@@ -45,6 +45,23 @@ func _run() -> void:
 	_game._refresh_room()
 	await _shot("08_gentleman_loser")
 
+	# Economy: open a shop (give CASE some credits so Buy is live), then inventory.
+	GameState.credits = 5000
+	GameState.current_room = "crazy_edos"
+	_game._refresh_room()
+	await _shot("09_crazy_edos")
+	_game._open_shop("edos", "")
+	await _shot("10_shop")
+	_game._buy("edos", "deck_ono7")        # buy the Ono-Sendai deck
+	await _shot("11_shop_after_buy")
+	_game._open_inventory()
+	await _shot("12_inventory")
+	_game._go_explore()
+	GameState.current_room = "bodyshop"
+	_game._refresh_room()
+	_game._open_organbank("")
+	await _shot("13_organ_bank")
+
 	print("TOUR: DONE")
 	get_tree().quit()
 

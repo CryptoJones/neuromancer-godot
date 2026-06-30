@@ -1,0 +1,8 @@
+{
+	"shops": {
+		"edos":  { "name": "Crazy Edo's",       "buys": true,  "stock": ["deck_ono7", "ram_chip", "sw_comlink", "sk_hwrepair"] },
+		"larry": { "name": "Larry's Software",  "buys": true,  "stock": ["sw_hammer", "sw_probe", "sw_decoder", "sw_doorstop", "sw_jammies", "sw_concrete", "sw_logicbomb"] },
+		"asano": { "name": "Asano Computing",   "buys": false, "stock": ["deck_hosaka", "ram_chip", "sk_cyberspace", "sk_icebreak", "sk_swrepair"] },
+		"shin":  { "name": "Shin's Pawn Shop",  "buys": true,  "stock": ["sk_evasion", "sk_bargain", "sw_comlink"] }
+	}
+}

@@ -27,14 +27,16 @@ issues #1–#5; file finer-grained issues as tasks are picked up and link them h
 - [x] Owned HD art swap (FLUX.2 plates), crisp-text + pixelated-plate render (canvas_items)
 - [x] Build out the Chiba City district: 18 connected rooms + NPCs (Ratz, Deane, Shin)
 - [ ] PAX terminal (messages + news board)
-- [ ] Inventory UI
+- [x] Inventory UI (gear/software/skills screen)
 - [ ] Map the remaining `.PIC`→location IDs — **Chiba done**; Night City / Freeside / cyberspace pending
 - [ ] Web export build + verify end-to-end
 
 ## M2 — Economy & progression ([#2](../../issues/2))
-- [ ] Credits, banks, chips; body shop (sell organs); pawn shops
-- [ ] Skill chips & software shop; deck purchase/upgrade
-- [ ] Skill system (Cyberspace I–VII, ICE Breaking, Hardware/Software Repair, …)
+- [x] Credits + working shops (Crazy Edo's, Larry's, Asano, Shin) — buy/sell, half-price resale
+- [x] Body Shop organ bank (sell organs for credits at a constitution cost, with a safety floor)
+- [x] Skill chips & software shop; deck purchase (Ono-Sendai / Hosaka) — `data/items.json`, `Catalog.gd`
+- [ ] Banks (accounts, transfers, chip cashing)
+- [ ] Skill *use* / levelling system (Cyberspace I–VII, ICE Breaking, Hardware/Software Repair, …)
 - [ ] Full real-world map traversal (Chiba → Night City → …)
 
 ## M3 — Cyberspace & ICE combat ([#3](../../issues/3))

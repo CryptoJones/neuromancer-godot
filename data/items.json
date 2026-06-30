@@ -1,0 +1,23 @@
+{
+	"items": {
+		"deck_ono7":   { "name": "Ono-Sendai Cyberspace 7", "type": "hardware", "price": 3000, "desc": "A classic cyberspace deck — your ticket onto the matrix." },
+		"deck_hosaka": { "name": "Hosaka Mark IV",          "type": "hardware", "price": 6000, "desc": "A heavier corporate deck with room for more software." },
+		"ram_chip":    { "name": "4MB RAM Chip",            "type": "hardware", "price": 800,  "desc": "More room to run programs while you're jacked in." },
+
+		"sk_cyberspace": { "name": "Cyberspace skillchip",   "type": "skill", "skill": "Cyberspace",     "rating": 2, "price": 1200, "desc": "The basics of running the matrix." },
+		"sk_icebreak":   { "name": "ICE Breaking skillchip", "type": "skill", "skill": "ICE Breaking",   "rating": 2, "price": 1500, "desc": "Take an ICE apart before it takes you apart." },
+		"sk_hwrepair":   { "name": "Hardware Repair chip",   "type": "skill", "skill": "Hardware Repair", "rating": 1, "price": 500,  "desc": "Fix fried chrome and decks." },
+		"sk_swrepair":   { "name": "Software Repair chip",   "type": "skill", "skill": "Software Repair", "rating": 1, "price": 500,  "desc": "Patch crashed warez." },
+		"sk_evasion":    { "name": "Evasion skillchip",      "type": "skill", "skill": "Evasion",        "rating": 1, "price": 700,  "desc": "Slip a tail on the street or in the matrix." },
+		"sk_bargain":    { "name": "Bargaining skillchip",   "type": "skill", "skill": "Bargaining",     "rating": 1, "price": 600,  "desc": "Talk a better price out of anyone." },
+
+		"sw_comlink":   { "name": "Comlink 2.0", "type": "software", "rating": 2, "price": 400,  "desc": "Basic handshake software for database links." },
+		"sw_hammer":    { "name": "Hammer",      "type": "software", "rating": 3, "price": 900,  "desc": "A blunt attack program. Bashes weak ICE." },
+		"sw_probe":     { "name": "Probe",       "type": "software", "rating": 2, "price": 700,  "desc": "Scouts a data fortress for soft spots." },
+		"sw_decoder":   { "name": "Decoder",     "type": "software", "rating": 2, "price": 850,  "desc": "Cracks passwords on locked nodes." },
+		"sw_doorstop":  { "name": "DoorStop",    "type": "software", "rating": 2, "price": 650,  "desc": "Holds a node open while you work." },
+		"sw_jammies":   { "name": "Jammies",     "type": "software", "rating": 2, "price": 700,  "desc": "Masks your icon from hostile ICE." },
+		"sw_concrete":  { "name": "Concrete",    "type": "software", "rating": 3, "price": 1100, "desc": "Defensive armor against ICE attacks." },
+		"sw_logicbomb": { "name": "Logic Bomb",  "type": "software", "rating": 4, "price": 1800, "desc": "A heavy offensive payload. Use it sparingly." }
+	}
+}
