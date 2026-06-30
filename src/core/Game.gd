@@ -645,6 +645,11 @@ func _story_next() -> void:
 func _beach_art() -> String:
 	return "res://assets/backgrounds_hd/R50.png"
 
+## The "stay" ending gets its own warm sunset plate (Linda Lee), distinct from the
+## cold betrayal beach.
+func _dream_art() -> String:
+	return "res://assets/ui/dream.png"
+
 ## First contact with the Neuromancer AI: it pulls you onto Cyberspace Beach and
 ## delivers the betrayal — the manipulator behind every "Matt Shaw" message.
 func _enter_endgame(id: String) -> void:
@@ -686,7 +691,7 @@ func _open_beach_ending() -> void:
 	GameState.story_flags["stayed_on_the_beach"] = true
 	_combat_db = ""
 	AudioManager.play("shops_pax")
-	_begin_story("THE DREAM", _beach_art(), [
+	_begin_story("THE DREAM", _dream_art(), [
 		"You don't refuse. Why would you? The ice can wait forever — and forever is exactly what's on offer.",
 		"You walk up the sand. She's there. Of course she's there: Linda Lee, exactly as you remember her, exactly as you've spent so long trying to forget. The construct built her out of your own memory, down to the way she says your name — and you find you don't care that she isn't real. Real is the meat, and the meat is a long way up.",
 		"\"Stay,\" the beach says, in her voice now. \"You're tired, cowboy. You did everything they asked of you. Stay.\"",
