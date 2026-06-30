@@ -352,16 +352,18 @@ func _build_menu_layer() -> void:
 
 # ---------------------------------------------------------------- menu (shop/inv)
 
-func _menu_begin(title: String, info: String, img_path := "") -> void:
+func _menu_begin(title: String, info: String, img_path := "", big_art := false) -> void:
 	_state = State.MENU
 	_show_only(_menu_layer)
+	var art_h := 116 if big_art else 84   # cutscenes get a much bigger plate
 	if img_path != "":
 		var t := _pixelated_path(img_path)
 		_menu_img.texture = t
 		_menu_img.visible = t != null
 	else:
 		_menu_img.visible = false
-	var top: int = 96 if _menu_img.visible else 5
+	_menu_img.size = Vector2(306, art_h)
+	var top: int = (art_h + 12) if _menu_img.visible else 5
 	_menu_title.position = Vector2(8, top)
 	_menu_info.position = Vector2(8, top + 13)
 	_menu_scroll.position = Vector2(8, top + 26)
@@ -627,7 +629,7 @@ func _begin_story(title: String, art: String, pages: Array, final: Array) -> voi
 	_show_story_page()
 
 func _show_story_page() -> void:
-	_menu_begin(_story_title, "· %d / %d ·" % [_story_idx + 1, _story_pages.size()], _story_art)
+	_menu_begin(_story_title, "· %d / %d ·" % [_story_idx + 1, _story_pages.size()], _story_art, true)
 	_menu_label(str(_story_pages[_story_idx]))
 	if _story_idx < _story_pages.size() - 1:
 		_menu_button("Next »", _story_next)
