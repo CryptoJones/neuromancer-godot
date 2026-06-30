@@ -7,11 +7,14 @@ numbers back here (e.g. `([#12](../../issues/12))`).
 
 ## M0 — Scaffold & asset pipeline
 - [x] Scaffold repo (dirs, LICENSE, README, CREDITS, BACKLOG, .gitignore, project.godot)
-- [ ] Port the `.DAT` resource-table reader from `NEURO.EXE` (87 + 151 entries)
-- [ ] Implement two-stage `.IMH` decode + VGA palette → PNG
-- [ ] Implement `.PIC` background decode → PNG
-- [ ] Extract text resources (dialog, news, items) → JSON
-- [ ] Asset-verification contact sheet / viewer; all 238 entries resolve
+- [x] Port the `.DAT` resource-directory reader from `NEURO.EXE` (165 resources)
+- [x] Implement the Huffman + RLE + scanline-XOR decode + 16-colour EGA palette
+- [x] `.IMH` sprite/screen decode → PNG (28 images: TITLE, ENDGAME, cyberspace, AI faces…)
+- [x] `.PIC` background decode → PNG (55 room backgrounds, 304×112)
+- [x] Extract text resources (`.BIH`/`.TXH`) → `assets/text/game_text.json` (55 resources)
+- [x] Verify decode: 144/144 resources decode, 0 failures, spot-checked vs original
+- [ ] `.ANH` animation reassembly (decompresses; frame layout not yet rendered) — defer to M1
+- [ ] `CONTRIBUTING.md` / project-structure doc for outside contributors
 
 ## M1 — Real-world engine (Chiba City vertical slice)
 - [ ] `RoomController` + room data format; player movement between rooms
