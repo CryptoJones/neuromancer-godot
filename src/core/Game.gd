@@ -357,22 +357,32 @@ func _sell(shop_id: String, iid: String) -> void:
 		_open_shop(shop_id, "Can't sell that here.")
 
 func _open_organbank(info: String) -> void:
-	_menu_begin("The Body Shop — Organ Bank",
+	_menu_begin("The Body Shop",
 		info if info != "" else "Credits: %d    Constitution: %d" % [GameState.credits, GameState.constitution])
-	_menu_label("The surgeon's smile never wavers. \"We buy what you can spare. Cash on the table.\"")
-	for organ in _catalog.ORGANS:
-		var line := "Sell %s — +%d cr  (−%d CON)" % [organ.get("name"), organ.get("price"), organ.get("con")]
-		if _catalog.can_sell_organ(GameState, organ):
-			_menu_button(line, _sell_organ.bind(organ))
+	_menu_label("The surgeon's smile never wavers. \"We buy what you can spare — and sell it back, for a price.\"")
+	for part in _catalog.parts:
+		if _catalog.part_sold(GameState, part):
+			if _catalog.can_buyback_part(GameState, part):
+				_menu_button("Buy back %s — %d cr  (+%d CON)" % [part.get("name"), part.get("buy"), part.get("con")],
+					_buyback_part.bind(part))
+			else:
+				_menu_button("(need %d cr) buy back %s" % [part.get("buy"), part.get("name")], Callable())
 		else:
-			_menu_button("(too risky) %s" % organ.get("name"), Callable())
+			_menu_button("Sell %s — +%d cr  (−%d CON)" % [part.get("name"), part.get("sell"), part.get("con")],
+				_sell_part.bind(part))
 	_menu_button("« Back to the street", _go_explore)
 
-func _sell_organ(organ: Dictionary) -> void:
-	if _catalog.sell_organ(GameState, organ):
-		_open_organbank("Sold %s.  Credits: %d   CON: %d" % [organ.get("name"), GameState.credits, GameState.constitution])
+func _sell_part(part: Dictionary) -> void:
+	if _catalog.sell_part(GameState, part):
+		_open_organbank("Sold %s.  Credits: %d   CON: %d" % [part.get("name"), GameState.credits, GameState.constitution])
 	else:
-		_open_organbank("You can't spare that and still walk out.")
+		_open_organbank("")
+
+func _buyback_part(part: Dictionary) -> void:
+	if _catalog.buyback_part(GameState, part):
+		_open_organbank("Bought back %s.  Credits: %d   CON: %d" % [part.get("name"), GameState.credits, GameState.constitution])
+	else:
+		_open_organbank("Can't afford to buy that back.")
 
 func _open_inventory() -> void:
 	_menu_begin("%s — Gear" % GameState.player_name,
@@ -419,7 +429,7 @@ func _start_new_game(player_name: String) -> void:
 	GameState.player_name = player_name
 	GameState.credits = 100
 	GameState.health = 100
-	GameState.constitution = 100
+	GameState.constitution = 2000   # CONSTITUTION_MAX
 	GameState.game_minutes = 360   # 06:00
 	GameState.current_room = _world.start_id
 	_go_explore()
@@ -538,8 +548,8 @@ func _refresh_status() -> void:
 	var hh := int(GameState.game_minutes / 60.0) % 24
 	var mm := GameState.game_minutes % 60
 	var loc: String = _world.room(GameState.current_room).get("name", GameState.current_room)
-	_status_lbl.text = "%s   CR %d   HP %d   %s   %02d:%02d" % [
-		GameState.player_name, GameState.credits, GameState.health, loc, hh, mm]
+	_status_lbl.text = "%s   CR %d   CON %d   %s   %02d:%02d" % [
+		GameState.player_name, GameState.credits, GameState.constitution, loc, hh, mm]
 
 
 # ---------------------------------------------------------------- actions

@@ -1,0 +1,145 @@
+{
+	"constitution_max": 2000,
+	"parts": [
+		{
+			"id": "heart",
+			"name": "Heart",
+			"sell": 6000,
+			"buy": 12000,
+			"con": 200
+		},
+		{
+			"id": "eyes",
+			"name": "Eyes (2)",
+			"sell": 5000,
+			"buy": 10000,
+			"con": 150
+		},
+		{
+			"id": "lungs",
+			"name": "Lungs (2)",
+			"sell": 3000,
+			"buy": 6000,
+			"con": 150
+		},
+		{
+			"id": "stomach",
+			"name": "Stomach",
+			"sell": 1500,
+			"buy": 3000,
+			"con": 100
+		},
+		{
+			"id": "liver",
+			"name": "Liver",
+			"sell": 1250,
+			"buy": 2500,
+			"con": 75
+		},
+		{
+			"id": "kidneys",
+			"name": "Kidneys (2)",
+			"sell": 1050,
+			"buy": 2100,
+			"con": 75
+		},
+		{
+			"id": "gall_bladder",
+			"name": "Gall Bladder",
+			"sell": 1050,
+			"buy": 2100,
+			"con": 75
+		},
+		{
+			"id": "pancreas",
+			"name": "Pancreas",
+			"sell": 500,
+			"buy": 1000,
+			"con": 75
+		},
+		{
+			"id": "legs",
+			"name": "Legs (2)",
+			"sell": 300,
+			"buy": 600,
+			"con": 50
+		},
+		{
+			"id": "arms",
+			"name": "Arms (2)",
+			"sell": 300,
+			"buy": 600,
+			"con": 50
+		},
+		{
+			"id": "tongue",
+			"name": "Tongue",
+			"sell": 150,
+			"buy": 300,
+			"con": 25
+		},
+		{
+			"id": "larynx",
+			"name": "Larynx",
+			"sell": 150,
+			"buy": 300,
+			"con": 25
+		},
+		{
+			"id": "node",
+			"name": "Nose",
+			"sell": 150,
+			"buy": 300,
+			"con": 25
+		},
+		{
+			"id": "ears",
+			"name": "Ears (2)",
+			"sell": 100,
+			"buy": 200,
+			"con": 25
+		},
+		{
+			"id": "intestine_l",
+			"name": "Intestine (large)",
+			"sell": 50,
+			"buy": 100,
+			"con": 10
+		},
+		{
+			"id": "intestine_s",
+			"name": "Intestine (small)",
+			"sell": 50,
+			"buy": 100,
+			"con": 10
+		},
+		{
+			"id": "spleen",
+			"name": "Spleen",
+			"sell": 45,
+			"buy": 90,
+			"con": 10
+		},
+		{
+			"id": "bone_marrow",
+			"name": "Bone Marrow",
+			"sell": 45,
+			"buy": 90,
+			"con": 10
+		},
+		{
+			"id": "spine_fluid",
+			"name": "Spinal Fluid",
+			"sell": 30,
+			"buy": 60,
+			"con": 10
+		},
+		{
+			"id": "appendix",
+			"name": "Appendix",
+			"sell": 3,
+			"buy": 6,
+			"con": 10
+		}
+	]
+}

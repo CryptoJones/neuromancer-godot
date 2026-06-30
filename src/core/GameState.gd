@@ -8,13 +8,14 @@ extends Node
 # --- Player ---
 var player_name: String = ""
 var credits: int = 0
-var constitution: int = 100
+var constitution: int = 2000         # original scale: CONSTITUTION_MAX = 2000
 var health: int = 100
 
 # --- Inventory & skills (filled in M1/M2) ---
 var inventory: Array[String] = []
 var skills: Dictionary = {}          # skill_name -> level (int)
 var software: Dictionary = {}        # warez_name -> { "rating": int }
+var sold_parts: Array = []           # body-part ids sold to the Body Shop organ bank
 
 # --- World ---
 var current_room: String = ""
@@ -24,11 +25,12 @@ var game_minutes: int = 0            # in-world clock (M1)
 func reset() -> void:
 	player_name = ""
 	credits = 0
-	constitution = 100
+	constitution = 2000
 	health = 100
 	inventory.clear()
 	skills.clear()
 	software.clear()
+	sold_parts.clear()
 	current_room = ""
 	story_flags.clear()
 	game_minutes = 0
@@ -43,6 +45,7 @@ func to_dict() -> Dictionary:
 		"inventory": inventory.duplicate(),
 		"skills": skills.duplicate(true),
 		"software": software.duplicate(true),
+		"sold_parts": sold_parts.duplicate(),
 		"current_room": current_room,
 		"story_flags": story_flags.duplicate(true),
 		"game_minutes": game_minutes,

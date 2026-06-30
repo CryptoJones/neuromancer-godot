@@ -49,6 +49,12 @@ func _run() -> void:
 	_game._open_inventory()
 	await _shot("09_inventory")
 
+	_game._go_explore()
+	GameState.current_room = "R4"     # Body Shop — real organ bank
+	_game._refresh_room()
+	_game._open_organbank("")
+	await _shot("10_body_shop")
+
 	print("TOUR: DONE")
 	get_tree().quit()
 

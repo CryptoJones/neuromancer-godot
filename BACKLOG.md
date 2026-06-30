@@ -36,8 +36,9 @@ issues #1–#5; file finer-grained issues as tasks are picked up and link them h
 > is being replaced with the originals from Javamancer + the extracted text.
 
 ## M2 — Economy & progression ([#2](../../issues/2))
-- [x] Economy ENGINE: `Catalog.gd` + Shop / Inventory / Organ-Bank menu UI (buy/sell, half-price resale, organ-for-CON)
-- [ ] Re-source the **real** item/skill/software/body-part tables + prices from Javamancer (`SkillsVendPopup`, `BodyShopPopup`, `PawnshopVendPopup`) — current `items.json`/`shops.json` are placeholders
+- [x] Economy ENGINE: `Catalog.gd` + Shop / Inventory / Organ-Bank menu UI (buy/sell, half-price resale)
+- [x] **Real Body Shop** (R4): 20 authentic body parts + prices + CON costs (`data/bodyparts.json` from `BodyPart.java`); constitution on the real 0–2000 scale; sell + buy-back
+- [ ] Re-source the **real** warez/deck/skill tables + prices from Javamancer (per-shop, traced through `RoomExtras`) — `items.json`/`shops.json` still placeholders
 - [ ] Wire shops to their real rooms (Shin's R25, Crazy Edo's R40, Asano's R44, Microsofts, Body Shop R4)
 - [ ] Real NPC dialogue trees (Ratz, Julius Deane, Shin, …) from the original
 - [ ] Banks (Bank of Berne / Gemeinschaft), skill *use* / levelling, cyberspace economy

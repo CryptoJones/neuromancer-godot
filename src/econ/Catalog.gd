@@ -7,21 +7,16 @@ extends RefCounted
 
 const ITEMS_PATH := "res://data/items.json"
 const SHOPS_PATH := "res://data/shops.json"
-
-# The Body Shop trade: organs for credits, paid in constitution. Iconic, grim.
-const ORGANS := [
-	{ "id": "kidney",      "name": "a kidney",      "price": 1000, "con": 15 },
-	{ "id": "lung",        "name": "a lung",        "price": 1800, "con": 25 },
-	{ "id": "heart_valve", "name": "a heart valve", "price": 3000, "con": 40 },
-]
-const CON_FLOOR := 10   # never let an organ sale drop you below this (it'd kill you)
+const PARTS_PATH := "res://data/bodyparts.json"   # real Body Shop organ table (from the original)
 
 var items: Dictionary = {}
 var shops: Dictionary = {}
+var parts: Array = []         # body parts: {id, name, sell, buy, con}
 
 func load_data() -> void:
 	items = _load(ITEMS_PATH).get("items", {})
 	shops = _load(SHOPS_PATH).get("shops", {})
+	parts = _load(PARTS_PATH).get("parts", [])
 
 func _load(path: String) -> Dictionary:
 	if not FileAccess.file_exists(path):
@@ -86,13 +81,31 @@ func sell(state, id: String) -> bool:
 	state.credits += sell_value(id)
 	return true
 
-func can_sell_organ(state, organ: Dictionary) -> bool:
-	return state.constitution - int(organ.get("con", 0)) >= CON_FLOOR
+# --- Body Shop organ bank (the original's grim trade) ---------------------------
+# Sell a part: gain its sell price, lose its constitution toll, mark it sold.
+# Buy it back later: pay the (higher) buy price, restore the constitution.
 
-func sell_organ(state, organ: Dictionary) -> bool:
-	if not can_sell_organ(state, organ):
+func part_sold(state, part: Dictionary) -> bool:
+	return state.sold_parts.has(part.get("id", ""))
+
+func can_sell_part(state, part: Dictionary) -> bool:
+	return not part_sold(state, part)
+
+func sell_part(state, part: Dictionary) -> bool:
+	if not can_sell_part(state, part):
 		return false
-	state.constitution -= int(organ.get("con", 0))
-	state.credits += int(organ.get("price", 0))
-	state.story_flags["sold_" + str(organ.get("id", ""))] = true
+	state.credits += int(part.get("sell", 0))
+	state.constitution -= int(part.get("con", 0))
+	state.sold_parts.append(part.get("id", ""))
+	return true
+
+func can_buyback_part(state, part: Dictionary) -> bool:
+	return part_sold(state, part) and state.credits >= int(part.get("buy", 0))
+
+func buyback_part(state, part: Dictionary) -> bool:
+	if not can_buyback_part(state, part):
+		return false
+	state.credits -= int(part.get("buy", 0))
+	state.constitution += int(part.get("con", 0))
+	state.sold_parts.erase(part.get("id", ""))
 	return true

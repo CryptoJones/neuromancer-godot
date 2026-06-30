@@ -129,12 +129,22 @@ func _initialize() -> void:
 	if not _check(cat.sell(gs2, "ram_chip") and gs2.credits == before + 400,
 			"resell ram_chip should pay half (400)"):
 		return
-	gs2.constitution = 100
-	if not _check(cat.sell_organ(gs2, cat.ORGANS[0]) and gs2.constitution == 85,
-			"kidney sale: constitution wrong (%d)" % gs2.constitution):
+	# Body Shop organ bank (real table): sell a part, re-sell guard, buy it back.
+	if not _check(cat.parts.size() == 20, "bodyparts.json should hold 20 parts"):
 		return
-	gs2.constitution = 12
-	if not _check(not cat.can_sell_organ(gs2, cat.ORGANS[2]), "organ sale must be blocked below floor"):
+	gs2.constitution = 2000
+	gs2.credits = 0
+	var heart = cat.parts[0]   # Heart: sell 6000, buy 12000, con 200
+	if not _check(cat.sell_part(gs2, heart) and gs2.credits == 6000
+			and gs2.constitution == 1800 and gs2.sold_parts.has("heart"),
+			"sell heart: cr/con/mark wrong (%d/%d)" % [gs2.credits, gs2.constitution]):
+		return
+	if not _check(not cat.can_sell_part(gs2, heart), "an already-sold part can't be sold again"):
+		return
+	gs2.credits = 20000
+	if not _check(cat.buyback_part(gs2, heart) and gs2.credits == 8000
+			and gs2.constitution == 2000 and not gs2.sold_parts.has("heart"),
+			"buy back heart: restore wrong (%d/%d)" % [gs2.credits, gs2.constitution]):
 		return
 	gs2.free()
 
