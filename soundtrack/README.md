@@ -1,7 +1,9 @@
-# Neuromancer (fan remake) — Original Soundtrack
+# The Flatline Sessions
 
-The score for the remake, composed for this project by arranging royalty-free sample
-loops (Splice / Zenhiser) into original cues. Each track has two forms:
+### Original soundtrack to the Neuromancer (2026 fan remake)
+
+The score, composed for this project by arranging royalty-free sample loops
+(Splice / Zenhiser) into original cues. Each track has two forms:
 
 - **`soundtrack/`** — these album-length cuts (~3 min), for listening.
 - **`assets/audio/music/`** — short seamless loops the game streams per area.
