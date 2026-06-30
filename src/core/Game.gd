@@ -71,18 +71,25 @@ func _ready() -> void:
 	_go_title()
 
 
-## Crisp DOS-terminal font (VT323, OFL) loaded at runtime, anti-aliasing OFF so
-## glyphs stay sharp through the viewport upscale. Cascades to all child controls.
+## DOS-terminal font (VT323, OFL), rendered as MSDF so glyphs stay razor-crisp at
+## ANY window scale. canvas_items stretch scales the 2D up by the window factor;
+## on a non-integer factor (e.g. a Chromebook fullscreen) an ordinary rasterised
+## pixel font smears into blur, but MSDF glyphs are resolution-independent — the
+## shader evaluates them at the final pixel size, so they're sharp everywhere.
+## Cascades to all child controls.
 func _apply_theme() -> void:
 	var f := FontFile.new()
 	if f.load_dynamic_font("res://fonts/VT323-Regular.ttf") != OK:
 		push_warning("Game: VT323 font not found; using default font")
 		return
-	f.antialiasing = TextServer.FONT_ANTIALIASING_NONE
+	f.multichannel_signed_distance_field = true
+	f.antialiasing = TextServer.FONT_ANTIALIASING_GRAY
 	f.hinting = TextServer.HINTING_NONE
-	f.subpixel_positioning = TextServer.SUBPIXEL_POSITIONING_DISABLED
 	var th := Theme.new()
 	th.default_font = f
+	# Scale the whole UI's fonts up a notch now that they render crisp — easier to
+	# read on a phone/Chromebook without reflowing the 320x200 layout.
+	th.default_font_size = 8
 	theme = th
 
 
