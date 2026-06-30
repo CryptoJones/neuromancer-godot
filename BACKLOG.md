@@ -15,14 +15,19 @@ issues #1–#5; file finer-grained issues as tasks are picked up and link them h
 - [x] Extract text resources (`.BIH`/`.TXH`) → `assets/text/game_text.json` (55 resources)
 - [x] Verify decode: 144/144 resources decode, 0 failures, spot-checked vs original
 - [ ] `.ANH` animation reassembly (decompresses; frame layout not yet rendered) — defer to M1
-- [ ] `CONTRIBUTING.md` / project-structure doc for outside contributors
+- [x] `CONTRIBUTING.md` / project-structure doc for outside contributors
 
 ## M1 — Real-world engine (Chiba City vertical slice) ([#1](../../issues/1))
-- [ ] `RoomController` + room data format; player movement between rooms
-- [ ] `DialogEngine` reading extracted dialog; first NPC conversations
+- [x] Runtime asset loader (`Assets.gd`, `Image.load` — no import pipeline)
+- [x] Room graph + data format (`data/rooms/chiba.json`); movement (buttons + WASD/arrows)
+- [x] Rooms render extracted backgrounds + real `.BIH` prose (Chatsubo, Body Shop, Justice…)
+- [x] `DialogEngine` + first NPC conversation (Ratz, data-driven)
+- [x] Real-world clock + status HUD; `SaveSystem` JSON round-trip
+- [x] Title → name-entry → explore loop; headless smoke test + visual tour
 - [ ] PAX terminal (messages + news board)
-- [ ] Basic inventory + real-world clock
-- [ ] Chiba opening playable end-to-end on web export
+- [ ] Inventory UI
+- [ ] Map the remaining `.PIC`→location IDs (connector rooms are provisional)
+- [ ] Web export build + verify end-to-end
 
 ## M2 — Economy & progression ([#2](../../issues/2))
 - [ ] Credits, banks, chips; body shop (sell organs); pawn shops

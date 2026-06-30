@@ -1,0 +1,39 @@
+{
+	"start": "chatsubo",
+	"rooms": {
+		"chatsubo": {
+			"name": "The Chatsubo",
+			"bg": "R1",
+			"text_key": "R1.BIH",
+			"desc": "A low bar for professional expatriates; you could drink there for a week and never hear two words in Japanese.",
+			"npcs": ["ratz"],
+			"exits": { "south": "street" }
+		},
+		"street": {
+			"name": "Ninsei Street",
+			"bg": "R5",
+			"desc": "Neon and rain on the strip of Ninsei. Holograms flicker over the noodle stalls and the crowd moves like one tired animal under the dead-channel sky.",
+			"exits": { "north": "chatsubo", "east": "chinatown", "west": "bodyshop", "south": "justice" }
+		},
+		"chinatown": {
+			"name": "Chinatown",
+			"bg": "R6",
+			"desc": "A warren of stalls and steam. Vendors hawk black-market chips and bowls of something hot while lawbots watch from the corners.",
+			"exits": { "west": "street" }
+		},
+		"bodyshop": {
+			"name": "The Body Shop",
+			"bg": "R4",
+			"text_key": "R4.BIH",
+			"desc": "A clinic for new flesh and chrome. Jars line the shelves and the surgeon's smile never wavers.",
+			"exits": { "east": "street" }
+		},
+		"justice": {
+			"name": "Justice Booth",
+			"bg": "R3",
+			"text_key": "R3.BIH",
+			"desc": "A cramped booth walled with monitors. A Compu-Judge frowns down from the big screen; a Compu-Lawyer waits on the small one.",
+			"exits": { "north": "street" }
+		}
+	}
+}

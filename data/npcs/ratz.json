@@ -1,0 +1,33 @@
+{
+	"id": "ratz",
+	"name": "Ratz",
+	"start": "greet",
+	"nodes": {
+		"greet": {
+			"text": "Ratz works the bar with his pink prosthetic arm, the servos whining. His steel teeth catch the neon. \"So. The artiste wakes. You still owe me for the spaghetti, friend.\"",
+			"options": [
+				{ "text": "Ask about your deck.", "next": "deck" },
+				{ "text": "Ask what's been going on.", "next": "news" },
+				{ "text": "\"Later, Ratz.\" (leave)", "next": "bye" }
+			]
+		},
+		"deck": {
+			"text": "\"Shin came by while you slept. He didn't want to wake the great man.\" Ratz grins. \"He still has your deck down at his shop. Go and see him.\"",
+			"options": [
+				{ "text": "Anything else?", "next": "greet" },
+				{ "text": "\"Thanks, Ratz.\" (leave)", "next": "bye" }
+			]
+		},
+		"news": {
+			"text": "\"One of Lonny Zone's girls was asking after you. And the Health Department keeps threatening to shut me down.\" He shrugs the whole prosthetic. \"Same Chiba, different night.\"",
+			"options": [
+				{ "text": "Ask about your deck.", "next": "deck" },
+				{ "text": "\"Take care, Ratz.\" (leave)", "next": "bye" }
+			]
+		},
+		"bye": {
+			"text": "Ratz grunts and goes back to wiping the bar. \"Fear is your friend, artiste. Now get out of my light.\"",
+			"options": []
+		}
+	}
+}
