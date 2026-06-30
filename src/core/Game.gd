@@ -677,7 +677,8 @@ func _show_void_room() -> void:
 	_small(qb, 7)
 	qb.pressed.connect(_do_quit)
 	_button_bar.add_child(qb)
-	_refresh_status()
+	# Everything down here reads 1337 (display only — the real stats are untouched).
+	_status_lbl.text = "%s   CR 1337   CON 1337   1337   13:37" % GameState.player_name
 	AudioManager.play_playlist(VOID_TRACKS)
 
 ## Downscale a room's HD plate to BG_PIXEL_W (nearest-neighbour) and cache it, so
