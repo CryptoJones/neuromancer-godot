@@ -14,6 +14,7 @@ const World = preload("res://src/world/World.gd")
 const DialogEngine = preload("res://src/world/DialogEngine.gd")
 const SaveSystem = preload("res://src/core/SaveSystem.gd")
 const Catalog = preload("res://src/econ/Catalog.gd")
+const Matrix = preload("res://src/cyber/Matrix.gd")
 
 const ROOMS_PATH := "res://data/rooms/chiba.json"
 const NPC_DIR := "res://data/npcs/"
@@ -40,6 +41,11 @@ var _menu_info: Label
 var _menu_list: VBoxContainer
 var _catalog                          # Catalog instance (items/shops + economy)
 var _descriptions: Dictionary = {}    # owned room prose (data/rooms/descriptions.json)
+var _matrix                           # Matrix instance (cyberspace + ICE combat)
+var _menu_img: TextureRect            # optional art at the top of the menu layer
+var _menu_scroll: ScrollContainer
+var _combat_db: String = ""           # database id currently under ICE attack
+var _combat_ice: int = 0              # remaining ICE strength this run
 
 # Explore widgets
 var _bg_rect: TextureRect
@@ -67,6 +73,8 @@ func _ready() -> void:
 	var dd = _load_json("res://data/rooms/descriptions.json")
 	if dd != null:
 		_descriptions = dd.get("desc", {})
+	_matrix = Matrix.new()
+	_matrix.load_data()
 	_build_title_layer()
 	_build_name_layer()
 	_build_explore_layer()
@@ -275,34 +283,51 @@ func _build_menu_layer() -> void:
 	sb.set_border_width_all(1)
 	panel.add_theme_stylebox_override("panel", sb)
 	_menu_layer.add_child(panel)
+	# Optional art at the top (cyberspace screens set this; pixelated like the rooms).
+	_menu_img = TextureRect.new()
+	_menu_img.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_menu_img.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	_menu_img.clip_contents = true
+	_menu_img.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	_menu_img.position = Vector2(8, 6)
+	_menu_img.size = Vector2(306, 84)
+	_menu_img.visible = false
+	panel.add_child(_menu_img)
 	_menu_title = Label.new()
-	_menu_title.position = Vector2(8, 5)
 	_menu_title.size = Vector2(304, 12)
 	_menu_title.add_theme_color_override("font_color", Color(0.9, 0.85, 0.5))
 	_small(_menu_title, 10)
 	panel.add_child(_menu_title)
 	_menu_info = Label.new()
-	_menu_info.position = Vector2(8, 18)
 	_menu_info.size = Vector2(304, 10)
 	_menu_info.add_theme_color_override("font_color", Color(0.6, 0.9, 0.7))
 	_small(_menu_info, 7)
 	panel.add_child(_menu_info)
-	var scroll := ScrollContainer.new()
-	scroll.position = Vector2(8, 30)
-	scroll.size = Vector2(306, 166)
-	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	panel.add_child(scroll)
+	_menu_scroll = ScrollContainer.new()
+	_menu_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	panel.add_child(_menu_scroll)
 	_menu_list = VBoxContainer.new()
 	_menu_list.custom_minimum_size = Vector2(300, 0)
 	_menu_list.add_theme_constant_override("separation", 1)
-	scroll.add_child(_menu_list)
+	_menu_scroll.add_child(_menu_list)
 
 
 # ---------------------------------------------------------------- menu (shop/inv)
 
-func _menu_begin(title: String, info: String) -> void:
+func _menu_begin(title: String, info: String, img_path := "") -> void:
 	_state = State.MENU
 	_show_only(_menu_layer)
+	if img_path != "":
+		var t := _pixelated_path(img_path)
+		_menu_img.texture = t
+		_menu_img.visible = t != null
+	else:
+		_menu_img.visible = false
+	var top: int = 96 if _menu_img.visible else 5
+	_menu_title.position = Vector2(8, top)
+	_menu_info.position = Vector2(8, top + 13)
+	_menu_scroll.position = Vector2(8, top + 26)
+	_menu_scroll.size = Vector2(306, 198 - (top + 26))
 	_menu_title.text = title
 	_menu_info.text = info
 	for c in _menu_list.get_children():
@@ -454,6 +479,89 @@ func _load_json(path: String):
 	return JSON.parse_string(FileAccess.get_file_as_string(path))
 
 
+# ---------------------------------------------------------------- cyberspace (M3)
+
+func _has_deck() -> bool:
+	for iid in GameState.inventory:
+		if _catalog.item(iid).get("type", "") == "hardware":
+			return true
+	return false
+
+func _go_matrix() -> void:
+	_open_matrix_nav("Jacking in...")
+
+func _open_matrix_nav(info := "") -> void:
+	_menu_begin("CYBERSPACE",
+		info if info != "" else "CON %d    The grid unfolds beneath you." % GameState.constitution,
+		_matrix.art("CYBER_grid"))
+	_menu_label("Pick a database to run:")
+	for d in _matrix.databases:
+		var did: String = d.get("id", "")
+		var nm: String = d.get("name", "?")
+		if _matrix.is_cracked(GameState, did):
+			_menu_button("[cracked] %s" % nm, _open_db_access.bind(did, ""))
+		else:
+			var tag: String = "  (AI: %s)" % str(d.get("ai", "")) if d.has("ai") else ""
+			_menu_button("Run: %s  -  ICE %d  -  zone %d%s" % [nm, int(d.get("ice", 0)), int(d.get("zone", 0)), tag],
+				_approach_db.bind(did))
+	_menu_button("« Jack out", _jack_out)
+
+func _approach_db(id: String) -> void:
+	var d: Dictionary = _matrix.db(id)
+	_combat_db = id
+	_combat_ice = int(d.get("ice", 0))
+	_open_combat("You close on the %s. Its ICE flares awake." % str(d.get("name", "fortress")))
+
+func _open_combat(info := "") -> void:
+	var d: Dictionary = _matrix.db(_combat_db)
+	_menu_begin(str(d.get("name", "ICE")), "ICE %d        CON %d" % [_combat_ice, GameState.constitution],
+		_matrix.art(str(d.get("bg", "CYBER_fortress"))))
+	if info != "":
+		_menu_label(info)
+	_menu_button("Attack the ICE  (your software hits for %d)" % _matrix.player_attack(GameState), _combat_attack)
+	_menu_button("« Break off and jack out", _jack_out)
+
+func _combat_attack() -> void:
+	var d: Dictionary = _matrix.db(_combat_db)
+	var atk: int = _matrix.player_attack(GameState)
+	var bite: int = _matrix.ice_bite(d)
+	_combat_ice -= atk
+	if _combat_ice <= 0:
+		_db_break(_combat_db)
+		return
+	GameState.constitution -= bite
+	if GameState.constitution <= 0:
+		_flatline()
+		return
+	_open_combat("You hit for %d; the ICE bites back for %d." % [atk, bite])
+
+func _db_break(id: String) -> void:
+	GameState.story_flags["cracked_" + id] = true
+	_open_db_access(id, "ICE shattered. You're in.")
+
+func _open_db_access(id: String, info := "") -> void:
+	var d: Dictionary = _matrix.db(id)
+	_menu_begin(str(d.get("name", "Database")),
+		info if info != "" else "Cracked.    CON %d" % GameState.constitution,
+		_matrix.art(str(d.get("bg", "CYBER_fortress"))))
+	_menu_label(str(d.get("content", "")))
+	if d.has("code"):
+		_menu_label("» Link code recovered: %s" % str(d.get("code")))
+	_menu_button("« Back to the matrix", _open_matrix_nav)
+	_menu_button("« Jack out", _jack_out)
+
+func _flatline() -> void:
+	GameState.constitution = 50   # ejected hard, not a full death in this slice
+	_combat_db = ""
+	_menu_begin("FLATLINE", "The ICE put you down.", _matrix.art("CYBER_ice"))
+	_menu_label("Black ice closes over your icon and your heart stutters. You rip the trodes off just in time, slammed back into your body shaking and broke, but breathing.")
+	_menu_button("« Come to (jack out)", _jack_out)
+
+func _jack_out() -> void:
+	_combat_db = ""
+	_go_explore()
+
+
 # ---------------------------------------------------------------- state switches
 
 func _show_only(active: Control) -> void:
@@ -583,6 +691,13 @@ func _rebuild_buttons(r: Dictionary) -> void:
 		_small(paxb, 7)
 		paxb.pressed.connect(_open_pax)
 		_button_bar.add_child(paxb)
+	# Jack into cyberspace — needs a deck.
+	if _has_deck():
+		var jb := Button.new()
+		jb.text = "Jack In"
+		_small(jb, 7)
+		jb.pressed.connect(_go_matrix)
+		_button_bar.add_child(jb)
 	# Inventory (always available).
 	var invb := Button.new()
 	invb.text = "Items"

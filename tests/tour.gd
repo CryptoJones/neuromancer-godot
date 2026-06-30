@@ -66,8 +66,21 @@ func _run() -> void:
 	_game._refresh_room()
 	_game._open_pax_news()            # the real NEWS.BIH feed
 	await _shot("11_pax_news")
-	_game._open_pax_messages()        # the real PAXBBS.BIH base
+	_game._open_pax_messages()
 	await _shot("12_pax_messages")
+
+	# Cyberspace: jack in, fly the matrix, break a weak fortress's ICE.
+	_game._go_explore()
+	GameState.inventory.append("uxb")     # give CASE a deck
+	GameState.current_room = "R1"
+	_game._refresh_room()
+	_game._go_matrix()
+	await _shot("13_matrix")
+	_game._approach_db("free_matrix")
+	await _shot("14_ice_combat")
+	_game._combat_attack()                # Free Matrix ICE 60 vs attack 40
+	_game._combat_attack()                # -> ICE shattered, you're in
+	await _shot("15_db_cracked")
 
 	print("TOUR: DONE")
 	get_tree().quit()

@@ -53,7 +53,8 @@ issues #1–#5; file finer-grained issues as tasks are picked up and link them h
 - [ ] Banks (Bank of Berne / Gemeinschaft), skill *use* / levelling, cyberspace economy
 
 ## M3 — Cyberspace & ICE combat ([#3](../../issues/3))
-- [ ] `MatrixNav` grid navigation + `Database` screens
+- [x] **Cyberspace vertical slice**: Jack In (needs a deck) -> matrix nav over the grid art -> approach a data fortress -> turn-based ICE combat (attack vs ICE strength; ICE bites your constitution; flatline = hard eject) -> crack the database + recover its link code. 5 real fortresses with the original's ICE values (Free Matrix 60 ... Bank of Berne 400, AI-guarded). `src/cyber/Matrix.gd`, `data/cyberspace/databases.json`.
+- [ ] Full matrix grid navigation (fly by coords) + all ~39 databases + Database read/transfer screens
 - [ ] `IceCombat` turn-based engine; ICE types; skill-software effects; flatlining
 - [ ] AI/construct interactions; data-fortress puzzles
 

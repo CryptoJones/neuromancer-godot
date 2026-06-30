@@ -15,6 +15,7 @@ const DialogEngine = preload("res://src/world/DialogEngine.gd")
 const Assets = preload("res://src/core/Assets.gd")
 const GameStateScript = preload("res://src/core/GameState.gd")
 const CatalogScript = preload("res://src/econ/Catalog.gd")
+const MatrixScript = preload("res://src/cyber/Matrix.gd")
 
 func _fail(msg: String) -> void:
 	push_error("SMOKE FAIL: " + msg)
@@ -143,6 +144,25 @@ func _initialize() -> void:
 			"buy back heart: restore wrong (%d/%d)" % [gs2.credits, gs2.constitution]):
 		return
 	gs2.free()
+
+	# --- 7. Cyberspace: Matrix data + ICE-combat math ---
+	var mx = MatrixScript.new()
+	mx.load_data()
+	if not _check(mx.databases.size() >= 5, "cyberspace databases did not load"):
+		return
+	if not _check(int(mx.db("free_matrix").get("ice", 0)) == 60, "free_matrix ICE wrong"):
+		return
+	var gs3 = GameStateScript.new()
+	gs3.reset()
+	if not _check(mx.player_attack(gs3) == 40, "base attack should be 40"):
+		return
+	gs3.skills["ICE Breaking"] = 2
+	if not _check(mx.player_attack(gs3) == 80, "ICE Breaking skill should add to attack"):
+		return
+	if not _check(mx.ice_bite(mx.db("bank_berne")) == mx.ice_bite({"ice": 400}) * 2,
+			"an AI-guarded core should bite twice as hard"):
+		return
+	gs3.free()
 
 	# Free the Node instances we created so the SceneTree exits cleanly.
 	gs.free()
