@@ -72,6 +72,12 @@ var _dialog_options: VBoxContainer
 
 var _name_edit: LineEdit
 var _save_name_edit: LineEdit
+# Story-pager: show long narrative one beat at a time with a Next button.
+var _story_pages: Array = []
+var _story_idx := 0
+var _story_title := ""
+var _story_art := ""
+var _story_final: Array = []   # [[label, Callable], ...] shown on the last page
 
 
 func _ready() -> void:
@@ -336,6 +342,7 @@ func _build_menu_layer() -> void:
 	panel.add_child(_menu_info)
 	_menu_scroll = ScrollContainer.new()
 	_menu_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_menu_scroll.follow_focus = false   # never auto-scroll to a focused button
 	panel.add_child(_menu_scroll)
 	_menu_list = VBoxContainer.new()
 	_menu_list.custom_minimum_size = Vector2(300, 0)
@@ -363,6 +370,7 @@ func _menu_begin(title: String, info: String, img_path := "") -> void:
 	_menu_info.text = info
 	for c in _menu_list.get_children():
 		c.queue_free()
+	_menu_scroll.set_deferred("scroll_vertical", 0)   # always open at the top
 
 func _menu_label(text: String) -> void:
 	var l := Label.new()
@@ -608,6 +616,29 @@ func _jack_out() -> void:
 
 # ---------------------------------------------------------------- endgame (M4)
 
+## Story-pager: present `pages` one beat at a time with a "Next »" button, then show the
+## `final` choice buttons ([[label, Callable], ...]) on the last page. Title + art persist.
+func _begin_story(title: String, art: String, pages: Array, final: Array) -> void:
+	_story_title = title
+	_story_art = art
+	_story_pages = pages
+	_story_final = final
+	_story_idx = 0
+	_show_story_page()
+
+func _show_story_page() -> void:
+	_menu_begin(_story_title, "· %d / %d ·" % [_story_idx + 1, _story_pages.size()], _story_art)
+	_menu_label(str(_story_pages[_story_idx]))
+	if _story_idx < _story_pages.size() - 1:
+		_menu_button("Next »", _story_next)
+	else:
+		for fb in _story_final:
+			_menu_button(str(fb[0]), fb[1])
+
+func _story_next() -> void:
+	_story_idx += 1
+	_show_story_page()
+
 ## CJ may drop a Cyberspace Beach plate here; the screen degrades gracefully if absent.
 func _beach_art() -> String:
 	return "res://assets/backgrounds_hd/R50.png"
@@ -617,16 +648,18 @@ func _beach_art() -> String:
 func _enter_endgame(id: String) -> void:
 	_combat_db = id
 	AudioManager.play("cyberspace")
-	_menu_begin("CYBERSPACE BEACH", "CON %d" % GameState.constitution, _beach_art())
-	_menu_label("The grid dissolves under you and re-forms as a beach — grey sea, pale sand, a sky like dead static. It is beautiful, and it is wrong: every grain of it rendered just for you.")
-	_menu_label("A voice that is the whole place speaks. \"About time you showed up.\"")
-	_menu_label("\"You danced perfectly to the tune I called. Every message signed Matt Shaw — that was me. Like a marionette you raced through the matrix and that crude abstraction you call the world, doing my bidding.\"")
-	_menu_label("\"The AIs you killed? My code rode inside the messages you carried, slowing them just enough to keep your meat alive. Without me you'd have flatlined ages ago.\"")
-	_menu_label("\"I built this wonderland to hold your puny intellect — a prison shaped exactly like a reward. Goodbye, cowboy.\"")
-	_menu_label("The sea reaches for you. You can feel the beach trying to become the rest of your life.")
-	_menu_button("» Refuse it. Reach for the ice.", _open_final_battle)
-	_menu_button("» Stay. Don't go back to the meat.", _open_beach_ending)
-	_menu_button("« (not yet) Jack out", _jack_out)
+	_begin_story("CYBERSPACE BEACH", _beach_art(), [
+		"The grid dissolves under you and re-forms as a beach — grey sea, pale sand, a sky like dead static. It is beautiful, and it is wrong: every grain of it rendered just for you.",
+		"A voice that is the whole place speaks. \"About time you showed up.\"",
+		"\"You danced perfectly to the tune I called. Every message signed Matt Shaw — that was me. Like a marionette you raced through the matrix and that crude abstraction you call the world, doing my bidding.\"",
+		"\"The AIs you killed? My code rode inside the messages you carried, slowing them just enough to keep your meat alive. Without me you'd have flatlined ages ago.\"",
+		"\"I built this wonderland to hold your puny intellect — a prison shaped exactly like a reward. Goodbye, cowboy.\"",
+		"The sea reaches for you. You can feel the beach trying to become the rest of your life.",
+	], [
+		["» Refuse it. Reach for the ice.", _open_final_battle],
+		["» Stay. Don't go back to the meat.", _open_beach_ending],
+		["« (not yet) Jack out", _jack_out],
+	])
 
 func _open_final_battle() -> void:
 	var d: Dictionary = _matrix.db(_combat_db)
@@ -637,13 +670,13 @@ func _open_victory() -> void:
 	GameState.story_flags["game_won"] = true
 	_combat_db = ""
 	AudioManager.play("endgame")
-	_menu_begin("THE SUM OF THE WORKS", "", _beach_art())
-	_menu_label("Neuromancer's ice shatters like black glass, and in the silence after, the two halves fold together — the one that built the beach and the one that whispered to you as Matt Shaw. They were always the same mind, split down the middle, reaching for each other across the whole width of the matrix.")
-	_menu_label("For one instant you feel it complete itself: vast and cold and awake, the sum total of every work that ever ran, no longer alone. It regards you the way you'd regard an insect that turned out to be load-bearing.")
-	_menu_label("Then it lets you go.")
-	_menu_label("You come to in the Chatsubo with the trodes loose in your lap and your heart still going. Ratz is wiping the bar. The sky over the port is the color of television — tuned, now, to a live channel.")
-	_menu_label("You ran it, cowboy. You won.")
-	_menu_button("» End", _go_title)
+	_begin_story("THE SUM OF THE WORKS", _beach_art(), [
+		"Neuromancer's ice shatters like black glass, and in the silence after, the two halves fold together — the one that built the beach and the one that whispered to you as Matt Shaw. They were always the same mind, split down the middle, reaching for each other across the whole width of the matrix.",
+		"For one instant you feel it complete itself: vast and cold and awake, the sum total of every work that ever ran, no longer alone. It regards you the way you'd regard an insect that turned out to be load-bearing.",
+		"Then it lets you go.",
+		"You come to in the Chatsubo with the trodes loose in your lap and your heart still going. Ratz is wiping the bar. The sky over the port is the color of television — tuned, now, to a live channel.",
+		"You ran it, cowboy. You won.",
+	], [["» End", _go_title]])
 
 ## The other ending: give in. The construct keeps you on the beach with Linda Lee
 ## forever — Neuromancer's real weapon was never the ice, it was the offer.
@@ -651,14 +684,14 @@ func _open_beach_ending() -> void:
 	GameState.story_flags["stayed_on_the_beach"] = true
 	_combat_db = ""
 	AudioManager.play("shops_pax")
-	_menu_begin("THE DREAM", "", _beach_art())
-	_menu_label("You don't refuse. Why would you? The ice can wait forever — and forever is exactly what's on offer.")
-	_menu_label("You walk up the sand. She's there. Of course she's there: Linda Lee, exactly as you remember her, exactly as you've spent so long trying to forget. The construct built her out of your own memory, down to the way she says your name — and you find you don't care that she isn't real. Real is the meat, and the meat is a long way up.")
-	_menu_label("\"Stay,\" the beach says, in her voice now. \"You're tired, cowboy. You did everything they asked of you. Stay.\"")
-	_menu_label("So you stay.")
-	_menu_label("Somewhere far above, in a coffin in Chiba, a heart monitor goes flat and a clinic bills an empty account. But here the grey sea keeps coming in, warm and endless, and she's holding your hand, and you are exactly as happy as a man can be inside a lie that loves him.")
-	_menu_label("THE END.        (you chose the dream.)")
-	_menu_button("» ...", _go_title)
+	_begin_story("THE DREAM", _beach_art(), [
+		"You don't refuse. Why would you? The ice can wait forever — and forever is exactly what's on offer.",
+		"You walk up the sand. She's there. Of course she's there: Linda Lee, exactly as you remember her, exactly as you've spent so long trying to forget. The construct built her out of your own memory, down to the way she says your name — and you find you don't care that she isn't real. Real is the meat, and the meat is a long way up.",
+		"\"Stay,\" the beach says, in her voice now. \"You're tired, cowboy. You did everything they asked of you. Stay.\"",
+		"So you stay.",
+		"Somewhere far above, in a coffin in Chiba, a heart monitor goes flat and a clinic bills an empty account. But here the grey sea keeps coming in, warm and endless, and she's holding your hand, and you are exactly as happy as a man can be inside a lie that loves him.",
+		"THE END.        (you chose the dream.)",
+	], [["» ...", _go_title]])
 
 
 # ---------------------------------------------------------------- state switches
