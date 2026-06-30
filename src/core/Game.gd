@@ -110,22 +110,28 @@ func _full_control(name: String) -> Control:
 func _small(node: Control, size: int) -> void:
 	node.add_theme_font_size_override("font_size", size)
 
+const TITLE_COVER := "res://assets/ui/cover.png"
+
 func _build_title_layer() -> void:
 	_title_layer = _full_control("Title")
-	var tex := Assets.sprite("TITLE")
+	# Dark backdrop behind the cover.
+	var bg := ColorRect.new()
+	bg.color = Color(0.02, 0.02, 0.04)
+	bg.size = Vector2(320, 200)
+	_title_layer.add_child(bg)
+	# Owned cover art, pixelated like the rooms for a consistent retro look.
+	var tex := _pixelated_path(TITLE_COVER)
 	if tex != null:
 		var tr := TextureRect.new()
 		tr.texture = tex
 		tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		tr.stretch_mode = TextureRect.STRETCH_SCALE
+		tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+		tr.clip_contents = true
+		tr.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		tr.position = Vector2.ZERO
 		tr.size = Vector2(320, 200)
 		_title_layer.add_child(tr)
 	else:
-		var bg := ColorRect.new()
-		bg.color = Color(0.04, 0.02, 0.08)
-		bg.size = Vector2(320, 200)
-		_title_layer.add_child(bg)
 		var t := Label.new()
 		t.text = "N E U R O M A N C E R"
 		t.position = Vector2(0, 80)
@@ -527,6 +533,15 @@ func _pixelated_bg(bg_id: String) -> Texture2D:
 	var tex := ImageTexture.create_from_image(img)
 	_pix_cache[bg_id] = tex
 	return tex
+
+## Load an owned PNG straight off disk and pixelate it (for the title cover).
+func _pixelated_path(path: String) -> Texture2D:
+	var img := Image.new()
+	if img.load(path) != OK:
+		return null
+	var h := int(round(float(BG_PIXEL_W) * img.get_height() / img.get_width()))
+	img.resize(BG_PIXEL_W, max(1, h), Image.INTERPOLATE_NEAREST)
+	return ImageTexture.create_from_image(img)
 
 func _rebuild_buttons(r: Dictionary) -> void:
 	for c in _button_bar.get_children():
