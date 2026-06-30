@@ -17,6 +17,7 @@ config/icon="res://icon.svg"
 
 GameState="*res://src/core/GameState.gd"
 Assets="*res://src/core/Assets.gd"
+AudioManager="*res://src/core/AudioManager.gd"
 
 [display]
 

@@ -59,6 +59,9 @@ on Linux (smooth on low-end boxes and Chromebooks), and launches. No `.DAT` file
   them back later), on the real 0–2000 scale
 - **The PAX terminal** — owned news & message base, in booths around the city
 - **NPCs** — Ratz, Shin (who hands back your impounded deck), and Julius Deane
+- **An original score** — area-reactive cyberpunk music that crossfades as you move
+  between the streets, the shops, the Body Shop, and cyberspace. Browse the album in
+  [`soundtrack/`](soundtrack/)
 
 ## Standing on the shoulders of 🙏
 

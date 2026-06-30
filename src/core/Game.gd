@@ -491,6 +491,7 @@ func _go_matrix() -> void:
 	_open_matrix_nav("Jacking in...")
 
 func _open_matrix_nav(info := "") -> void:
+	AudioManager.play("cyberspace")
 	_menu_begin("CYBERSPACE",
 		info if info != "" else "CON %d    The grid unfolds beneath you." % GameState.constitution,
 		_matrix.art("CYBER_grid"))
@@ -513,6 +514,7 @@ func _approach_db(id: String) -> void:
 	_open_combat("You close on the %s. Its ICE flares awake." % str(d.get("name", "fortress")))
 
 func _open_combat(info := "") -> void:
+	AudioManager.play("ice_combat")
 	var d: Dictionary = _matrix.db(_combat_db)
 	_menu_begin(str(d.get("name", "ICE")), "ICE %d        CON %d" % [_combat_ice, GameState.constitution],
 		_matrix.art(str(d.get("bg", "CYBER_fortress"))))
@@ -571,6 +573,7 @@ func _show_only(active: Control) -> void:
 func _go_title() -> void:
 	_state = State.TITLE
 	_show_only(_title_layer)
+	AudioManager.play("title")
 
 func _go_name() -> void:
 	_state = State.NAME
@@ -622,6 +625,7 @@ func _refresh_room() -> void:
 	_desc_lbl.text = _descriptions.get(id, r.get("desc", ""))
 	_rebuild_buttons(r)
 	_refresh_status()
+	AudioManager.play(AudioManager.for_room(r))
 
 ## Downscale a room's HD plate to BG_PIXEL_W (nearest-neighbour) and cache it, so
 ## the canvas_items stretch blows it back up into chunky retro pixels. The owned

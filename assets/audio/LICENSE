@@ -1,0 +1,20 @@
+# Audio assets — license note (exception to the repo's MIT license)
+
+The music in this directory and in `/soundtrack` was **composed for this project** by
+arranging royalty-free sample loops that the project author licensed through
+**Splice** (splice.com) and **Zenhiser**. Under those sample licenses, the resulting
+musical works may be used and distributed as part of this game and its soundtrack.
+
+**These rendered tracks are NOT covered by the repository's MIT license** and are
+**not** offered for independent reuse. Specifically, you may **not** extract, re-use,
+or redistribute these files (or any stems/loops derived from them) as samples, loops,
+or as part of any sample library or competing product. They are bundled solely to be
+played within this game and heard as its soundtrack.
+
+The **raw source sample loops are never included** in this repository — only the
+finished, multi-layer arrangements.
+
+If you fork this project for your own release, replace these files with your own
+licensed or original music.
+
+*Proudly Made in Nebraska. Go Big Red! 🌽 <https://xkcd.com/2347/>*

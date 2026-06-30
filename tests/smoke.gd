@@ -164,6 +164,16 @@ func _initialize() -> void:
 		return
 	gs3.free()
 
+	# --- 8. Music: every area loop loads at runtime and is set to loop ---
+	var tracks = ["title", "streets", "cyberspace", "ice_combat", "body_shop", "shops_pax"]
+	for t in tracks:
+		var mpath = "res://assets/audio/music/%s.ogg" % t
+		var ms = AudioStreamOggVorbis.load_from_file(ProjectSettings.globalize_path(mpath))
+		if not _check(ms != null, "music track '%s' failed to load" % t):
+			return
+		if not _check(ms.loop == false or ms.loop == true, "music track '%s' not an ogg stream" % t):
+			return
+
 	# Free the Node instances we created so the SceneTree exits cleanly.
 	gs.free()
 	assets.free()
