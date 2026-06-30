@@ -22,6 +22,11 @@ const VIEW_W := 304
 const VIEW_H := 124   # taller frame: the owned HD plates are ~16:9, not the EGA letterbox
 const MINUTES_PER_MOVE := 3
 const BG_PIXEL_W := 320   # downscale width: keeps the plates chunky/retro while text stays crisp
+# Hidden room: a tampered/invalid save dumps the player into room "1337" — a glitch
+# room with no exits, only Load/Quit, and the whole soundtrack looping forever.
+const HIDDEN_ROOM := "1337"
+const VOID_IMAGE := "res://assets/ui/void.png"
+const VOID_TRACKS := ["title", "streets", "cyberspace", "ice_combat", "shops_pax", "body_shop", "endgame"]
 
 var _state: int = State.TITLE
 var _world: World
@@ -632,6 +637,9 @@ func _go_dialog(npc_id: String) -> void:
 # ---------------------------------------------------------------- explore render
 
 func _refresh_room() -> void:
+	if GameState.current_room == HIDDEN_ROOM:
+		_show_void_room()
+		return
 	var id := GameState.current_room
 	var r := _world.room(id)
 	_room_name_lbl.text = r.get("name", id)
@@ -647,6 +655,30 @@ func _refresh_room() -> void:
 	_rebuild_buttons(r)
 	_refresh_status()
 	AudioManager.play(AudioManager.for_room(r))
+
+## The hidden room 1337 — where tampered saves are exiled. No exits, only Load/Quit,
+## and the whole soundtrack loops over a special plate (assets/ui/void.png).
+func _show_void_room() -> void:
+	_room_name_lbl.text = "1337"
+	var tex := _pixelated_path(VOID_IMAGE)
+	_bg_rect.texture = tex
+	_bg_rect.visible = tex != null
+	_bg_placeholder.visible = tex == null
+	_desc_lbl.text = "You slipped through a crack in the matrix into a room that's on no map. Static crawls the walls, and every song in the city bleeds together down here, looping forever. There's no door back the way you came — only out."
+	for c in _button_bar.get_children():
+		c.queue_free()
+	var lb := Button.new()
+	lb.text = "Load"
+	_small(lb, 7)
+	lb.pressed.connect(_do_load)
+	_button_bar.add_child(lb)
+	var qb := Button.new()
+	qb.text = "Quit"
+	_small(qb, 7)
+	qb.pressed.connect(_do_quit)
+	_button_bar.add_child(qb)
+	_refresh_status()
+	AudioManager.play_playlist(VOID_TRACKS)
 
 ## Downscale a room's HD plate to BG_PIXEL_W (nearest-neighbour) and cache it, so
 ## the canvas_items stretch blows it back up into chunky retro pixels. The owned
@@ -833,12 +865,34 @@ func _do_load_slug(slug: String) -> void:
 	else:
 		_toast("Load failed — save is corrupt.")
 
-## Guard against hand-edited / corrupt saves: a bogus current_room would strand the
-## player on a blank screen with no exits, so snap back to the start room instead.
+## Validate a freshly-loaded save. ANY invalid field — a non-existent room, an
+## out-of-range or overflowing stat, or a junk inventory id — means the save was
+## tampered with, so we banish the player to the hidden room 1337 to suffer. Numbers
+## are still clamped so even the void's HUD stays sane.
 func _sanitize_loaded_state() -> void:
-	if not _world.has_room(GameState.current_room):
-		push_warning("Load: room '%s' does not exist — falling back to start" % GameState.current_room)
-		GameState.current_room = _world.start_id
+	var tampered := false
+	if GameState.current_room != HIDDEN_ROOM and not _world.has_room(GameState.current_room):
+		tampered = true
+	if GameState.constitution < 0 or GameState.constitution > 2000:
+		tampered = true
+	if GameState.health < 0 or GameState.health > 100:
+		tampered = true
+	if GameState.credits < 0 or GameState.credits > 1_000_000_000:
+		tampered = true
+	if GameState.game_minutes < 0:
+		tampered = true
+	for it in GameState.inventory:
+		if _catalog.item(str(it)).is_empty():
+			tampered = true
+			break
+	# Clamp the numbers so the HUD/combat math stay sane even down in the void.
+	GameState.constitution = clampi(GameState.constitution, 0, 2000)   # CONSTITUTION_MAX
+	GameState.health = clampi(GameState.health, 0, 100)
+	GameState.credits = clampi(GameState.credits, 0, 1_000_000_000)
+	GameState.game_minutes = maxi(GameState.game_minutes, 0)
+	if tampered:
+		push_warning("Load: tampered/invalid save — banished to room 1337")
+		GameState.current_room = HIDDEN_ROOM
 
 func _confirm_delete(slug: String, display_name: String) -> void:
 	_menu_begin("DELETE SAVE?", "This cannot be undone.")
