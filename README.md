@@ -9,8 +9,10 @@ adventure based on William Gibson's novel — rebuilt in **Godot 4** with modern
 freely-licensed art and freshly-written prose. Exports to web, desktop, and mobile.
 
 > **Status:** 🟢 Playable. All of Chiba City + Freeside is explorable (56 rooms), with
-> working shops, the economy, the Body Shop organ bank, the PAX terminal, and NPC
-> conversations. Cyberspace & ICE combat (M3) are in progress.
+> working shops, the economy, the Body Shop organ bank, the PAX terminal, NPC
+> conversations, **cyberspace navigation & turn-based ICE combat**, an original
+> area-reactive **score**, and **named multi-slot saves**. The story endgame (M4) is
+> what's left to wire up.
 
 ## A remaster, not a reimagining
 
@@ -59,6 +61,10 @@ on Linux (smooth on low-end boxes and Chromebooks), and launches. No `.DAT` file
   them back later), on the real 0–2000 scale
 - **The PAX terminal** — owned news & message base, in booths around the city
 - **NPCs** — Ratz, Shin (who hands back your impounded deck), and Julius Deane
+- **Cyberspace & ICE combat** — jack in with a deck, fly the matrix, and break the ICE
+  on data fortresses (real ICE strength, AI-guarded cores, link codes, flatlining)
+- **Named saves** — save under any name you like to multiple slots, then pick any save
+  point from the load menu (with quicksave/quickload on F5/F9)
 - **An original score** — area-reactive cyberpunk music that crossfades as you move
   between the streets, the shops, the Body Shop, and cyberspace. Listen to the full
   soundtrack, **[*The Flatline Sessions* by As30p](https://soundcloud.com/as30p/sets/the-flatline-sessions)**,
@@ -94,7 +100,7 @@ required**.
 ## Roadmap
 
 See [BACKLOG.md](BACKLOG.md): **M0** asset pipeline ✅ → **M1** Chiba City ✅ → **M2**
-economy & shops ✅ → **M3** cyberspace & ICE combat (in progress) → **M4** endgame & full
+economy & shops ✅ → **M3** cyberspace & ICE combat ✅ → **M4** endgame & full
 owned-asset build → **M5** polish & multi-platform release.
 
 ## License
