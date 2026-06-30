@@ -33,12 +33,12 @@ func _initialize() -> void:
 	var world = World.new()
 	if not _check(world.load_file("res://data/rooms/chiba.json"), "room graph failed to load"):
 		return
-	if not _check(world.start_id == "chatsubo", "start room is not 'chatsubo'"):
+	if not _check(world.start_id == "R1", "start room is not R1 (Chatsubo)"):
 		return
-	if not _check(world.has_room("chatsubo"), "missing start room"):
+	if not _check(world.has_room("R1"), "missing start room"):
 		return
-	var ex = world.exits("chatsubo")
-	if not _check(ex.has("south") and ex["south"] == "street", "chatsubo south exit missing"):
+	var ex = world.exits("R1")
+	if not _check(ex.has("south") and ex["south"] == "R2", "Chatsubo south exit (-> Street) missing"):
 		return
 
 	# --- 2. Runtime texture load: R1 background must be 304x112 ---
@@ -74,16 +74,16 @@ func _initialize() -> void:
 
 	# --- 4. Room transitions via World.move (Chiba City district graph) ---
 	var here = world.start_id
-	var dest = world.move(here, "south")          # chatsubo -> street
-	if not _check(dest == "street", "move south from chatsubo failed"):
+	var dest = world.move(here, "south")          # R1 Chatsubo -> R2 Street
+	if not _check(dest == "R2", "move south from Chatsubo failed"):
 		return
-	var dest2 = world.move(dest, "west")          # street -> ninsei_west
-	if not _check(dest2 == "ninsei_west", "move west from street failed"):
+	var dest2 = world.move(dest, "east")          # R2 Street -> R5 Street Body Shop
+	if not _check(dest2 == "R5", "move east from Street Chatsubo failed"):
 		return
-	var dest3 = world.move(dest2, "south")        # ninsei_west -> bodyshop
-	if not _check(dest3 == "bodyshop", "move south from ninsei_west failed"):
+	var dest3 = world.move(dest2, "north")        # R5 -> R4 Body Shop
+	if not _check(dest3 == "R4", "move north from R5 to Body Shop failed"):
 		return
-	if not _check(world.move("bodyshop", "east") == "", "non-exit should yield ''"):
+	if not _check(world.move("R1", "north") == "", "non-exit should yield ''"):
 		return
 	# Connectivity: every exit must point at a real room, and be reciprocal.
 	for rid in world.rooms.keys():

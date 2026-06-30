@@ -31,36 +31,23 @@ func _run() -> void:
 	await _shot("04_ratz_dialog")
 
 	_game._end_dialog()
-	_game._try_move("south")          # Chatsubo -> Ninsei Street
-	await _shot("05_street")
+	_game._try_move("south")          # R1 Chatsubo -> R2 Street Chatsubo
+	await _shot("05_street_chatsubo")
 
-	_game._try_move("west")           # Street -> Ninsei West
-	await _shot("06_ninsei_west")
-
-	_game._try_move("south")          # Ninsei West -> Body Shop
-	await _shot("07_bodyshop")
+	_game._try_move("east")           # R2 -> R5 Street Body Shop
+	await _shot("06_street_bodyshop")
 
 	_game._go_explore()
-	GameState.current_room = "gentleman_loser"
+	GameState.current_room = "R4"     # Body Shop interior
+	_game._refresh_room()
+	await _shot("07_body_shop")
+
+	GameState.current_room = "R8"     # Gentleman Loser
 	_game._refresh_room()
 	await _shot("08_gentleman_loser")
 
-	# Economy: open a shop (give CASE some credits so Buy is live), then inventory.
-	GameState.credits = 5000
-	GameState.current_room = "crazy_edos"
-	_game._refresh_room()
-	await _shot("09_crazy_edos")
-	_game._open_shop("edos", "")
-	await _shot("10_shop")
-	_game._buy("edos", "deck_ono7")        # buy the Ono-Sendai deck
-	await _shot("11_shop_after_buy")
 	_game._open_inventory()
-	await _shot("12_inventory")
-	_game._go_explore()
-	GameState.current_room = "bodyshop"
-	_game._refresh_room()
-	_game._open_organbank("")
-	await _shot("13_organ_bank")
+	await _shot("09_inventory")
 
 	print("TOUR: DONE")
 	get_tree().quit()

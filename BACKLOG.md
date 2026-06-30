@@ -24,20 +24,23 @@ issues #1–#5; file finer-grained issues as tasks are picked up and link them h
 - [x] `DialogEngine` + first NPC conversation (Ratz, data-driven)
 - [x] Real-world clock + status HUD; `SaveSystem` JSON round-trip
 - [x] Title → name-entry → explore loop; headless smoke test + visual tour
-- [x] Owned HD art swap (FLUX.2 plates), crisp-text + pixelated-plate render (canvas_items)
-- [x] Build out the Chiba City district: 18 connected rooms + NPCs (Ratz, Deane, Shin)
-- [ ] PAX terminal (messages + news board)
+- [x] Owned HD art swap (FLUX.2 plates), crisp-text (MSDF) + pixelated-plate render (canvas_items)
+- [x] **Faithful full map: 56 rooms** ported from Javamancer `RoomMap` (real names + real exits); room prose from `R*.BIH`
 - [x] Inventory UI (gear/software/skills screen)
-- [ ] Map the remaining `.PIC`→location IDs — **Chiba done**; Night City / Freeside / cyberspace pending
+- [ ] PAX terminal — wire the **real** `NEWS.BIH` + `PAXBBS.BIH` content
 - [ ] Web export build + verify end-to-end
 
+> **REMASTER fidelity rule:** the game must match the 1988 original (rooms, dialogue,
+> shops, items, prices, logic) — only the art/presentation is modernised. Earlier
+> *invented* content (improvised map, Deane/Shin dialogue, made-up item/shop tables)
+> is being replaced with the originals from Javamancer + the extracted text.
+
 ## M2 — Economy & progression ([#2](../../issues/2))
-- [x] Credits + working shops (Crazy Edo's, Larry's, Asano, Shin) — buy/sell, half-price resale
-- [x] Body Shop organ bank (sell organs for credits at a constitution cost, with a safety floor)
-- [x] Skill chips & software shop; deck purchase (Ono-Sendai / Hosaka) — `data/items.json`, `Catalog.gd`
-- [ ] Banks (accounts, transfers, chip cashing)
-- [ ] Skill *use* / levelling system (Cyberspace I–VII, ICE Breaking, Hardware/Software Repair, …)
-- [ ] Full real-world map traversal (Chiba → Night City → …)
+- [x] Economy ENGINE: `Catalog.gd` + Shop / Inventory / Organ-Bank menu UI (buy/sell, half-price resale, organ-for-CON)
+- [ ] Re-source the **real** item/skill/software/body-part tables + prices from Javamancer (`SkillsVendPopup`, `BodyShopPopup`, `PawnshopVendPopup`) — current `items.json`/`shops.json` are placeholders
+- [ ] Wire shops to their real rooms (Shin's R25, Crazy Edo's R40, Asano's R44, Microsofts, Body Shop R4)
+- [ ] Real NPC dialogue trees (Ratz, Julius Deane, Shin, …) from the original
+- [ ] Banks (Bank of Berne / Gemeinschaft), skill *use* / levelling, cyberspace economy
 
 ## M3 — Cyberspace & ICE combat ([#3](../../issues/3))
 - [ ] `MatrixNav` grid navigation + `Database` screens

@@ -1,124 +1,493 @@
 {
-	"start": "chatsubo",
+	"start": "R1",
 	"rooms": {
-		"chatsubo": {
-			"name": "The Chatsubo",
+		"R1": {
+			"name": "Chatsubo",
 			"bg": "R1",
 			"text_key": "R1.BIH",
-			"desc": "A low bar for professional expatriates; you could drink there for a week and never hear two words in Japanese.",
-			"npcs": ["ratz"],
-			"exits": { "south": "street" }
+			"exits": {
+				"south": "R2"
+			},
+			"npcs": [
+				"ratz"
+			]
 		},
-		"street": {
-			"name": "Ninsei Street",
-			"bg": "R5",
-			"desc": "Neon and rain on the strip of Ninsei. Holograms flicker over the noodle stalls and the crowd moves like one tired animal under the dead-channel sky.",
-			"exits": { "north": "chatsubo", "west": "ninsei_west", "east": "ninsei_east", "south": "justice" }
+		"R2": {
+			"name": "Street Chatsubo",
+			"bg": "R2",
+			"text_key": "R2.BIH",
+			"exits": {
+				"north": "R1",
+				"east": "R5"
+			}
 		},
-		"justice": {
-			"name": "Justice Booth",
+		"R3": {
+			"name": "Cyber Justice",
 			"bg": "R3",
 			"text_key": "R3.BIH",
-			"desc": "A cramped booth walled with monitors. A Compu-Judge frowns down from the big screen; a Compu-Lawyer waits on the small one.",
-			"exits": { "north": "street" }
+			"exits": {}
 		},
-		"ninsei_west": {
-			"name": "Ninsei Street, West",
-			"bg": "R14",
-			"desc": "The strip narrows toward the bay. Pachinko parlors bleed light onto wet asphalt and a noodle vendor works his cart under a sign that died years ago.",
-			"exits": { "east": "street", "north": "cheap_hotel", "west": "donut_world", "south": "bodyshop" }
-		},
-		"cheap_hotel": {
-			"name": "Cheap Hotel",
-			"bg": "R7",
-			"desc": "A coffin rack of capsule rooms stacked to the ceiling. The clerk behind the cage never looks up. One of these coffins is yours, for now.",
-			"exits": { "south": "ninsei_west" }
-		},
-		"donut_world": {
-			"name": "Donut World",
-			"bg": "R6",
-			"desc": "Fluorescent and sticky. A pair of Chiba cops nurse coffee in the corner booth, watching the door a lot harder than their crullers.",
-			"exits": { "east": "ninsei_west" }
-		},
-		"bodyshop": {
-			"name": "The Body Shop",
+		"R4": {
+			"name": "Body Shop",
 			"bg": "R4",
 			"text_key": "R4.BIH",
-			"desc": "A clinic for new flesh and chrome. Jars line the shelves and the surgeon's smile never wavers.",
-			"organbank": true,
-			"exits": { "north": "ninsei_west" }
+			"exits": {
+				"south": "R5"
+			}
 		},
-		"ninsei_east": {
-			"name": "Ninsei Alley, East",
-			"bg": "R18",
-			"desc": "A canyon of fire escapes and steam, the asphalt slick with runoff. Somewhere above, a window unit drips on the just and the unjust alike.",
-			"exits": { "west": "street", "north": "gentleman_loser", "south": "shins_pawn", "east": "chiba_alley" }
+		"R5": {
+			"name": "Street Body Shop",
+			"bg": "R5",
+			"text_key": "R5.BIH",
+			"exits": {
+				"north": "R4",
+				"east": "R13",
+				"south": "R6",
+				"west": "R2"
+			}
 		},
-		"gentleman_loser": {
-			"name": "The Gentleman Loser",
+		"R6": {
+			"name": "Donut World",
+			"bg": "R6",
+			"text_key": "R6.BIH",
+			"exits": {
+				"north": "R5"
+			}
+		},
+		"R7": {
+			"name": "Cheap Hotel",
+			"bg": "R7",
+			"text_key": "R7.BIH",
+			"exits": {
+				"east": "R15"
+			}
+		},
+		"R8": {
+			"name": "Gentleman Loser",
 			"bg": "R8",
-			"desc": "The cowboys' bar. Console jockeys and washed-out hustlers trade war stories under a haze of smoke. Nobody asks your real name here.",
-			"exits": { "south": "ninsei_east" }
+			"text_key": "R8.BIH",
+			"exits": {
+				"east": "R16"
+			}
 		},
-		"shins_pawn": {
-			"name": "Shin's Pawn Shop",
-			"bg": "R25",
-			"desc": "Glass cases of dead men's hardware. Shin keeps your Ono-Sendai behind the counter and, by the look of him, a sawn-off under it.",
-			"npcs": ["shin"],
-			"shop": "shin",
-			"exits": { "north": "ninsei_east" }
+		"R9": {
+			"name": "Maas Biolabs",
+			"bg": "R9",
+			"text_key": "R9.BIH",
+			"exits": {}
 		},
-		"chiba_alley": {
-			"name": "Chiba Alley",
-			"bg": "R13",
-			"desc": "A dripping seam between two towers. Graffiti tags glow faintly where someone sprayed cheap photolume over the brick.",
-			"exits": { "west": "ninsei_east", "north": "julius_deane", "south": "house_of_pong", "east": "crazy_edos" }
+		"R10": {
+			"name": "JAL Shuttle",
+			"bg": "R10",
+			"text_key": "R10.BIH",
+			"exits": {}
 		},
-		"julius_deane": {
-			"name": "Julius Deane's Office",
-			"bg": "R27",
-			"desc": "Past a wall of shipping crates, an old man in a wool suit smiles from behind an antique desk. The air smells of ginger and very old money.",
-			"npcs": ["deane"],
-			"exits": { "south": "chiba_alley" }
+		"R11": {
+			"name": "Zion",
+			"bg": "R11",
+			"text_key": "R11.BIH",
+			"exits": {
+				"east": "R20",
+				"west": "R18"
+			}
 		},
-		"house_of_pong": {
-			"name": "House of Pong",
-			"bg": "R36",
-			"desc": "A dim arcade-bar where the machines are older than the patrons. Cigarette burns and spilled beer map the carpet like a city seen from orbit.",
-			"exits": { "north": "chiba_alley" }
-		},
-		"crazy_edos": {
-			"name": "Crazy Edo's",
-			"bg": "R40",
-			"desc": "Edo fixes decks, sells gray-market chrome, and asks no questions. Half-gutted cyberspace rigs hang from the ceiling like smoked hams.",
-			"shop": "edos",
-			"exits": { "west": "chiba_alley", "north": "asano_computing", "east": "larrys_software" }
-		},
-		"asano_computing": {
-			"name": "Asano Computing",
-			"bg": "R44",
-			"desc": "A clean-lit storefront of legitimate gear, the kind with warranties and serial numbers. You feel conspicuous just standing in the doorway.",
-			"shop": "asano",
-			"exits": { "south": "crazy_edos" }
-		},
-		"larrys_software": {
+		"R12": {
 			"name": "Larry's Software",
 			"bg": "R12",
-			"desc": "Racks of bootleg ice-breakers and skillsofts behind bulletproof glass. Larry watches you over a paperback, thumbing the page but never turning it.",
-			"shop": "larry",
-			"exits": { "west": "crazy_edos", "south": "metro_holografix", "east": "spaceport" }
+			"text_key": "R12.BIH",
+			"exits": {
+				"north": "R23",
+				"south": "R13"
+			}
 		},
-		"metro_holografix": {
-			"name": "Metro Holografix",
-			"bg": "R32",
-			"desc": "Lonny Zone's place. Holographic touts shimmer in the doorway, selling stims and simstim dreams to whatever foot traffic the rain washes in.",
-			"exits": { "north": "larrys_software" }
+		"R13": {
+			"name": "Street Microsofts",
+			"bg": "R13",
+			"text_key": "R13.BIH",
+			"exits": {
+				"north": "R12",
+				"east": "R24",
+				"south": "R14",
+				"west": "R5"
+			}
 		},
-		"spaceport": {
-			"name": "Chiba Spaceport",
+		"R14": {
+			"name": "Street Shin's",
+			"bg": "R14",
+			"text_key": "R14.BIH",
+			"exits": {
+				"north": "R13",
+				"east": "R25",
+				"south": "R15"
+			}
+		},
+		"R15": {
+			"name": "Street Cheap Hotel",
+			"bg": "R15",
+			"text_key": "R15.BIH",
+			"exits": {
+				"north": "R14",
+				"east": "R26",
+				"south": "R16",
+				"west": "R7"
+			}
+		},
+		"R16": {
+			"name": "Street G-Loser",
+			"bg": "R16",
+			"text_key": "R16.BIH",
+			"exits": {
+				"north": "R15",
+				"south": "R17",
+				"west": "R8"
+			}
+		},
+		"R17": {
+			"name": "Street Maas Biolabs",
+			"bg": "R17",
+			"text_key": "R17.BIH",
+			"exits": {
+				"north": "R16",
+				"east": "R27",
+				"south": "R18",
+				"west": "R9"
+			}
+		},
+		"R18": {
+			"name": "Street Spaceport",
+			"bg": "R18",
+			"text_key": "R18.BIH",
+			"exits": {
+				"north": "R17",
+				"west": "R19"
+			}
+		},
+		"R19": {
+			"name": "Spaceport",
 			"bg": "R19",
-			"desc": "The shuttle gantries loom past the chain-link. Orbital flights to Freeside board here — but with no money and no clearance, you're not going off-world tonight.",
-			"exits": { "west": "larrys_software" }
+			"text_key": "R19.BIH",
+			"exits": {
+				"east": "R18"
+			}
+		},
+		"R20": {
+			"name": "Marcus Garvey",
+			"bg": "R20",
+			"text_key": "R20.BIH",
+			"exits": {
+				"east": "R30"
+			}
+		},
+		"R21": {
+			"name": "Villa Straylight, Ext.",
+			"bg": "R21",
+			"text_key": "R21.BIH",
+			"exits": {
+				"north": "R22",
+				"east": "R30"
+			}
+		},
+		"R22": {
+			"name": "Villa Straylight",
+			"bg": "R22",
+			"text_key": "R22.BIH",
+			"exits": {
+				"south": "R21"
+			}
+		},
+		"R23": {
+			"name": "Panther Moderns",
+			"bg": "R23",
+			"text_key": "R23.BIH",
+			"exits": {
+				"south": "R12"
+			}
+		},
+		"R24": {
+			"name": "Massage Parlor",
+			"bg": "R24",
+			"text_key": "R24.BIH",
+			"exits": {
+				"west": "R13"
+			}
+		},
+		"R25": {
+			"name": "Shin's Pawn Shop",
+			"bg": "R25",
+			"text_key": "R25.BIH",
+			"exits": {
+				"west": "R14"
+			}
+		},
+		"R26": {
+			"name": "Street Light Pole",
+			"bg": "R26",
+			"text_key": "R26.BIH",
+			"exits": {
+				"east": "R31",
+				"west": "R15"
+			}
+		},
+		"R27": {
+			"name": "Julius Dean",
+			"bg": "R27",
+			"text_key": "R27.BIH",
+			"exits": {
+				"west": "R17"
+			}
+		},
+		"R28": {
+			"name": "JAL Shuttle",
+			"bg": "R28",
+			"text_key": "R28.BIH",
+			"exits": {}
+		},
+		"R29": {
+			"name": "Freeside Spacedock",
+			"bg": "R29",
+			"text_key": "R29.BIH",
+			"exits": {
+				"south": "R30"
+			}
+		},
+		"R30": {
+			"name": "SpaceDock Ext.",
+			"bg": "R30",
+			"text_key": "R30.BIH",
+			"exits": {
+				"north": "R29",
+				"east": "R33",
+				"west": "R21"
+			}
+		},
+		"R31": {
+			"name": "Street Metro Holographix",
+			"bg": "R31",
+			"text_key": "R31.BIH",
+			"exits": {
+				"north": "R32",
+				"east": "R39",
+				"west": "R26"
+			}
+		},
+		"R32": {
+			"name": "Metro Holographix",
+			"bg": "R32",
+			"text_key": "R32.BIH",
+			"exits": {
+				"south": "R31"
+			}
+		},
+		"R33": {
+			"name": "Bank of Berne Ext.",
+			"bg": "R33",
+			"text_key": "R33.BIH",
+			"exits": {
+				"north": "R34",
+				"east": "R42",
+				"west": "R30"
+			}
+		},
+		"R34": {
+			"name": "Bank of Berne Lobby",
+			"bg": "R34",
+			"text_key": "R34.BIH",
+			"exits": {
+				"north": "R35",
+				"south": "R33"
+			}
+		},
+		"R35": {
+			"name": "Bank Manager's Office",
+			"bg": "R35",
+			"text_key": "R35.BIH",
+			"exits": {
+				"south": "R34"
+			}
+		},
+		"R36": {
+			"name": "House of Pong",
+			"bg": "R36",
+			"text_key": "R36.BIH",
+			"exits": {
+				"south": "R37"
+			}
+		},
+		"R37": {
+			"name": "Street House of Pong",
+			"bg": "R37",
+			"text_key": "R37.BIH",
+			"exits": {
+				"north": "R36",
+				"south": "R38"
+			}
+		},
+		"R38": {
+			"name": "Street Asano's",
+			"bg": "R38",
+			"text_key": "R38.BIH",
+			"exits": {
+				"north": "R37",
+				"east": "R44",
+				"south": "R39"
+			}
+		},
+		"R39": {
+			"name": "Street Crazy Edo's",
+			"bg": "R39",
+			"text_key": "R39.BIH",
+			"exits": {
+				"north": "R38",
+				"east": "R45",
+				"south": "R40",
+				"west": "R31"
+			}
+		},
+		"R40": {
+			"name": "Crazy Edo's",
+			"bg": "R40",
+			"text_key": "R40.BIH",
+			"exits": {
+				"north": "R39"
+			}
+		},
+		"R41": {
+			"name": "Bank Gemeinschaft",
+			"bg": "R41",
+			"text_key": "R41.BIH",
+			"exits": {
+				"east": "R47",
+				"south": "R42"
+			}
+		},
+		"R42": {
+			"name": "Bank Gemeinschaft Ext.",
+			"bg": "R42",
+			"text_key": "R42.BIH",
+			"exits": {
+				"north": "R41",
+				"west": "R33"
+			}
+		},
+		"R44": {
+			"name": "Asano's",
+			"bg": "R44",
+			"text_key": "R44.BIH",
+			"exits": {
+				"west": "R38"
+			}
+		},
+		"R45": {
+			"name": "Street Security Robot",
+			"bg": "R45",
+			"text_key": "R45.BIH",
+			"exits": {
+				"east": "R49",
+				"south": "R46",
+				"west": "R39"
+			}
+		},
+		"R46": {
+			"name": "Matrix Restaurant",
+			"bg": "R46",
+			"text_key": "R46.BIH",
+			"exits": {
+				"north": "R45"
+			}
+		},
+		"R47": {
+			"name": "Bank Gemeinschaft Vault",
+			"bg": "R47",
+			"text_key": "R47.BIH",
+			"exits": {
+				"west": "R41"
+			}
+		},
+		"R49": {
+			"name": "Street Burned Building",
+			"bg": "R49",
+			"text_key": "R49.BIH",
+			"exits": {
+				"east": "R52",
+				"west": "R45"
+			}
+		},
+		"R50": {
+			"name": "Cyberspace Beach",
+			"bg": "R50",
+			"text_key": "R50.BIH",
+			"exits": {}
+		},
+		"R51": {
+			"name": "Fuji Electric",
+			"bg": "R51",
+			"text_key": "R51.BIH",
+			"exits": {
+				"east": "R54"
+			}
+		},
+		"R52": {
+			"name": "Security Gate",
+			"bg": "R52",
+			"text_key": "R52.BIH",
+			"exits": {
+				"east": "R55",
+				"west": "R49"
+			}
+		},
+		"R53": {
+			"name": "Hitachi Biotech",
+			"bg": "R53",
+			"text_key": "R53.BIH",
+			"exits": {
+				"south": "R54"
+			}
+		},
+		"R54": {
+			"name": "High Tech Area 1",
+			"bg": "R54",
+			"text_key": "R54.BIH",
+			"exits": {
+				"north": "R53",
+				"east": "R57",
+				"south": "R55",
+				"west": "R51"
+			}
+		},
+		"R55": {
+			"name": "High Tech Area 2",
+			"bg": "R55",
+			"text_key": "R55.BIH",
+			"exits": {
+				"north": "R54",
+				"east": "R58",
+				"south": "R56",
+				"west": "R52"
+			}
+		},
+		"R56": {
+			"name": "SenseNet Headquarters",
+			"bg": "R56",
+			"text_key": "R56.BIH",
+			"exits": {
+				"north": "R55"
+			}
+		},
+		"R57": {
+			"name": "Hosaka Headquarters",
+			"bg": "R57",
+			"text_key": "R57.BIH",
+			"exits": {
+				"west": "R54"
+			}
+		},
+		"R58": {
+			"name": "Musabori Headquarters",
+			"bg": "R58",
+			"text_key": "R58.BIH",
+			"exits": {
+				"west": "R55"
+			}
 		}
 	}
 }
