@@ -151,6 +151,10 @@ func _initialize() -> void:
 			and gs2.constitution == 2000 and not gs2.sold_parts.has("heart"),
 			"buy back heart: restore wrong (%d/%d)" % [gs2.credits, gs2.constitution]):
 		return
+	# Affordability guard: a broke cowboy can't buy.
+	gs2.credits = 0
+	if not _check(not cat.can_buy(gs2, "ninja4000"), "can_buy must be false when broke"):
+		return
 	gs2.free()
 
 	# --- 7. Cyberspace: Matrix data + ICE-combat math ---

@@ -15,17 +15,23 @@ var _tex_cache: Dictionary = {}      # path -> Texture2D (or null sentinel)
 var _text_data: Dictionary = {}      # parsed game_text.json
 var _text_loaded := false
 
-## Load a PNG off disk into a Texture2D. Returns null (and warns) if missing.
+## Load a texture by res:// path. Prefers the imported resource (so it works inside an
+## exported .pck) and falls back to a raw disk load (running from source / unimported
+## extracted files). Returns null (and warns) if neither works.
 func load_texture(path: String) -> Texture2D:
 	if _tex_cache.has(path):
 		return _tex_cache[path]
-	var img := Image.new()
-	var err := img.load(path)
-	if err != OK:
-		push_warning("Assets: cannot load image '%s' (err %d)" % [path, err])
-		_tex_cache[path] = null
-		return null
-	var tex := ImageTexture.create_from_image(img)
+	var tex: Texture2D = null
+	if ResourceLoader.exists(path):
+		var res = ResourceLoader.load(path)
+		if res is Texture2D:
+			tex = res
+	if tex == null:
+		var img := Image.new()
+		if img.load(path) == OK:
+			tex = ImageTexture.create_from_image(img)
+	if tex == null:
+		push_warning("Assets: cannot load image '%s'" % path)
 	_tex_cache[path] = tex
 	return tex
 
@@ -39,7 +45,7 @@ func background(bg_id: String) -> Texture2D:
 	if _tex_cache.has(hd_path):
 		if _tex_cache[hd_path] != null:
 			return _tex_cache[hd_path]
-	elif FileAccess.file_exists(hd_path):
+	elif ResourceLoader.exists(hd_path) or FileAccess.file_exists(hd_path):
 		var hd := load_texture(hd_path)
 		if hd != null:
 			return hd

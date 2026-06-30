@@ -39,3 +39,6 @@ Thumbs.db
 *.swp
 .idea/
 .vscode/
+
+# Platform export builds (shipped as release assets, not committed)
+build/

@@ -108,10 +108,17 @@ func _ready() -> void:
 ## shader evaluates them at the final pixel size, so they're sharp everywhere.
 ## Cascades to all child controls.
 func _apply_theme() -> void:
-	var f := FontFile.new()
-	if f.load_dynamic_font("res://fonts/VT323-Regular.ttf") != OK:
-		push_warning("Game: VT323 font not found; using default font")
-		return
+	# Prefer the imported FontFile (works inside an exported .pck); fall back to a raw
+	# dynamic-font load when running unimported from source.
+	var f: FontFile = null
+	var res = ResourceLoader.load("res://fonts/VT323-Regular.ttf")
+	if res is FontFile:
+		f = res
+	else:
+		f = FontFile.new()
+		if f.load_dynamic_font("res://fonts/VT323-Regular.ttf") != OK:
+			push_warning("Game: VT323 font not found; using default font")
+			return
 	f.multichannel_signed_distance_field = true
 	f.antialiasing = TextServer.FONT_ANTIALIASING_GRAY
 	f.hinting = TextServer.HINTING_NONE
@@ -831,17 +838,28 @@ func _pixelated_bg(bg_id: String) -> Texture2D:
 		_pix_cache[bg_id] = null
 		return null
 	var img := src.get_image()
+	if img.is_compressed():
+		img.decompress()
 	var h := int(round(float(BG_PIXEL_W) * img.get_height() / img.get_width()))
 	img.resize(BG_PIXEL_W, max(1, h), Image.INTERPOLATE_NEAREST)
 	var tex := ImageTexture.create_from_image(img)
 	_pix_cache[bg_id] = tex
 	return tex
 
-## Load an owned PNG straight off disk and pixelate it (for the title cover).
+## Load an owned plate and pixelate it (cover/void/dream). Prefers the imported
+## resource (export-safe) and falls back to a raw disk load (running from source).
 func _pixelated_path(path: String) -> Texture2D:
-	var img := Image.new()
-	if img.load(path) != OK:
-		return null
+	var img: Image = null
+	if ResourceLoader.exists(path):
+		var res = ResourceLoader.load(path)
+		if res is Texture2D:
+			img = res.get_image()
+	if img == null:
+		img = Image.new()
+		if img.load(path) != OK:
+			return null
+	if img.is_compressed():
+		img.decompress()
 	var h := int(round(float(BG_PIXEL_W) * img.get_height() / img.get_width()))
 	img.resize(BG_PIXEL_W, max(1, h), Image.INTERPOLATE_NEAREST)
 	return ImageTexture.create_from_image(img)
