@@ -1,0 +1,36 @@
+# --- Original game files & anything derived from them (NEVER commit) ---
+*.dat
+*.DAT
+*.exe
+*.EXE
+*.com
+*.COM
+# Extracted/original-derived assets — regenerate locally with tools/extract_dat
+/assets/sprites/
+/assets/backgrounds/
+/assets/palettes/
+/assets/text/
+# Keep the asset folders in git even when empty
+!/assets/sprites/.gitkeep
+!/assets/backgrounds/.gitkeep
+!/assets/palettes/.gitkeep
+!/assets/text/.gitkeep
+
+# --- Godot ---
+.godot/
+/android/
+export.cfg
+*.translation
+
+# --- Python (extraction tool) ---
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
