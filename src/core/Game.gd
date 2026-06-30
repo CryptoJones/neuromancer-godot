@@ -827,10 +827,18 @@ func _open_load_menu() -> void:
 
 func _do_load_slug(slug: String) -> void:
 	if SaveSystem.load_slug(slug):
+		_sanitize_loaded_state()
 		_go_explore()
 		_toast("Game loaded.")
 	else:
 		_toast("Load failed — save is corrupt.")
+
+## Guard against hand-edited / corrupt saves: a bogus current_room would strand the
+## player on a blank screen with no exits, so snap back to the start room instead.
+func _sanitize_loaded_state() -> void:
+	if not _world.has_room(GameState.current_room):
+		push_warning("Load: room '%s' does not exist — falling back to start" % GameState.current_room)
+		GameState.current_room = _world.start_id
 
 func _confirm_delete(slug: String, display_name: String) -> void:
 	_menu_begin("DELETE SAVE?", "This cannot be undone.")
@@ -852,6 +860,7 @@ func _quicksave() -> void:
 
 func _quickload() -> void:
 	if SaveSystem.load_slug(SaveSystem.QUICK_SLUG):
+		_sanitize_loaded_state()
 		_go_explore()
 		_toast("Quickloaded.")
 	else:
