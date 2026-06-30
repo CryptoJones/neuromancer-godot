@@ -19,10 +19,12 @@ const NPC_DIR := "res://data/npcs/"
 const VIEW_W := 304
 const VIEW_H := 124   # taller frame: the owned HD plates are ~16:9, not the EGA letterbox
 const MINUTES_PER_MOVE := 3
+const BG_PIXEL_W := 320   # downscale width: keeps the plates chunky/retro while text stays crisp
 
 var _state: int = State.TITLE
 var _world: World
 var _dialog: DialogEngine
+var _pix_cache: Dictionary = {}      # bg_id -> downscaled (pixelated) Texture2D
 
 # Layers
 var _title_layer: Control
@@ -165,6 +167,9 @@ func _build_explore_layer() -> void:
 	# overflow so the wide HD art never bleeds past the window into the HUD.
 	_bg_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 	_bg_rect.clip_contents = true
+	# NEAREST so the downscaled plate blows back up into chunky retro pixels
+	# (canvas_items mode otherwise linear-filters it into a soft blur).
+	_bg_rect.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	_bg_rect.position = Vector2(8, 6)
 	_bg_rect.size = Vector2(VIEW_W, VIEW_H)
 	_explore_layer.add_child(_bg_rect)
@@ -280,8 +285,10 @@ func _refresh_room() -> void:
 	var id := GameState.current_room
 	var r := _world.room(id)
 	_room_name_lbl.text = r.get("name", id)
-	# Background.
-	var tex := Assets.background(r.get("bg", ""))
+	# Background — deliberately downscaled to low-res (nearest) so the plate reads
+	# as chunky retro pixels when canvas_items stretch scales it up, while the
+	# text/UI render crisp at native resolution.
+	var tex := _pixelated_bg(r.get("bg", ""))
 	_bg_rect.texture = tex
 	_bg_rect.visible = tex != null
 	_bg_placeholder.visible = tex == null
@@ -294,6 +301,25 @@ func _refresh_room() -> void:
 	_desc_lbl.text = prose
 	_rebuild_buttons(r)
 	_refresh_status()
+
+## Downscale a room's HD plate to BG_PIXEL_W (nearest-neighbour) and cache it, so
+## the canvas_items stretch blows it back up into chunky retro pixels. The owned
+## 1344x768 art stays on disk untouched; only the on-screen plate is pixelated.
+func _pixelated_bg(bg_id: String) -> Texture2D:
+	if bg_id == "":
+		return null
+	if _pix_cache.has(bg_id):
+		return _pix_cache[bg_id]
+	var src := Assets.background(bg_id)
+	if src == null:
+		_pix_cache[bg_id] = null
+		return null
+	var img := src.get_image()
+	var h := int(round(float(BG_PIXEL_W) * img.get_height() / img.get_width()))
+	img.resize(BG_PIXEL_W, max(1, h), Image.INTERPOLATE_NEAREST)
+	var tex := ImageTexture.create_from_image(img)
+	_pix_cache[bg_id] = tex
+	return tex
 
 func _rebuild_buttons(r: Dictionary) -> void:
 	for c in _button_bar.get_children():
