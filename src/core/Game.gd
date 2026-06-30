@@ -53,6 +53,7 @@ var _bg_placeholder: ColorRect
 var _room_name_lbl: Label
 var _desc_lbl: Label
 var _status_lbl: Label
+var _toast_lbl: Label
 var _button_bar: HBoxContainer
 
 # Dialog widgets
@@ -60,6 +61,7 @@ var _dialog_text: Label
 var _dialog_options: VBoxContainer
 
 var _name_edit: LineEdit
+var _save_name_edit: LineEdit
 
 
 func _ready() -> void:
@@ -148,13 +150,21 @@ func _build_title_layer() -> void:
 		_small(t, 14)
 		_title_layer.add_child(t)
 	var prompt := Label.new()
-	prompt.text = "press any key"
-	prompt.position = Vector2(0, 184)
-	prompt.size = Vector2(320, 12)
+	prompt.text = "PRESS ANY KEY"
+	prompt.position = Vector2(0, 166)
+	prompt.size = Vector2(320, 26)
 	prompt.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	prompt.add_theme_color_override("font_color", Color(0.7, 0.9, 0.7))
-	_small(prompt, 8)
+	prompt.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	# Big and BLACK, with a neon-green halo so it reads on any part of the cover.
+	prompt.add_theme_color_override("font_color", Color.BLACK)
+	prompt.add_theme_color_override("font_outline_color", Color(0.4, 1.0, 0.55))
+	prompt.add_theme_constant_override("outline_size", 6)
+	_small(prompt, 18)
 	_title_layer.add_child(prompt)
+	# Flashing: pulse the alpha forever while the title is up.
+	var blink := create_tween().set_loops()
+	blink.tween_property(prompt, "modulate:a", 0.12, 0.55).set_trans(Tween.TRANS_SINE)
+	blink.tween_property(prompt, "modulate:a", 1.0, 0.55).set_trans(Tween.TRANS_SINE)
 
 func _build_name_layer() -> void:
 	_name_layer = _full_control("NameEntry")
@@ -242,6 +252,17 @@ func _build_explore_layer() -> void:
 	_status_lbl.add_theme_color_override("font_color", Color(0.6, 0.9, 0.7))
 	_small(_status_lbl, 7)
 	_explore_layer.add_child(_status_lbl)
+	# Transient toast (Saved / Loaded / etc.), centered over the scene.
+	_toast_lbl = Label.new()
+	_toast_lbl.position = Vector2(8, 58)
+	_toast_lbl.size = Vector2(VIEW_W, 16)
+	_toast_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_toast_lbl.add_theme_color_override("font_color", Color(0.7, 1.0, 0.75))
+	_toast_lbl.add_theme_color_override("font_outline_color", Color.BLACK)
+	_toast_lbl.add_theme_constant_override("outline_size", 5)
+	_small(_toast_lbl, 12)
+	_toast_lbl.visible = false
+	_explore_layer.add_child(_toast_lbl)
 
 func _build_dialog_layer() -> void:
 	_dialog_layer = _full_control("Dialog")
@@ -658,10 +679,13 @@ func _pixelated_path(path: String) -> Texture2D:
 func _rebuild_buttons(r: Dictionary) -> void:
 	for c in _button_bar.get_children():
 		c.queue_free()
-	# Exit buttons.
+	# Exit buttons, always in W N S E order.
 	var dir_abbr := { "north": "N", "south": "S", "east": "E", "west": "W" }
-	for dir in r.get("exits", {}).keys():
-		var dest: String = r["exits"][dir]
+	var exits: Dictionary = r.get("exits", {})
+	for dir in ["west", "north", "south", "east"]:
+		if not exits.has(dir):
+			continue
+		var dest: String = exits[dir]
 		var b := Button.new()
 		b.text = dir_abbr.get(dir, dir)
 		b.tooltip_text = "Go %s to %s" % [dir, _world.room(dest).get("name", dest)]
@@ -719,6 +743,12 @@ func _rebuild_buttons(r: Dictionary) -> void:
 	_small(lb, 7)
 	lb.pressed.connect(_do_load)
 	_button_bar.add_child(lb)
+	# Quit.
+	var qb := Button.new()
+	qb.text = "Quit"
+	_small(qb, 7)
+	qb.pressed.connect(_do_quit)
+	_button_bar.add_child(qb)
 
 func _refresh_status() -> void:
 	var hh := int(GameState.game_minutes / 60.0) % 24
@@ -740,12 +770,104 @@ func _try_move(direction: String) -> void:
 	GameState.game_minutes += MINUTES_PER_MOVE
 	_refresh_room()
 
+# ---- Save: name it (or overwrite an existing slot) -----------------------------
+
 func _do_save() -> void:
-	SaveSystem.save_game()
+	_open_save_menu()
+
+func _open_save_menu() -> void:
+	_menu_begin("SAVE GAME", "Name this save, then press Save:")
+	var suggested := "%s - %s" % [GameState.player_name, _room_name(GameState.current_room)]
+	_save_name_edit = LineEdit.new()
+	_save_name_edit.text = suggested
+	_save_name_edit.custom_minimum_size = Vector2(298, 16)
+	_save_name_edit.max_length = 28
+	_small(_save_name_edit, 8)
+	_menu_list.add_child(_save_name_edit)
+	_menu_button("» Save", _commit_save)
+	var saves := SaveSystem.list_saves()
+	if not saves.is_empty():
+		_menu_label("— or overwrite an existing save —")
+		for s in saves:
+			_menu_button("%s   (%s)" % [s["name"], s["saved_at"]], _commit_save_named.bind(str(s["name"])))
+	_menu_button("« Cancel", _go_explore)
+	_save_name_edit.grab_focus()
+	_save_name_edit.select_all()
+
+func _commit_save() -> void:
+	var nm := _save_name_edit.text.strip_edges() if _save_name_edit != null else ""
+	if nm == "":
+		nm = GameState.player_name
+	_commit_save_named(nm)
+
+func _commit_save_named(nm: String) -> void:
+	if SaveSystem.save_as(nm):
+		_go_explore()
+		_toast("Saved: %s" % nm)
+	else:
+		_toast("Save failed.")
+
+# ---- Load: pick any save point (or delete one) ---------------------------------
 
 func _do_load() -> void:
-	if SaveSystem.load_game():
+	_open_load_menu()
+
+func _open_load_menu() -> void:
+	_menu_begin("LOAD GAME", "Pick a save point:")
+	var saves := SaveSystem.list_saves()
+	if saves.is_empty():
+		_menu_label("No saves yet — use Save first.")
+	else:
+		for s in saves:
+			_menu_button("▸ %s  —  %s, CR %d  (%s)" % [
+					s["name"], _room_name(str(s["room"])), int(s["credits"]), s["saved_at"]],
+				_do_load_slug.bind(str(s["slug"])))
+			_menu_button("        ✕ delete \"%s\"" % s["name"], _do_delete_slug.bind(str(s["slug"])))
+	_menu_button("« Cancel", _go_explore)
+
+func _do_load_slug(slug: String) -> void:
+	if SaveSystem.load_slug(slug):
 		_go_explore()
+		_toast("Game loaded.")
+	else:
+		_toast("Load failed — save is corrupt.")
+
+func _do_delete_slug(slug: String) -> void:
+	SaveSystem.delete_slug(slug)
+	_open_load_menu()   # refresh the list in place
+
+func _quicksave() -> void:
+	if SaveSystem.quicksave():
+		_toast("Quicksaved.")
+	else:
+		_toast("Quicksave failed.")
+
+func _quickload() -> void:
+	if SaveSystem.load_slug(SaveSystem.QUICK_SLUG):
+		_go_explore()
+		_toast("Quickloaded.")
+	else:
+		_toast("No quicksave found.")
+
+func _room_name(rid: String) -> String:
+	if rid == "":
+		return "?"
+	return _world.room(rid).get("name", rid)
+
+func _do_quit() -> void:
+	get_tree().quit()
+
+## Briefly flash a centered message over the scene, then fade it out.
+func _toast(msg: String) -> void:
+	if _toast_lbl == null:
+		return
+	_toast_lbl.text = msg
+	_toast_lbl.modulate.a = 1.0
+	_toast_lbl.visible = true
+	var tw := create_tween()
+	tw.tween_interval(1.1)
+	tw.tween_property(_toast_lbl, "modulate:a", 0.0, 0.8)
+	tw.tween_callback(func() -> void: _toast_lbl.visible = false)
 
 
 # ---------------------------------------------------------------- dialog render
@@ -819,6 +941,6 @@ func _handle_explore_key(keycode: int) -> void:
 		KEY_I:
 			_open_inventory()
 		KEY_F5:
-			_do_save()
+			_quicksave()
 		KEY_F9:
-			_do_load()
+			_quickload()
