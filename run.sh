@@ -1,37 +1,29 @@
 #!/usr/bin/env bash
-# run.sh — wipe the Godot import cache and launch the Neuromancer Chiba slice.
-#
-# Fresh clones have no .godot/ cache (it's gitignored), and a stale cache after a
-# pull can leave the import db pointing at old assets. This clears it, rebuilds
-# the import, then runs the game from source.
-#
-# Usage:
-#   ./run.sh                       # uses `godot` on PATH
-#   GODOT=/path/to/godot ./run.sh  # or point at a specific binary
-#   ./run.sh --editor              # open in the editor instead of running
+# Self-contained launcher — zero manual steps, ever.
+#  - Always imports assets first (incremental); if the cache is stale/corrupt it
+#    wipes .godot and rebuilds, so a fresh clone or a `git pull` never black-screens.
+#  - On Linux it defaults to SOFTWARE rendering (llvmpipe) so it draws correctly
+#    on low-end / GPU-less boxes (e.g. the Linux-Mint Chromebook). The Chiba slice
+#    is light enough that software rendering is smooth. Force the GPU: `GPU=1 ./run.sh`.
+# Usage: ./run.sh [extra godot args]   (e.g. ./run.sh --editor)
 set -euo pipefail
-
 cd "$(dirname "$0")"
 
-GODOT="${GODOT:-godot}"
-if ! command -v "$GODOT" >/dev/null 2>&1; then
-  echo "error: Godot not found. Install Godot 4.6, then either put it on PATH" >&2
-  echo "       or run:  GODOT=/path/to/godot ./run.sh" >&2
-  exit 1
+GODOT="${GODOT:-$(command -v godot || echo "$HOME/.local/bin/godot")}"
+[ -x "$GODOT" ] || { echo "Godot not found. Set \$GODOT or install godot on PATH." >&2; exit 1; }
+
+# Linux: software-render by default so it never black-screens on a GPU-less box.
+if [ "$(uname)" = "Linux" ] && [ "${GPU:-0}" != "1" ]; then
+  export LIBGL_ALWAYS_SOFTWARE=1 GALLIUM_DRIVER=llvmpipe
+  echo "Rendering: software GL (llvmpipe). Use 'GPU=1 ./run.sh' to force the GPU."
 fi
 
-echo "==> Clearing Godot import cache (.godot/ + *.import)…"
-rm -rf .godot
-find . -name '*.import' -not -path './.git/*' -delete 2>/dev/null || true
-
-echo "==> Rebuilding import cache…"
-# A clean --import can exit non-zero even on success; the cache is built regardless.
-"$GODOT" --headless --import || true
-
-if [[ "${1:-}" == "--editor" || "${1:-}" == "-e" ]]; then
-  echo "==> Opening in the Godot editor…"
-  exec "$GODOT" --editor --path .
+echo "Using $("$GODOT" --version 2>/dev/null | head -1)"
+echo "Importing assets…"
+if ! "$GODOT" --headless --path . --import; then
+  echo "Import errored — rebuilding the .godot cache from scratch…"
+  rm -rf .godot
+  "$GODOT" --headless --path . --import
 fi
 
-echo "==> Launching Neuromancer…"
-exec "$GODOT" --path .
+exec "$GODOT" --path . "$@"
