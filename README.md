@@ -37,7 +37,7 @@ The result plays like the classic but **ships standalone — no original game fi
   <br><em>▶ Watch the 30-second trailer</em>
 </p>
 
-📖 Browse every plate in **[The Art of a Neuromancer Fan Remake](docs/The-Art-of-a-Neuromancer-Fan-Remake.pdf)** — a PDF gallery of all 56 room plates and the full cyberspace set.
+📖 Browse every plate in **[The Art of The Flatline Sessions](docs/The-Art-of-The-Flatline-Sessions.pdf)** — a PDF gallery of all 56 room plates and the full cyberspace set.
 
 |  |  |
 |:---:|:---:|

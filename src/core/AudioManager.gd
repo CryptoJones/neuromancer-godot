@@ -14,6 +14,10 @@ const MUSIC_DIR := "res://assets/audio/music/"
 const FADE := 1.2          # crossfade seconds
 const MUSIC_DB := -8.0     # nominal playback level
 
+## Emitted whenever the playlist actually changes track (start, auto-advance, or ◀▶ skip)
+## so UIs like the 1337 now-playing header stay in sync with what's really playing.
+signal track_changed(track)
+
 var enabled := true
 var _a: AudioStreamPlayer
 var _b: AudioStreamPlayer
@@ -104,6 +108,7 @@ func _play_playlist_track() -> void:
 	if stream == null:
 		return
 	_crossfade_to(stream)
+	track_changed.emit(str(_playlist[_pl_idx]))
 
 
 func _on_finished(which: AudioStreamPlayer) -> void:

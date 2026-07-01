@@ -93,6 +93,7 @@ func _ready() -> void:
 		_descriptions = dd.get("desc", {})
 	_matrix = Matrix.new()
 	_matrix.load_data()
+	AudioManager.track_changed.connect(_on_track_changed)
 	_build_title_layer()
 	_build_name_layer()
 	_build_explore_layer()
@@ -773,6 +774,7 @@ func _refresh_room() -> void:
 	var id := GameState.current_room
 	var r := _world.room(id)
 	_bg_rect.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST   # normal rooms stay chunky-pixel
+	_bg_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED   # rooms fill the frame (cover-crop)
 	_room_name_lbl.text = r.get("name", id)
 	# Background — deliberately downscaled to low-res (nearest) so the plate reads
 	# as chunky retro pixels when canvas_items stretch scales it up, while the
@@ -792,8 +794,10 @@ func _refresh_room() -> void:
 func _show_void_room() -> void:
 	_room_name_lbl.text = "1337"
 	# The one hand-drawn plate in the whole game renders SHARP — skip the pixel crush,
-	# switch the view to smooth filtering so the pencil linework stays clean.
+	# switch to smooth filtering so the pencil linework stays clean, and FIT the whole
+	# drawing in the frame (pillarboxed with side bars) instead of cover-cropping it.
 	_bg_rect.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	_bg_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	var tex := _crisp_path(VOID_IMAGE)
 	_bg_rect.texture = tex
 	_bg_rect.visible = tex != null
@@ -840,6 +844,12 @@ func _void_skip(forward: bool) -> void:
 	else:
 		AudioManager.prev_track()
 	_room_name_lbl.text = _void_nowplaying()
+
+## Keep the 1337 now-playing header in sync when a track ends and auto-advances on
+## its own (not just on manual ◀▶). Only touches the header while in the void.
+func _on_track_changed(_track: String) -> void:
+	if GameState.current_room == HIDDEN_ROOM:
+		_room_name_lbl.text = _void_nowplaying()
 
 ## Downscale a room's HD plate to BG_PIXEL_W (nearest-neighbour) and cache it, so
 ## the canvas_items stretch blows it back up into chunky retro pixels. The owned
