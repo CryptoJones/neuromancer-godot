@@ -30,7 +30,12 @@ quests, mechanics, shop stock, prices, and the win path are the real thing
 
 The result plays like the classic but **ships standalone — no original game files required.**
 
-## Screenshots
+## Trailer & screenshots
+
+<p align="center">
+  <a href="https://youtu.be/Dl9qZNm67bQ"><img src="https://img.youtube.com/vi/Dl9qZNm67bQ/maxresdefault.jpg" alt="Watch the 30-second trailer" width="72%"></a>
+  <br><em>▶ Watch the 30-second trailer</em>
+</p>
 
 📖 Browse every plate in **[The Art of a Neuromancer Fan Remake](docs/The-Art-of-a-Neuromancer-Fan-Remake.pdf)** — a PDF gallery of all 56 room plates and the full cyberspace set.
 
