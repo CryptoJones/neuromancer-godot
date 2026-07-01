@@ -8,7 +8,7 @@ config_version=5
 [application]
 
 config/name="Neuromancer"
-config/version="1.0.1"
+config/version="1.0.2"
 config/description="Neuromancer — a 2026 fan remake. A faithful, standalone Godot 4 remaster of Interplay's 1988 cyberpunk adventure, after the novel by William Gibson."
 run/main_scene="res://scenes/Boot.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")

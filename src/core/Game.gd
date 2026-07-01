@@ -648,6 +648,18 @@ func _story_next() -> void:
 	_story_idx += 1
 	_show_story_page()
 
+## Load a plate at full resolution WITHOUT the pixel crush — for the one hand-drawn
+## plate (room 1337), which should read as sharp pencil against the pixelated world.
+func _crisp_path(path: String) -> Texture2D:
+	if ResourceLoader.exists(path):
+		var res = ResourceLoader.load(path)
+		if res is Texture2D:
+			return res
+	var img := Image.new()
+	if img.load(path) != OK:
+		return null
+	return ImageTexture.create_from_image(img)
+
 ## CJ may drop a Cyberspace Beach plate here; the screen degrades gracefully if absent.
 func _beach_art() -> String:
 	return "res://assets/backgrounds_hd/R50.png"
@@ -760,6 +772,7 @@ func _refresh_room() -> void:
 		return
 	var id := GameState.current_room
 	var r := _world.room(id)
+	_bg_rect.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST   # normal rooms stay chunky-pixel
 	_room_name_lbl.text = r.get("name", id)
 	# Background — deliberately downscaled to low-res (nearest) so the plate reads
 	# as chunky retro pixels when canvas_items stretch scales it up, while the
@@ -778,7 +791,10 @@ func _refresh_room() -> void:
 ## and the whole soundtrack loops over a special plate (assets/ui/void.png).
 func _show_void_room() -> void:
 	_room_name_lbl.text = "1337"
-	var tex := _pixelated_path(VOID_IMAGE)
+	# The one hand-drawn plate in the whole game renders SHARP — skip the pixel crush,
+	# switch the view to smooth filtering so the pencil linework stays clean.
+	_bg_rect.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	var tex := _crisp_path(VOID_IMAGE)
 	_bg_rect.texture = tex
 	_bg_rect.visible = tex != null
 	_bg_placeholder.visible = tex == null
