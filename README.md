@@ -2,7 +2,7 @@
 
 <p align="center"><strong>A 2026 fan remake.</strong></p>
 
-# The Flatline Sessions — A fan-made 2026 cyberpunk remaster
+# The Flatline Sessions
 
 A faithful, standalone **remaster** of **Neuromancer** — the 1988 Interplay cyberpunk
 adventure based on William Gibson's novel — rebuilt in **Godot 4** with modern,
