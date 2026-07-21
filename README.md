@@ -111,6 +111,13 @@ economy & shops ✅ → **M3** cyberspace & ICE combat ✅ → **M4** endgame & 
 owned-asset build ✅ → **M5** polish & multi-platform release ✅ — **shipped as
 [v1.0.0](https://github.com/CryptoJones/neuromancer-godot/releases/tag/v1.0.0)** (Linux/macOS/Windows).
 
+### macOS signing
+
+Starting with v1.0.5, the macOS app is Developer ID signed as Patrick Hannah but
+is not notarized. The signature protects artifact integrity and identifies its
+publisher, though Gatekeeper may still warn about the unnotarized download.
+Verify the release's SHA-256 manifest before bypassing a security warning.
+
 ## License
 
 [MIT](LICENSE) for our code. The original game and its content are **not** covered — see
