@@ -148,10 +148,10 @@ jobs:
           (cd dist/linux && zip -r "../TheFlatlineSessions-v${version}-Linux.zip" .)
           (cd dist/windows && zip -r "../TheFlatlineSessions-v${version}-Windows.zip" .)
           mv dist/macos/* dist/
-          sha256sum "dist/TheFlatlineSessions-v${version}-Linux.zip" \
-            > "dist/TheFlatlineSessions-v${version}-Linux.zip.sha256"
-          sha256sum "dist/TheFlatlineSessions-v${version}-Windows.zip" \
-            > "dist/TheFlatlineSessions-v${version}-Windows.zip.sha256"
+          (cd dist && sha256sum "TheFlatlineSessions-v${version}-Linux.zip" \
+            > "TheFlatlineSessions-v${version}-Linux.zip.sha256")
+          (cd dist && sha256sum "TheFlatlineSessions-v${version}-Windows.zip" \
+            > "TheFlatlineSessions-v${version}-Windows.zip.sha256")
       - name: Publish GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
