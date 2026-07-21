@@ -110,7 +110,8 @@ jobs:
           ./.github/scripts/sign-macos-app.sh "$app"
           archive="signed/TheFlatlineSessions-v${version}-macOS.zip"
           ditto -c -k --sequesterRsrc --keepParent "$app" "$archive"
-          shasum -a 256 "$archive" > "$archive.sha256"
+          archive_name="$(basename "$archive")"
+          (cd signed && shasum -a 256 "$archive_name" > "$archive_name.sha256")
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: flatline-i-macos-signed
@@ -127,6 +128,7 @@ jobs:
     permissions:
       contents: write
     steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
           name: flatline-i-linux-raw
@@ -146,10 +148,10 @@ jobs:
           (cd dist/linux && zip -r "../TheFlatlineSessions-v${version}-Linux.zip" .)
           (cd dist/windows && zip -r "../TheFlatlineSessions-v${version}-Windows.zip" .)
           mv dist/macos/* dist/
-          sha256sum "dist/TheFlatlineSessions-v${version}-Linux.zip" \
-            > "dist/TheFlatlineSessions-v${version}-Linux.zip.sha256"
-          sha256sum "dist/TheFlatlineSessions-v${version}-Windows.zip" \
-            > "dist/TheFlatlineSessions-v${version}-Windows.zip.sha256"
+          (cd dist && sha256sum "TheFlatlineSessions-v${version}-Linux.zip" \
+            > "TheFlatlineSessions-v${version}-Linux.zip.sha256")
+          (cd dist && sha256sum "TheFlatlineSessions-v${version}-Windows.zip" \
+            > "TheFlatlineSessions-v${version}-Windows.zip.sha256")
       - name: Publish GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
