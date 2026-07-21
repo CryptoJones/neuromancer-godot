@@ -110,7 +110,8 @@ jobs:
           ./.github/scripts/sign-macos-app.sh "$app"
           archive="signed/TheFlatlineSessions-v${version}-macOS.zip"
           ditto -c -k --sequesterRsrc --keepParent "$app" "$archive"
-          shasum -a 256 "$archive" > "$archive.sha256"
+          archive_name="$(basename "$archive")"
+          (cd signed && shasum -a 256 "$archive_name" > "$archive_name.sha256")
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: flatline-i-macos-signed
