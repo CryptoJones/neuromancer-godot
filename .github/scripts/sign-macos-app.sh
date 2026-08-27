@@ -11,7 +11,7 @@ codesign --force --deep --options runtime --timestamp \
 codesign --verify --deep --strict --verbose=2 "$APP"
 
 SIGNING_DETAILS="$(codesign -dvvv "$APP" 2>&1)"
-grep -Fq "Authority=Developer ID Application: Patrick Hannah (GPKDR6QL9Q)" \
+grep -Fq "Authority=Developer ID Application: Aaron Clark (J6P99Q4479)" \
   <<< "$SIGNING_DETAILS"
-grep -Fq "TeamIdentifier=GPKDR6QL9Q" <<< "$SIGNING_DETAILS"
+grep -Fq "TeamIdentifier=J6P99Q4479" <<< "$SIGNING_DETAILS"
 echo "Verified Developer ID signature for $(basename "$APP")."

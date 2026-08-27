@@ -25,7 +25,7 @@ security default-keychain -d user -s "$KEYCHAIN_PATH"
 
 IDENTITY="$(security find-identity -v -p codesigning "$KEYCHAIN_PATH" \
   | sed -n 's/.*"\(Developer ID Application:[^"]*\)".*/\1/p')"
-if [[ -z "$IDENTITY" || "$IDENTITY" != *"(GPKDR6QL9Q)" ]]; then
+if [[ -z "$IDENTITY" || "$IDENTITY" != *"(J6P99Q4479)" ]]; then
   echo "Expected Developer ID Application identity was not imported" >&2
   exit 1
 fi

@@ -160,4 +160,4 @@ jobs:
           gh release create "$GITHUB_REF_NAME" dist/*.zip dist/*.sha256 \
             --verify-tag \
             --title "The Flatline Sessions v${version}" \
-            --notes "The macOS app is Developer ID signed as Patrick Hannah but is not notarized. Verify the matching SHA-256 manifest before use."
+            --notes "The macOS app is Developer ID signed as Aaron Clark but is not notarized. Verify the matching SHA-256 manifest before use."
